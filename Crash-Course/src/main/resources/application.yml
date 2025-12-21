@@ -1,0 +1,41 @@
+server:
+    port: 8080
+spring:
+  profiles:
+    active: dev
+  security:
+    enabled: true
+  application:
+    name: Crash Course
+  
+
+  datasource:
+    # Replace 'localhost:3306/your_db' with your actual host and database name
+    url: jdbc:mysql://localhost:3306/db_spring_boot_crash_course?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: db_user
+    password: "Abcd1234$"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    # HikariCP Connection Pool Settings (Best Practice)
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+
+  jpa:
+    hibernate:
+      # 'update' is good for dev; use 'none' or 'validate' for production
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        # Optimized for MySQL 8+
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  # If you are using Liquibase as discussed earlier
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/db.changelog-master.yaml
