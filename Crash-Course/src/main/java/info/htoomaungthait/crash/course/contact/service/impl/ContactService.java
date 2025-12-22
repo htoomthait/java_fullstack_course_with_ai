@@ -1,5 +1,6 @@
 package info.htoomaungthait.crash.course.contact.service.impl;
 
+import info.htoomaungthait.crash.course.common.exception.ResourceNotFoundException;
 import info.htoomaungthait.crash.course.contact.dto.request.ContactReq;
 import info.htoomaungthait.crash.course.contact.dto.response.ContactRes;
 import info.htoomaungthait.crash.course.contact.model.Contact;
@@ -86,6 +87,6 @@ public class ContactService implements IContactService {
     }
 
     private Contact findContactById(Long id) {
-        return contactRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Contact not found"));
+        return contactRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Contact not found", "CONT_006"));
     }
 }
