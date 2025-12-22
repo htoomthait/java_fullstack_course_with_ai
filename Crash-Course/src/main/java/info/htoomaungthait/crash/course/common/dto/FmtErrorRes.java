@@ -12,23 +12,19 @@ import tools.jackson.databind.annotation.JsonNaming;
 @NoArgsConstructor
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class FmtResponse<T> {
-
+public class FmtErrorRes {
     private String statusCode;
 
     private String statusText;
 
-    private String message;
+    private String errorMessage;
 
-    private T data;
 
-    public static <T> FmtResponse<T> of(String statusCode, String statusText, String message, T data) {
-        return FmtResponse.<T>builder()
+    public static FmtErrorRes of(String statusCode, String statusText, String errorMessage) {
+        return FmtErrorRes.builder()
                 .statusCode(statusCode)
                 .statusText(statusText)
-                .message(message)
-                .data(data)
+                .errorMessage(errorMessage)
                 .build();
     }
-
 }

@@ -1,13 +1,18 @@
 server:
     port: 8080
 spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
   profiles:
     active: dev
   security:
     enabled: true
   application:
     name: Crash Course
-  
+
 
   datasource:
     # Replace 'localhost:3306/your_db' with your actual host and database name
