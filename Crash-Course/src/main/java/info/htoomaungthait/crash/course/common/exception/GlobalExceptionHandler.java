@@ -1,18 +1,36 @@
 package info.htoomaungthait.crash.course.common.exception;
 
 import info.htoomaungthait.crash.course.common.dto.FmtErrorRes;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<FmtErrorRes> handleNoHandlerFound(NoHandlerFoundException ex) {
+
+        log.info("Handling 404 URI Not Found: {}", ex.getRequestURL());
+
+        FmtErrorRes error = FmtErrorRes.of(
+                "RES_404",
+                "URI Not Found",
+                "No endpoint found for " + ex.getRequestURL()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<FmtErrorRes> handleAllExceptions(Exception ex) {
+
+        log.info("Handling general exception SRV_500 Global: {}", ex.getMessage());
 
         FmtErrorRes error = FmtErrorRes.of(
                 "SRV_500",
