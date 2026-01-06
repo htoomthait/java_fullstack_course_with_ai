@@ -10,7 +10,7 @@ function App() {
   return (
     <>
       <div>
-        <h2>Welcome to the todo list app !!</h2>
+        <h2>Welcome to the todo list app hot reload worked again!!</h2>
         <Todo />
       </div>
     </>

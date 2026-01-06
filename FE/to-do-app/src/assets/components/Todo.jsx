@@ -19,7 +19,9 @@ export const Todo = () => {
     const [showForm, setShowForm] = useState(false);
 
     const handleAddTodo = () => {
+       
         if (inputValue.title.trim() === "") return;
+        console.log(`you added new task named: ${inputValue.title}`)
         if (editIndex !== null) {
             const updatedTodos = [...todos];
             updatedTodos[editIndex] = inputValue;
@@ -31,6 +33,9 @@ export const Todo = () => {
             setInputValue(
                 initialInputValue);
         }
+
+        
+        setShowForm(false);
 
 
     }
