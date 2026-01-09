@@ -108,3 +108,8 @@ td.action-group button {
   display: none;
 }
 
+.err-msg{
+  color: #ee0011;
+  font-size: 11px;
+}
+
