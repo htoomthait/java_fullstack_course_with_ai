@@ -35,10 +35,8 @@ export const Todo = () => {
             return updatedInput;
         });
 
-        console.log(`init form : `+inputValue.initFrm)
-
         if(inputValue.initFrm === false){
-            console.log(`validating form on change after add new...`);
+
             fnValidateForm();
         }
         
@@ -50,12 +48,10 @@ export const Todo = () => {
 
         setInputValue( prev => ({ ...prev, initFrm: false }) );
 
-        console.log(`btn add  init frm` + inputValue.initFrm);
+        
 
-        console.log(`you clicked add button`)
 
         if(fnValidateForm() === true){
-             console.log(`you added new task named: ${inputValue.title}`)
             if (editIndex !== null) {
                 const updatedTodos = [...todos];
                 updatedTodos[editIndex] = inputValue;
@@ -83,15 +79,12 @@ export const Todo = () => {
     const fnValidateForm = () => {
         let validatePass = true;
 
-        console.log(`validating form...`);
-
         const errorMessages = {...initInputErrMsg};
 
         
         
         // validate title is missing
         if(!inputValue.title.trim()){
-            console.log(`title is missing...`);
             errorMessages.title_err_msg = "Title is missing!";
             validatePass = false;
         }else{
@@ -101,7 +94,6 @@ export const Todo = () => {
 
         // validate description is missing
         if(!inputValue.description.trim()){
-            console.log(`description is missing...`);
             errorMessages.description_err_msg = "Description is missing!";
             validatePass = false;
         }else{
@@ -111,7 +103,6 @@ export const Todo = () => {
 
         // validate due date is missing
         if(!inputValue.dueDate.trim()){
-            console.log(`due date is missing...`);
             errorMessages.due_date_err_msg = "Due date is missing!";
             validatePass = false;
         }else{
@@ -130,8 +121,20 @@ export const Todo = () => {
     }
 
     const handleEditTodo = (index) => {
-        setInputValue(todos[index]);
+        console.log("Editing todo at index:", index);
+        const inputToEdit = todos[index];
+        console.log("inputToEdit:", inputToEdit);
+
+        setInputValue(prev => 
+            ({ ...prev, 
+                title: inputToEdit.title,
+                description: inputToEdit.description,
+                dueDate: inputToEdit.dueDate,
+                completed: inputToEdit.completed,
+            })
+        );
         setEditIndex(index);
+        setShowForm(true);
     }
 
     const handleToggleCompleted = (index) => {
@@ -191,6 +194,9 @@ export const Todo = () => {
                             name="dueDate"
                             value={inputValue.dueDate}
                             onChange={(e) => {
+                                handleInputOnChange(e);
+                            }}
+                            onBlur={(e) => {
                                 handleInputOnChange(e);
                             }}
                         />
