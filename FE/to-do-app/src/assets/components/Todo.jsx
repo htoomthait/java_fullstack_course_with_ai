@@ -6,14 +6,16 @@ import TblRowTodo from './TblRowTodo';
 const initialInputValue = {
     initFrm: true,
     title: "",
-    title_err_msg: "",
     description: "",
-    description_err_msg: "",
     dueDate: "",
-    due_date_err_msg: "",
     completed: false,
-    validate_pass: false
 };
+
+const initInputErrMsg = {
+    title_err_msg: "",
+    description_err_msg: "",
+    due_date_err_msg: ""
+}
 
 
 export const Todo = () => {
@@ -22,6 +24,7 @@ export const Todo = () => {
     const [inputValue, setInputValue] = useState(initialInputValue);
     const [editIndex, setEditIndex] = useState(null);
     const [showForm, setShowForm] = useState(false);
+    const [errorMessages, setErrorMessages] = useState(initInputErrMsg);
 
     const handleInputOnChange = (e) => {
         const {name, value}  = e.target;
@@ -64,39 +67,59 @@ export const Todo = () => {
                 setInputValue(
                     initialInputValue);
             }
+
+            setShowForm(false);
         }
 
         
         
 
         
-        setShowForm(false);
+        
 
 
     }
 
     const fnValidateForm = () => {
-        let validatePass = null;
+        let validatePass = true;
 
         console.log(`validating form...`);
+
+        const errorMessages = {...initInputErrMsg};
+
         
         
         // validate title is missing
-        if(inputValue.title.trim() === ""){
-            setInputValue({ ...inputValue, 
-                    title_err_msg: "Title is missing!",
-                    validate_pass: false
-            })
+        if(!inputValue.title.trim()){
+            console.log(`title is missing...`);
+            errorMessages.title_err_msg = "Title is missing!";
             validatePass = false;
         }else{
-             setInputValue({ ...inputValue, 
-                    title_err_msg: "",
-                    validate_pass: true
-            })
+            errorMessages.title_err_msg = "";
             validatePass = true;
         }
 
-        console.log(`validation result: ${validatePass}`);
+        // validate description is missing
+        if(!inputValue.description.trim()){
+            console.log(`description is missing...`);
+            errorMessages.description_err_msg = "Description is missing!";
+            validatePass = false;
+        }else{
+            errorMessages.description_err_msg = "";
+            validatePass = true;
+        }
+
+        // validate due date is missing
+        if(!inputValue.dueDate.trim()){
+            console.log(`due date is missing...`);
+            errorMessages.due_date_err_msg = "Due date is missing!";
+            validatePass = false;
+        }else{
+            errorMessages.due_date_err_msg = "";
+            validatePass = true;
+        }
+
+        setErrorMessages( prev => ({ ...prev, ...errorMessages }) );
 
         return validatePass;
     }
@@ -137,14 +160,12 @@ export const Todo = () => {
                             name="title"
                             value={inputValue.title}
                             onChange={(e) => {
-                                //setInputValue({ ...inputValue, title: e.target.value } )
-                                //fnValidateForm()
-
+                               
                                 handleInputOnChange(e);
 
                             }}
                         />
-                        <span className={`err-msg`} > {inputValue.title_err_msg}</span>
+                        <span className={`err-msg`} > {errorMessages.title_err_msg}</span>
                     </div>
 
                     <div className="input-block">
@@ -158,7 +179,7 @@ export const Todo = () => {
                                 handleInputOnChange(e);
                             }}
                         />
-                        <span className={`err-msg`} > {inputValue.description_err_msg}  </span>
+                        <span className={`err-msg`} > {errorMessages.description_err_msg}  </span>
                     </div>
 
                     <div className="input-block">
@@ -173,7 +194,7 @@ export const Todo = () => {
                                 handleInputOnChange(e);
                             }}
                         />
-                        <span className={`err-msg`} > {inputValue.due_date_err_msg}</span>
+                        <span className={`err-msg`} > {errorMessages.due_date_err_msg}</span>
                     </div>
 
                     <div className="input-block">
