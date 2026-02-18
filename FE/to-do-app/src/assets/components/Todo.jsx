@@ -204,16 +204,18 @@ export const Todo = () => {
                         <span className={`err-msg`} > {errorMessages.due_date_err_msg}</span>
                     </div>
 
-                    <div className="input-block">
+                    <div className="input-block" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                         <label>
                             Completed:
-                            <input
-                                type="checkbox"
-                                name="completed"
-                                checked={inputValue.completed}
-                                onChange={(e) => setInputValue({ ...inputValue, completed: e.target.checked })}
-                            />
+
                         </label>
+                        <input
+                            type="checkbox"
+                            name="completed"
+                            style={{ margin: "10px 0 0 0px", width: "20px", height: "20px" }}
+                            checked={inputValue.completed}
+                            onChange={(e) => setInputValue({ ...inputValue, completed: e.target.checked })}
+                        />
 
 
                     </div>

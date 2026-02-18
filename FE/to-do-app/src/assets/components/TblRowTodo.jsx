@@ -17,15 +17,15 @@ const TblRowTodo = ({
     }
 
     return (
-        <tr key={index}>
+        <tr key={index} className={index % 2 === 0 ? "even-row" : "odd-row"}>
             <td>{index + 1}</td>
             <td>{todo.title}</td>
             <td>{todo.description}</td>
             <td>{todo.dueDate}</td>
             <td>{todo.completed ? "Yes" : "No"}</td>
             <td className='action-group'>
-                <button onClick={() => fnEditTodo(index)}>Edit</button>
-                <button onClick={() => fnDeleteTodo(index)}>Delete</button>
+                <button className="button-bw" onClick={() => fnEditTodo(index)}>Edit</button>
+                <button className="button-bw" onClick={() => fnDeleteTodo(index)}>Delete</button>
             </td>
         </tr>
     )

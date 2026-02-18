@@ -51,7 +51,9 @@
   margin: 1rem 0;
   text-align: left;
   width: 100%;
+  min-height: 100px;
   padding: 0.5rem;
+  border:1px solid #ccc;
   
 }
 
