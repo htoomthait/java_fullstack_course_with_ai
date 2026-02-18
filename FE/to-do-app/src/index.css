@@ -5,7 +5,10 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* background-color: #242424; */
+
+  
+  
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -28,6 +31,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+
+  background-color: #E4E4E4;
 }
 
 h1 {
@@ -66,3 +71,55 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+.button-bw {
+  background: radial-gradient(circle at center, blue 0%, rgb(196, 190, 209) 180%);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-bw:hover {
+  opacity: 0.95;
+  transform: scale(1.05);
+}
+
+.button-vertical {
+  background: linear-gradient(to bottom, #000000, #ffffff);
+  color: #000000;
+  padding: 12px 24px;
+  border: 1px solid #000;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-vertical:hover {
+  opacity: 0.85;
+}
+
+.button-elegant {
+  background: linear-gradient(135deg, #000000 0%, #444444 50%, #ffffff 100%);
+  color: #111111;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-elegant:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  transform: scale(1.03);
+}
+
+
+

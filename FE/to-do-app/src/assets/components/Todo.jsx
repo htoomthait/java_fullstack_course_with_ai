@@ -27,31 +27,31 @@ export const Todo = () => {
     const [errorMessages, setErrorMessages] = useState(initInputErrMsg);
 
     const handleInputOnChange = (e) => {
-        const {name, value}  = e.target;
-        
+        const { name, value } = e.target;
+
         setInputValue(prev => {
             const updatedInput = { ...prev, [name]: value };
-            
+
             return updatedInput;
         });
 
-        if(inputValue.initFrm === false){
+        if (inputValue.initFrm === false) {
 
             fnValidateForm();
         }
-        
 
-        
+
+
     }
 
     const handleAddTodo = () => {
 
-        setInputValue( prev => ({ ...prev, initFrm: false }) );
-
-        
+        setInputValue(prev => ({ ...prev, initFrm: false }));
 
 
-        if(fnValidateForm() === true){
+
+
+        if (fnValidateForm() === true) {
             if (editIndex !== null) {
                 const updatedTodos = [...todos];
                 updatedTodos[editIndex] = inputValue;
@@ -67,11 +67,11 @@ export const Todo = () => {
             setShowForm(false);
         }
 
-        
-        
 
-        
-        
+
+
+
+
 
 
     }
@@ -79,38 +79,38 @@ export const Todo = () => {
     const fnValidateForm = () => {
         let validatePass = true;
 
-        const errorMessages = {...initInputErrMsg};
+        const errorMessages = { ...initInputErrMsg };
 
-        
-        
+
+
         // validate title is missing
-        if(!inputValue.title.trim()){
+        if (!inputValue.title.trim()) {
             errorMessages.title_err_msg = "Title is missing!";
             validatePass = false;
-        }else{
+        } else {
             errorMessages.title_err_msg = "";
             validatePass = true;
         }
 
         // validate description is missing
-        if(!inputValue.description.trim()){
+        if (!inputValue.description.trim()) {
             errorMessages.description_err_msg = "Description is missing!";
             validatePass = false;
-        }else{
+        } else {
             errorMessages.description_err_msg = "";
             validatePass = true;
         }
 
         // validate due date is missing
-        if(!inputValue.dueDate.trim()){
+        if (!inputValue.dueDate.trim()) {
             errorMessages.due_date_err_msg = "Due date is missing!";
             validatePass = false;
-        }else{
+        } else {
             errorMessages.due_date_err_msg = "";
             validatePass = true;
         }
 
-        setErrorMessages( prev => ({ ...prev, ...errorMessages }) );
+        setErrorMessages(prev => ({ ...prev, ...errorMessages }));
 
         return validatePass;
     }
@@ -125,13 +125,14 @@ export const Todo = () => {
         const inputToEdit = todos[index];
         console.log("inputToEdit:", inputToEdit);
 
-        setInputValue(prev => 
-            ({ ...prev, 
-                title: inputToEdit.title,
-                description: inputToEdit.description,
-                dueDate: inputToEdit.dueDate,
-                completed: inputToEdit.completed,
-            })
+        setInputValue(prev =>
+        ({
+            ...prev,
+            title: inputToEdit.title,
+            description: inputToEdit.description,
+            dueDate: inputToEdit.dueDate,
+            completed: inputToEdit.completed,
+        })
         );
         setEditIndex(index);
         setShowForm(true);
@@ -150,7 +151,7 @@ export const Todo = () => {
                 <div>
                     <div className="input-block">
                         <label>Todo Form</label>
-                        <button onClick={() => setShowForm(!showForm)}>{showForm ? "Hide Form" : "Add New"}</button>
+                        <button className="button-bw" onClick={() => setShowForm(!showForm)}>{showForm ? "Hide Form" : "Add New"}</button>
                     </div>
                 </div>
                 <div className={`form-fields ${showForm ? "" : "hidden"}`}>
@@ -163,7 +164,7 @@ export const Todo = () => {
                             name="title"
                             value={inputValue.title}
                             onChange={(e) => {
-                               
+
                                 handleInputOnChange(e);
 
                             }}
@@ -217,7 +218,7 @@ export const Todo = () => {
 
                     </div>
 
-                    <button onClick={handleAddTodo}>{editIndex !== null ? "Update Todo" : "Add Todo"}</button>
+                    <button onClick={handleAddTodo} className="button-bw" >{editIndex !== null ? "Update Todo" : "Add Todo"}</button>
                 </div>
             </div>
             <div className="tbl-container">
