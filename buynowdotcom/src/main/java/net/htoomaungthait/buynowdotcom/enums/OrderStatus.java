@@ -1,4 +1,13 @@
 package net.htoomaungthait.buynowdotcom.enums;
 
-public class OrderStatus {
+public enum OrderStatus {
+    PENDING,
+
+    PROCESSING,
+
+    SHIPPED,
+
+    DELIVERED,
+
+    CANCELLED
 }
