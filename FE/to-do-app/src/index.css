@@ -120,7 +120,7 @@ button:focus-visible {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
   transform: scale(1.03);
 }
-
+  
 .odd-row {
   background-color: #f9f9f9;
 }
