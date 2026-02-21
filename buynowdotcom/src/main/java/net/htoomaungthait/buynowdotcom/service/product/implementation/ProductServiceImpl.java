@@ -1,24 +1,37 @@
 package net.htoomaungthait.buynowdotcom.service.product.implementation;
 
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
+import net.htoomaungthait.buynowdotcom.model.Category;
 import net.htoomaungthait.buynowdotcom.model.Product;
+import net.htoomaungthait.buynowdotcom.repository.CategoryRepository;
 import net.htoomaungthait.buynowdotcom.repository.ProductRepository;
 import net.htoomaungthait.buynowdotcom.service.product.IProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements IProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
-    public Product addProduct(Product product) {
-        return null;
+    public Product addProduct(AddProductRequest request) {
+
+        if(productExists(request.getName(), request.getBrand())){
+            throw new EntityExistsException("Product with the same name and brand already exists.");
+        }
+
+
+
+        return productRepository.save(createProduct(request));
     }
 
     @Override
@@ -80,6 +93,26 @@ public class ProductServiceImpl implements IProductService {
     private Product getProductById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
+    }
+
+    private boolean productExists(String name, String brand) {
+        List<Product> products = productRepository.findByBrandAndCategoryName(brand, name);
+        return !products.isEmpty();
+    }
+
+    private Product createProduct(AddProductRequest request){
+        Product productToAdd = AddProductRequest.toProduct(request);
+
+        Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory()))
+                .orElseGet(() -> {
+                    Category newCategory = new Category();
+                    newCategory.setName(request.getCategory());
+                    return categoryRepository.save(newCategory);
+                });
+
+        productToAdd.setCategory(category);
+
+        return productToAdd;
     }
 
 

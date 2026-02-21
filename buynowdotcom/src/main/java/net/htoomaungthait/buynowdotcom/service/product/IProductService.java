@@ -1,12 +1,13 @@
 package net.htoomaungthait.buynowdotcom.service.product;
 
+import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
 import net.htoomaungthait.buynowdotcom.model.Product;
 
 import java.util.List;
 
 public interface IProductService {
 
-    Product addProduct(Product product);
+    Product addProduct(AddProductRequest request);
 
     Product updateProduct(Product product);
 
