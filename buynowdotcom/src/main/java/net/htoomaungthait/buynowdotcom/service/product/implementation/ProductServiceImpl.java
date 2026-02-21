@@ -5,13 +5,16 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
-import net.htoomaungthait.buynowdotcom.model.Category;
-import net.htoomaungthait.buynowdotcom.model.Product;
+import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
+import net.htoomaungthait.buynowdotcom.model.*;
+import net.htoomaungthait.buynowdotcom.repository.CartItemRepository;
 import net.htoomaungthait.buynowdotcom.repository.CategoryRepository;
+import net.htoomaungthait.buynowdotcom.repository.OrderItemRepository;
 import net.htoomaungthait.buynowdotcom.repository.ProductRepository;
 import net.htoomaungthait.buynowdotcom.service.product.IProductService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +24,8 @@ public class ProductServiceImpl implements IProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final CartItemRepository cartItemRepository;
+    private final OrderItemRepository orderItemRepository;
 
     @Override
     public Product addProduct(AddProductRequest request) {
@@ -35,8 +40,13 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        return null;
+    public Product updateProduct(Long productId, UpdateProductRequest request) {
+
+            Product existingProduct = getProductById(productId);
+
+            return productRepository.save(updateExistingProduct(existingProduct, request));
+
+
     }
 
     @Override
@@ -48,6 +58,33 @@ public class ProductServiceImpl implements IProductService {
     public void deleteProductById(Long id) {
         // Check if the product exists before attempting to delete
         Product product = getProductById(id);
+
+        // get all cart items associated with the product and delete them
+        List<CartItem> cartItems = cartItemRepository.findByProductId(id);
+
+        cartItems.forEach(item -> {
+            Cart cart = item.getCart();
+            cart.removeItem(item);
+            cartItemRepository.delete(item);
+        });
+
+        // get all order items associated with the product and delete them
+        List<OrderItem> orderItems = orderItemRepository.findByProductId(id);
+
+        orderItems.forEach(item -> {
+            item.setProduct(null);
+            orderItemRepository.save(item);
+        });
+
+
+        // Remove the product from its category's product list
+        Optional.ofNullable(product.getCategory())
+                .ifPresent(category -> {
+                    category.getProducts().remove(product);
+                    categoryRepository.save(category);
+                });
+
+
 
         // If the product exists, delete it
         productRepository.delete(product);
@@ -82,12 +119,12 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public List<Product> searchProductsByName(String name) {
-        return productRepository.findByProductNameContainingIgnoreCase(name);
+        return productRepository.findByNameContainingIgnoreCase(name);
     }
 
     @Override
     public List<Product> searchProductsByNameAndBrand(String name, String brand) {
-        return productRepository.findByProductNameContainingIgnoreCaseAndBrand(name, brand);
+        return productRepository.findByNameContainingIgnoreCaseAndBrand(name, brand);
     }
 
     private Product getProductById(Long id) {
@@ -113,6 +150,28 @@ public class ProductServiceImpl implements IProductService {
         productToAdd.setCategory(category);
 
         return productToAdd;
+    }
+
+    private Product updateExistingProduct(Product existingProduct, UpdateProductRequest request){
+
+        existingProduct.setName(request.getName());
+        existingProduct.setBrand(request.getBrand());
+        existingProduct.setPrice(BigDecimal.valueOf(request.getPrice()));
+        existingProduct.setInventory(request.getQuantity());
+        existingProduct.setDescription(request.getDescription());
+
+        Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory()))
+                .orElseGet(() -> {
+                    Category newCategory = new Category();
+                    newCategory.setName(request.getCategory());
+                    return categoryRepository.save(newCategory);
+                });
+
+        existingProduct.setCategory(category);
+
+
+        return existingProduct;
+
     }
 
 

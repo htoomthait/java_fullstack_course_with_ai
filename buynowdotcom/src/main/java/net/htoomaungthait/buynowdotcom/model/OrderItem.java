@@ -25,6 +25,8 @@ public class OrderItem {
 
     private BigDecimal price;
 
+    private BigDecimal totalPrice;
+
     @ManyToOne
     @JoinColumn(name = "order_id",
         foreignKey = @ForeignKey(name = "fk_order_item_order")

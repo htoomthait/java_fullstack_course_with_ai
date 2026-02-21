@@ -38,6 +38,12 @@ public class Order {
     )
     private User user;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<OrderItem> orderItems;
+
+
+
+
 
 
 }

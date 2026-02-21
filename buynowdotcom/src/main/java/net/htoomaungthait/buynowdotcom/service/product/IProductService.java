@@ -1,6 +1,7 @@
 package net.htoomaungthait.buynowdotcom.service.product;
 
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
+import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
 import net.htoomaungthait.buynowdotcom.model.Product;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface IProductService {
 
     Product addProduct(AddProductRequest request);
 
-    Product updateProduct(Product product);
+    Product updateProduct(Long productId, UpdateProductRequest request);
 
     Product findProductById(Long id);
 
