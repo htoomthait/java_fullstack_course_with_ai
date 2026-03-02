@@ -18,6 +18,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @Column(name = "id", columnDefinition = "BIGINT")
     private Long id;
 
     @Column(nullable = false, unique = true)

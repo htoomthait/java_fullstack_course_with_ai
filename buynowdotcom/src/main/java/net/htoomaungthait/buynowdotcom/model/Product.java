@@ -39,7 +39,7 @@ public class Product  {
 
     @ManyToOne
     @JoinColumn(name = "category_id",
-            foreignKey = @ForeignKey(name = "fk_products_category"))
+            foreignKey = @ForeignKey(name = "FK_PROD_CAT_001"))
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

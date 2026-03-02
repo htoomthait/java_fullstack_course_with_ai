@@ -20,11 +20,11 @@ public class UserRole {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_user_roles_user"), columnDefinition = "BIGINT")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_USER_ROLE_USER"), columnDefinition = "BIGINT")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_user_roles_role"), columnDefinition = "BIGINT")
+    @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_USER_ROLE_ROLE"), columnDefinition = "BIGINT")
     private Role role;
 
     // Optional extra info
