@@ -1,9 +1,10 @@
 package net.htoomaungthait.buynowdotcom.service.cateogry.implementation;
 
 import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.dto.request.CategoryRequest;
 import net.htoomaungthait.buynowdotcom.model.Category;
 import net.htoomaungthait.buynowdotcom.repository.CategoryRepository;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CategoryServiceImpl implements ICategoryService {
 
 
@@ -60,7 +62,12 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        try {
+            return categoryRepository.findAll();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -70,6 +77,6 @@ public class CategoryServiceImpl implements ICategoryService {
 
     private Category getCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + categoryId));
+                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + categoryId, "CAT_004"));
     }
 }

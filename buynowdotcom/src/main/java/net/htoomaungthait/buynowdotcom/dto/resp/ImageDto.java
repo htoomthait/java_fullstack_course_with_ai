@@ -1,4 +1,4 @@
-package net.htoomaungthait.buynowdotcom.dto.request;
+package net.htoomaungthait.buynowdotcom.dto.resp;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

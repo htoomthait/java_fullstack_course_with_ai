@@ -2,7 +2,7 @@ package net.htoomaungthait.buynowdotcom.service.image.implementation;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import net.htoomaungthait.buynowdotcom.dto.request.ImageDto;
+import net.htoomaungthait.buynowdotcom.dto.resp.ImageDto;
 import net.htoomaungthait.buynowdotcom.model.Image;
 import net.htoomaungthait.buynowdotcom.model.Product;
 import net.htoomaungthait.buynowdotcom.repository.ImageRepository;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
