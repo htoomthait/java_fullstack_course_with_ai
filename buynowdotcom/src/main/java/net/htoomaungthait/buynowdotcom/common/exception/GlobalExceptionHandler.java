@@ -1,5 +1,6 @@
 package net.htoomaungthait.buynowdotcom.common.exception;
 
+import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityExistsException;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.common.response.ErrorResponse;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,16 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(404).body(errorResponse);
+    }
+
+    @ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<ErrorResponse> handleEntityExistsException(EntityExistsException ex) {
+        ErrorResponse errorResponse = ErrorResponse.of(
+                ex.getStatusCode(), "Data Already Exists",
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(409).body(errorResponse);
     }
 
 }

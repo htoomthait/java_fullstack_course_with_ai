@@ -8,6 +8,7 @@ import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
 import net.htoomaungthait.buynowdotcom.common.response.StatusCodeAndMessage;
 import net.htoomaungthait.buynowdotcom.common.response.StatusCodesAndMessages;
 import net.htoomaungthait.buynowdotcom.dto.request.CategoryRequest;
+import net.htoomaungthait.buynowdotcom.dto.resp.CategoryDto;
 import net.htoomaungthait.buynowdotcom.model.Category;
 import net.htoomaungthait.buynowdotcom.service.cateogry.ICategoryService;
 import org.springframework.http.HttpStatus;
@@ -28,28 +29,15 @@ public class CategoryController extends BaseController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<ApiResponse<List<Category>>> getAllCategories(){
-
-        List<Category> categories = categoryService.getAllCategories();
-
-        if(categories.isEmpty()){
-            this.statusCodeAndMessage = StatusCodesAndMessages.getByStatusCode("CAT_006");
-            this.respondStatus = HttpStatus.OK.value();
-
-
-        }
-        else{
-            this.respondStatus = HttpStatus.OK.value();
-            this.statusCodeAndMessage = StatusCodesAndMessages.getByStatusCode("CAT_005");
-        }
+    public ResponseEntity<ApiResponse<List<CategoryDto>>> getAllCategories(){
 
 
         return makeResponse(
-                this.respondStatus ,
-                statusCodeAndMessage.getStatusCode(),
+                HttpStatus.OK.value() ,
+                "CAT_005",
                 "success search",
-                statusCodeAndMessage.getMessage(),
-                categories
+                getStatusMessageByCode("CAT_005"),
+                categoryService.getAllCategories()
         );
 
 
@@ -57,86 +45,82 @@ public class CategoryController extends BaseController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse<Category>> addCategory(
+    public ResponseEntity<ApiResponse<CategoryDto>> addCategory(
             @Valid @RequestBody CategoryRequest categoryRequest
     ){
 
-        Category newCategory = categoryService.addCategory(categoryRequest);
-        this.statusCodeAndMessage = StatusCodesAndMessages.getByStatusCode("CAT_001");
+
 
         return makeResponse(
                 HttpStatus.CREATED.value(),
-                statusCodeAndMessage.getStatusCode(),
+                "CAT_001",
                 "success created",
-                statusCodeAndMessage.getMessage(),
-                newCategory
+                getStatusMessageByCode("CAT_005"),
+                categoryService.addCategory(categoryRequest)
         );
     }
 
     @GetMapping("/{categoryId}")
-    public ResponseEntity<ApiResponse<Category>> getCategoryById(
+    public ResponseEntity<ApiResponse<CategoryDto>> getCategoryById(
             @PathVariable Long categoryId
     ){
 
-        Category category = categoryService.findCategoryById(categoryId);
-        this.statusCodeAndMessage = StatusCodesAndMessages.getByStatusCode("CAT_007");
+
 
         return makeResponse(
-                HttpStatus.CREATED.value(),
-                statusCodeAndMessage.getStatusCode(),
+                HttpStatus.OK.value(),
+                "CAT_007",
                 "success search",
-                statusCodeAndMessage.getMessage(),
-                category
+                getStatusMessageByCode("CAT_007"),
+                categoryService.findCategoryById(categoryId)
         );
      }
 
-     @PutMapping("/{categoryId}")
-    public ResponseEntity<ApiResponse<Category>> updateCategory(
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<ApiResponse<CategoryDto>> updateCategory(
             @PathVariable Long categoryId,
             @Valid @RequestBody CategoryRequest categoryRequest
     ){
-        Category updatedCategory = categoryService.updateCategory(categoryRequest, categoryId);
 
-        this.statusCodeAndMessage = StatusCodesAndMessages.getByStatusCode("CAT_002");
+
 
          return makeResponse(
-                 HttpStatus.CREATED.value(),
-                 statusCodeAndMessage.getStatusCode(),
+                 HttpStatus.ACCEPTED.value(),
+                 "CAT_002",
                  "success update",
-                 statusCodeAndMessage.getMessage(),
-                 updatedCategory
+                 getStatusMessageByCode("CAT_002"),
+                 categoryService.updateCategory(categoryRequest, categoryId)
          );
     }
 
     @DeleteMapping("/{categoryId}")
-    public ResponseEntity<ApiResponse<Category>> deleteCategory(
+    public ResponseEntity<ApiResponse<CategoryDto>> deleteCategory(
             @PathVariable Long categoryId
     ){
-        categoryService.deleteCategory(categoryId);
-        this.statusCodeAndMessage = StatusCodesAndMessages.getByStatusCode("CAT_002");
+
+
 
         return makeResponse(
-                HttpStatus.CREATED.value(),
-                statusCodeAndMessage.getStatusCode(),
+                HttpStatus.OK.value(),
+                "CAT_003",
                 "success delete",
-                statusCodeAndMessage.getMessage(),
-                null
+                getStatusMessageByCode("CAT_003"),
+                categoryService.deleteCategory(categoryId)
         );
     }
 
     @GetMapping("/get-by-name/{name}")
-    public ResponseEntity<ApiResponse<Category>> getCategoryByName(
+    public ResponseEntity<ApiResponse<List<CategoryDto>>> getCategoryByName(
             @PathVariable String name
     ){
-        Category category = categoryService.findCategoryByName(name);
-        this.statusCodeAndMessage = StatusCodesAndMessages.getByStatusCode("CAT_002");
+
 
         return makeResponse(
                 HttpStatus.CREATED.value(),
-                statusCodeAndMessage.getStatusCode(),
+                "CAT_009",
                 "success  search",
-                statusCodeAndMessage.getMessage(),
-                category
+                getStatusMessageByCode("CAT_009"),
+                categoryService.findCategoryByName(name)
         );
     }
 

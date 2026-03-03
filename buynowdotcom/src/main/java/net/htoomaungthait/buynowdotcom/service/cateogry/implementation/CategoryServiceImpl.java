@@ -1,11 +1,12 @@
 package net.htoomaungthait.buynowdotcom.service.cateogry.implementation;
 
-import jakarta.persistence.EntityExistsException;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityExistsException;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.dto.request.CategoryRequest;
+import net.htoomaungthait.buynowdotcom.dto.resp.CategoryDto;
 import net.htoomaungthait.buynowdotcom.model.Category;
 import net.htoomaungthait.buynowdotcom.repository.CategoryRepository;
 import net.htoomaungthait.buynowdotcom.service.cateogry.ICategoryService;
@@ -23,47 +24,59 @@ public class CategoryServiceImpl implements ICategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public Category addCategory(CategoryRequest category) {
+    public CategoryDto addCategory(CategoryRequest category) {
         Category newCategory = CategoryRequest.of(category);
 
         Optional.of(category).map(CategoryRequest::getName)
                 .ifPresent(name -> {
-                    if (categoryRepository.findByNameContainingIgnoreCase(name) != null) {
-                        throw new EntityExistsException("Category with the same name already exists.");
+                    if (categoryRepository.findByName(name) != null) {
+                        throw new EntityExistsException("Category with the same name already exists.", "CAT_010");
                     }
                 });
 
-        return categoryRepository.save(newCategory);
+        return CategoryDto.from(categoryRepository.save(newCategory));
     }
 
     @Override
-    public Category updateCategory(CategoryRequest category, Long categoryId) {
+    public CategoryDto updateCategory(CategoryRequest category, Long categoryId) {
         Category existingCategory = this.getCategoryById(categoryId);
 
         existingCategory.setName(category.getName());
         existingCategory.setDescription(category.getDescription());
-        categoryRepository.save(existingCategory);
 
-        return null;
+        return CategoryDto.from(categoryRepository.save(existingCategory));
     }
 
     @Override
-    public void deleteCategory(Long categoryId) {
+    public CategoryDto deleteCategory(Long categoryId) {
 
         Category categoryToDelete = this.getCategoryById(categoryId);
         categoryRepository.delete(categoryToDelete);
 
+        return CategoryDto.from(categoryToDelete);
+
     }
 
     @Override
-    public Category findCategoryById(Long categoryId) {
-        return this.getCategoryById(categoryId);
+    public CategoryDto findCategoryById(Long categoryId) {
+        return CategoryDto.from(this.getCategoryById(categoryId));
     }
 
     @Override
-    public List<Category> getAllCategories() {
+    public List<CategoryDto> getAllCategories() {
         try {
-            return categoryRepository.findAll();
+
+            // find all and throw exception if empty
+            List<Category> searchCategories = categoryRepository.findAll();
+            if (searchCategories.isEmpty()) {
+                throw new EntityNotFoundException("Categories not found", "CAT_006");
+            }
+
+            // Map to DTO and return
+            return searchCategories.stream()
+                    .map(CategoryDto::from)
+                    .toList();
+
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);
@@ -71,8 +84,17 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public Category findCategoryByName(String name) {
-        return categoryRepository.findByNameContainingIgnoreCase(name);
+    public List<CategoryDto> findCategoryByName(String name) {
+        List<CategoryDto> categoryDtoList = categoryRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(CategoryDto::from)
+                .toList();
+
+        if (categoryDtoList.isEmpty()) {
+            throw new EntityNotFoundException("Categories not found with name: " + name, "CAT_006");
+        }
+
+        return categoryDtoList;
     }
 
     private Category getCategoryById(Long categoryId) {

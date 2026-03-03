@@ -1,23 +1,24 @@
 package net.htoomaungthait.buynowdotcom.service.cateogry;
 
 import net.htoomaungthait.buynowdotcom.dto.request.CategoryRequest;
+import net.htoomaungthait.buynowdotcom.dto.resp.CategoryDto;
 import net.htoomaungthait.buynowdotcom.model.Category;
 
 import java.util.List;
 
 public interface ICategoryService {
 
-    Category addCategory(CategoryRequest category);
+    CategoryDto addCategory(CategoryRequest category);
 
-    Category updateCategory(CategoryRequest category, Long categoryId);
+    CategoryDto updateCategory(CategoryRequest category, Long categoryId);
 
-    void deleteCategory(Long categoryId);
+    CategoryDto deleteCategory(Long categoryId);
 
-    Category findCategoryById(Long categoryId);
+    CategoryDto findCategoryById(Long categoryId);
 
-    List<Category> getAllCategories();
+    List<CategoryDto> getAllCategories();
 
-    Category findCategoryByName(String name);
+    List<CategoryDto> findCategoryByName(String name);
 
 
 }

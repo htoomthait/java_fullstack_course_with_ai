@@ -27,10 +27,12 @@ public class StatusCodesAndMessages {
             StatusCodeAndMessage.of("CAT_002", "Category updated successfully"),
             StatusCodeAndMessage.of("CAT_003", "Category deleted successfully"),
             StatusCodeAndMessage.of("CAT_004", "Category not found"),
-            StatusCodeAndMessage.of("CAT_005", "Categories found"),
+            StatusCodeAndMessage.of("CAT_005", "Queried Categories found"),
             StatusCodeAndMessage.of("CAT_006", "Empty category list"),
             StatusCodeAndMessage.of("CAT_007", "Category  found"),
             StatusCodeAndMessage.of("CAT_008", "Category Not found"),
+            StatusCodeAndMessage.of("CAT_009", "Category found by name"),
+            StatusCodeAndMessage.of("CAT_010", "Category name already existed."),
 
             StatusCodeAndMessage.of("PROD_001", "Product created successfully"),
             StatusCodeAndMessage.of("PROD_002", "Product updated successfully"),
