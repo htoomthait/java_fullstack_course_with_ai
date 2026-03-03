@@ -8,7 +8,9 @@ import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundExc
 import net.htoomaungthait.buynowdotcom.dto.request.CategoryRequest;
 import net.htoomaungthait.buynowdotcom.dto.resp.CategoryDto;
 import net.htoomaungthait.buynowdotcom.model.Category;
+import net.htoomaungthait.buynowdotcom.model.Product;
 import net.htoomaungthait.buynowdotcom.repository.CategoryRepository;
+import net.htoomaungthait.buynowdotcom.repository.ProductRepository;
 import net.htoomaungthait.buynowdotcom.service.cateogry.ICategoryService;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,8 @@ public class CategoryServiceImpl implements ICategoryService {
 
 
     private final CategoryRepository categoryRepository;
+
+    private final ProductRepository productRepository;
 
     @Override
     public CategoryDto addCategory(CategoryRequest category) {
@@ -50,7 +54,18 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public CategoryDto deleteCategory(Long categoryId) {
 
+        // find category to delete and throw exception if not found
         Category categoryToDelete = this.getCategoryById(categoryId);
+
+        // Set category to null for all products
+        List<Product> products = productRepository.findByCategoryName(categoryToDelete.getName());
+
+        products.forEach(product -> product.setCategory(null));
+
+        productRepository.saveAll(products);
+
+
+        // delete category and return deleted category as DTO
         categoryRepository.delete(categoryToDelete);
 
         return CategoryDto.from(categoryToDelete);

@@ -2,28 +2,32 @@ package net.htoomaungthait.buynowdotcom.controller;
 
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.BaseController;
-import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
-import net.htoomaungthait.buynowdotcom.common.response.StatusCodeAndMessage;
-import net.htoomaungthait.buynowdotcom.common.response.StatusCodesAndMessages;
+import net.htoomaungthait.buynowdotcom.common.response.*;
 import net.htoomaungthait.buynowdotcom.dto.request.CategoryRequest;
 import net.htoomaungthait.buynowdotcom.dto.resp.CategoryDto;
 import net.htoomaungthait.buynowdotcom.model.Category;
 import net.htoomaungthait.buynowdotcom.service.cateogry.ICategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("${api.prefix}/categories")
+@Validated
 public class CategoryController extends BaseController {
 
     private final ICategoryService categoryService;
-
 
 
 
@@ -62,7 +66,9 @@ public class CategoryController extends BaseController {
 
     @GetMapping("/{categoryId}")
     public ResponseEntity<ApiResponse<CategoryDto>> getCategoryById(
-            @PathVariable Long categoryId
+            @PathVariable
+            @Min(value = 1, message = "Id must be greater than or equal to 1")
+            Long categoryId
     ){
 
 

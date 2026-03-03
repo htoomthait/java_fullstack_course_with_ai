@@ -23,6 +23,13 @@ public class StatusCodesAndMessages {
     }
 
     private static final List<StatusCodeAndMessage> statusCodesAndMessages = List.of(
+            StatusCodeAndMessage.of("CER_001", "Http Method Not Allowed!"),
+            StatusCodeAndMessage.of("CER_002", "Unsupported Media Type!"),
+            StatusCodeAndMessage.of("CER_003", "Undefined URL!"),
+            StatusCodeAndMessage.of("CER_004", "Input Validation Failed."),
+            StatusCodeAndMessage.of("CER_005", "Input variable type doesn't match the required type."),
+
+
             StatusCodeAndMessage.of("CAT_001", "Category created successfully"),
             StatusCodeAndMessage.of("CAT_002", "Category updated successfully"),
             StatusCodeAndMessage.of("CAT_003", "Category deleted successfully"),

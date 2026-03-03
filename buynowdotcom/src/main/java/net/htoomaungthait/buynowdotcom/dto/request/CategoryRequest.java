@@ -21,6 +21,7 @@ public class CategoryRequest {
     @NotBlank(message = "Category name must not be blank")
     private String name;
 
+    @NotBlank(message = "Description  must not be blank")
     private String description;
 
     public static Category of(CategoryRequest request) {
