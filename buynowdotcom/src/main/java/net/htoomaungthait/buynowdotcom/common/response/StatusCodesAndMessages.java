@@ -1,17 +1,36 @@
 package net.htoomaungthait.buynowdotcom.common.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class StatusCodesAndMessages {
+
+    private String categoryCreated = "CAT_001";
+
+    public static StatusCodeAndMessage getByStatusCode(String statusCode) {
+        return statusCodesAndMessages.stream()
+                .filter(s -> s.getStatusCode().equals(statusCode))
+                .findFirst()
+                .orElse(null);
+    }
 
     private static final List<StatusCodeAndMessage> statusCodesAndMessages = List.of(
             StatusCodeAndMessage.of("CAT_001", "Category created successfully"),
             StatusCodeAndMessage.of("CAT_002", "Category updated successfully"),
             StatusCodeAndMessage.of("CAT_003", "Category deleted successfully"),
             StatusCodeAndMessage.of("CAT_004", "Category not found"),
+            StatusCodeAndMessage.of("CAT_005", "Categories found"),
+            StatusCodeAndMessage.of("CAT_006", "Empty category list"),
+            StatusCodeAndMessage.of("CAT_007", "Category  found"),
+            StatusCodeAndMessage.of("CAT_008", "Category Not found"),
 
             StatusCodeAndMessage.of("PROD_001", "Product created successfully"),
             StatusCodeAndMessage.of("PROD_002", "Product updated successfully"),

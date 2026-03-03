@@ -13,15 +13,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ApiResponse {
+public class ApiResponse<T> {
+
+    private String statusCode;
+
+    private String status;
 
     private String message;
 
-    private Object data;
+    private T data;
 
 
-    public static ApiResponse of(String message, Object data) {
-        return ApiResponse.builder()
+  public static <T> ApiResponse<T> of(String statusCode, String status, String message, T data) {
+        return ApiResponse.<T>builder()
+                .statusCode(statusCode)
+                .status(status)
                 .message(message)
                 .data(data)
                 .build();
