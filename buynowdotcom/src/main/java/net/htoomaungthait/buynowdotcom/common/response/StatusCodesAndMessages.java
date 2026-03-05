@@ -41,6 +41,11 @@ public class StatusCodesAndMessages {
             StatusCodeAndMessage.of("CAT_009", "Category found by name"),
             StatusCodeAndMessage.of("CAT_010", "Category name already existed."),
 
+
+            StatusCodeAndMessage.of("IMG_001", "Images created successfully"),
+            StatusCodeAndMessage.of("IMG_002", "Images cannot be created"),
+
+
             StatusCodeAndMessage.of("PROD_001", "Product created successfully"),
             StatusCodeAndMessage.of("PROD_002", "Product updated successfully"),
             StatusCodeAndMessage.of("PROD_003", "Product deleted successfully"),

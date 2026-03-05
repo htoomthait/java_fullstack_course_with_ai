@@ -24,11 +24,12 @@ public class ErrorResponse {
 
     private String message;
 
-    public static ErrorResponse of(String statusCode, String status, String message) {
+    public static ErrorResponse of(String statusCode, String status, String message, LocalDateTime timestamp) {
         return ErrorResponse.builder()
                 .statusCode(statusCode)
                 .status(status)
                 .message(message)
+                .timestamp(timestamp)
                 .build();
     }
 }

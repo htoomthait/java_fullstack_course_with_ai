@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
@@ -21,6 +23,8 @@ public class ApiResponse<T> {
 
     private String message;
 
+    private String timestamp;
+
     private T data;
 
 
@@ -29,6 +33,7 @@ public class ApiResponse<T> {
                 .statusCode(statusCode)
                 .status(status)
                 .message(message)
+                .timestamp(LocalDateTime.now().toString())
                 .data(data)
                 .build();
     }

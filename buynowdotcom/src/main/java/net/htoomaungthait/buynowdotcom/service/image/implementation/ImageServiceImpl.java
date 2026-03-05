@@ -2,6 +2,9 @@ package net.htoomaungthait.buynowdotcom.service.image.implementation;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.htoomaungthait.buynowdotcom.common.exception.custom.GeneralException;
+import net.htoomaungthait.buynowdotcom.common.response.StatusCodesAndMessages;
 import net.htoomaungthait.buynowdotcom.dto.resp.ImageDto;
 import net.htoomaungthait.buynowdotcom.model.Image;
 import net.htoomaungthait.buynowdotcom.model.Product;
@@ -17,6 +20,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ImageServiceImpl implements IImageService {
@@ -83,7 +87,10 @@ public class ImageServiceImpl implements IImageService {
 
 
             } catch (IOException | SQLException e) {
-                throw new RuntimeException(e.getMessage());
+                log.error(e.getMessage());
+
+                throw new GeneralException(STR."\{StatusCodesAndMessages.getByStatusCode("IMG_002").getMessage()}Failed to save image: \{file.getOriginalFilename()}",
+                        "IMG_002");
             }
 
         }
