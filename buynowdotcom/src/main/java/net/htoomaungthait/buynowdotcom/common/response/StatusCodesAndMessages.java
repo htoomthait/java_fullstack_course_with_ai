@@ -1,0 +1,60 @@
+package net.htoomaungthait.buynowdotcom.common.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class StatusCodesAndMessages {
+
+    private String categoryCreated = "CAT_001";
+
+    public static StatusCodeAndMessage getByStatusCode(String statusCode) {
+        return statusCodesAndMessages.stream()
+                .filter(s -> s.getStatusCode().equals(statusCode))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static final List<StatusCodeAndMessage> statusCodesAndMessages = List.of(
+            StatusCodeAndMessage.of("CER_001", "Http Method Not Allowed!"),
+            StatusCodeAndMessage.of("CER_002", "Unsupported Media Type!"),
+            StatusCodeAndMessage.of("CER_003", "Undefined URL!"),
+            StatusCodeAndMessage.of("CER_004", "Input Validation Failed."),
+            StatusCodeAndMessage.of("CER_005", "Input variable type doesn't match the required type."),
+
+
+            StatusCodeAndMessage.of("CAT_001", "Category created successfully"),
+            StatusCodeAndMessage.of("CAT_002", "Category updated successfully"),
+            StatusCodeAndMessage.of("CAT_003", "Category deleted successfully"),
+            StatusCodeAndMessage.of("CAT_004", "Category not found"),
+            StatusCodeAndMessage.of("CAT_005", "Queried Categories found"),
+            StatusCodeAndMessage.of("CAT_006", "Empty category list"),
+            StatusCodeAndMessage.of("CAT_007", "Category  found"),
+            StatusCodeAndMessage.of("CAT_008", "Category Not found"),
+            StatusCodeAndMessage.of("CAT_009", "Category found by name"),
+            StatusCodeAndMessage.of("CAT_010", "Category name already existed."),
+
+
+            StatusCodeAndMessage.of("IMG_001", "Images created successfully"),
+            StatusCodeAndMessage.of("IMG_002", "Images cannot be created"),
+
+
+            StatusCodeAndMessage.of("PROD_001", "Product created successfully"),
+            StatusCodeAndMessage.of("PROD_002", "Product updated successfully"),
+            StatusCodeAndMessage.of("PROD_003", "Product deleted successfully"),
+            StatusCodeAndMessage.of("PROD_004", "Product not found")
+    );
+
+
+
+
+}
+
+
