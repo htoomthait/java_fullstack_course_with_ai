@@ -1,8 +1,9 @@
 package net.htoomaungthait.buynowdotcom.service.image.implementation;
 
-import jakarta.persistence.EntityNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.GeneralException;
 import net.htoomaungthait.buynowdotcom.common.response.StatusCodesAndMessages;
 import net.htoomaungthait.buynowdotcom.dto.resp.ImageDto;
@@ -34,18 +35,20 @@ public class ImageServiceImpl implements IImageService {
     }
 
     @Override
-    public void deleteImageById(Long id) {
+    public ImageDto deleteImageById(Long id) {
         Image imgToDelete = this.findImageById(id);
         imageRepository.delete(imgToDelete);
     }
 
     @Override
-    public void updateImage(MultipartFile file, Long imageId) {
+    public ImageDto updateImage(MultipartFile file, Long imageId, Long productId) {
+        Product product = productService.findProductById(productId);
         Image existingImage = this.findImageById(imageId);
         try {
             existingImage.setFileName(file.getOriginalFilename());
             existingImage.setFileType(file.getContentType());
             existingImage.setImage(new SerialBlob(file.getBytes()));
+            existingImage.setProduct(product);
 
 
             imageRepository.save(existingImage);
@@ -99,6 +102,7 @@ public class ImageServiceImpl implements IImageService {
 
     private Image findImageById(Long id) {
         return imageRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Image not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(STR."Image not found with id: \{id}", "IMG_004"));
+
     }
 }

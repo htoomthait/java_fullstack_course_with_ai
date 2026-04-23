@@ -44,6 +44,8 @@ public class StatusCodesAndMessages {
 
             StatusCodeAndMessage.of("IMG_001", "Images created successfully"),
             StatusCodeAndMessage.of("IMG_002", "Images cannot be created"),
+            StatusCodeAndMessage.of("IMG_003", "Image deleted successfully"),
+            StatusCodeAndMessage.of("IMG_004", "Image not found"),
 
 
             StatusCodeAndMessage.of("PROD_001", "Product created successfully"),

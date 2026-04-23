@@ -51,6 +51,13 @@ public class ImageController extends BaseController {
 
     }
 
+    /**
+     * To download an image by its ID, we will retrieve the image from the database and return it as a downloadable resource.
+     * @author Htoo Maung Thait
+     * @since 2026-04-23
+     * @param imageId the ID of the image to be downloaded
+     * @return ResponseEntity containing the image resource with appropriate headers for downloading
+     * */
     @GetMapping("/download/{imageId}")
     public ResponseEntity<Resource> downloadImage(@PathVariable Long imageId) throws SQLException {
         Image image = iImageService.getImageById(imageId);
@@ -62,5 +69,46 @@ public class ImageController extends BaseController {
                 .contentType(MediaType.parseMediaType(image.getFileType()))
                 .body(resource);
     }
+
+
+    /**
+     * To delete an image by its ID, we will remove the image from the database and return a response indicating the success of the operation.
+     * @author Htoo Maung Thait
+     * @since 2026-04-23
+     * @param imageId the ID of the image to be deleted
+     * @return ResponseEntity with ApiResponse containing ImageDto of the deleted image
+     * */
+    @DeleteMapping("/{imageId}")
+    public ResponseEntity<ApiResponse<ImageDto>> deleteImage(@PathVariable Long imageId) {
+
+
+        return makeResponse(
+                HttpStatus.OK.value(),
+                "IMG_003",
+                "Image deleted successfully.",
+                getStatusMessageByCode("IMG_003"),
+                iImageService.deleteImageById(imageId)
+        );
+    }
+
+
+    @PutMapping("/{imageId}")
+    public ResponseEntity<ApiResponse<ImageDto>> updateImage(
+            @PathVariable Long imageId,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("productId") @Min(value = 1, message = "Product ID must be a positive number.") Long productId)
+    {
+
+        return makeResponse(
+                HttpStatus.ACCEPTED.value(),
+                "IMG_002",
+                "Image updated successfully.",
+                getStatusMessageByCode("IMG_002"),
+                iImageService.updateImage(file, imageId)
+        );
+    }
+
+
+
 
 }
