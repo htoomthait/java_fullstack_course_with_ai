@@ -38,6 +38,13 @@ public class ImageServiceImpl implements IImageService {
     public ImageDto deleteImageById(Long id) {
         Image imgToDelete = this.findImageById(id);
         imageRepository.delete(imgToDelete);
+
+        return ImageDto.of(
+                imgToDelete.getId(),
+                imgToDelete.getFileName(),
+                imgToDelete.getFileType(),
+                imgToDelete.getDownloadUrl()
+        );
     }
 
     @Override
@@ -55,6 +62,13 @@ public class ImageServiceImpl implements IImageService {
         } catch (SQLException | IOException e) {
             throw new RuntimeException(e.getMessage());
         }
+
+        return ImageDto.of(
+                existingImage.getId(),
+                existingImage.getFileName(),
+                existingImage.getFileType(),
+                existingImage.getDownloadUrl()
+        );
     }
 
     @Override

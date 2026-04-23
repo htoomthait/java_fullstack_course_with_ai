@@ -104,7 +104,7 @@ public class ImageController extends BaseController {
                 "IMG_002",
                 "Image updated successfully.",
                 getStatusMessageByCode("IMG_002"),
-                iImageService.updateImage(file, imageId)
+                iImageService.updateImage(file, imageId, productId)
         );
     }
 
