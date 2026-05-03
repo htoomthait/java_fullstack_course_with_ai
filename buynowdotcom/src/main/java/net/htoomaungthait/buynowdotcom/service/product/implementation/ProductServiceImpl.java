@@ -1,17 +1,16 @@
 package net.htoomaungthait.buynowdotcom.service.product.implementation;
 
 
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
+import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityExistsException;
+import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
 import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
 import net.htoomaungthait.buynowdotcom.dto.resp.ProductDto;
 import net.htoomaungthait.buynowdotcom.model.*;
-import net.htoomaungthait.buynowdotcom.repository.CartItemRepository;
-import net.htoomaungthait.buynowdotcom.repository.CategoryRepository;
-import net.htoomaungthait.buynowdotcom.repository.OrderItemRepository;
-import net.htoomaungthait.buynowdotcom.repository.ProductRepository;
+import net.htoomaungthait.buynowdotcom.repository.*;
 import net.htoomaungthait.buynowdotcom.service.product.IProductService;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +18,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements IProductService {
@@ -27,17 +28,22 @@ public class ProductServiceImpl implements IProductService {
     private final CategoryRepository categoryRepository;
     private final CartItemRepository cartItemRepository;
     private final OrderItemRepository orderItemRepository;
+    private final ImageRepository imageRepository;
+
+
 
     @Override
-    public Product addProduct(AddProductRequest request) {
+    public ProductDto addProduct(AddProductRequest request) {
+
 
         if(productExists(request.getName(), request.getBrand())){
-            throw new EntityExistsException("Product with the same name and brand already exists.");
+            throw new EntityExistsException("Product with the same name and brand already exists.", "PROD_008");
         }
 
 
 
-        return productRepository.save(createProduct(request));
+        return ProductDto
+                .fromEntity(productRepository.save(createProduct(request)));
     }
 
     @Override
@@ -56,7 +62,17 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public void deleteProductById(Long id) {
+    public ProductDto findProductDtoById(Long id) {
+        Product product = getProductById(id);
+
+        List<Image> images = imageRepository.findByProductId(id);
+        product.setImages(images);
+
+        return ProductDto.fromEntity(product);
+    }
+
+    @Override
+    public ProductDto deleteProductById(Long id) {
         // Check if the product exists before attempting to delete
         Product product = getProductById(id);
 
@@ -89,6 +105,8 @@ public class ProductServiceImpl implements IProductService {
 
         // If the product exists, delete it
         productRepository.delete(product);
+
+        return ProductDto.fromEntity(product);
 
     }
 
@@ -134,7 +152,7 @@ public class ProductServiceImpl implements IProductService {
 
     private Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(STR."Product not found with id: \{id}", "PROD_004") );
     }
 
     private boolean productExists(String name, String brand) {

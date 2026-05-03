@@ -1,3 +1,6 @@
+logging:
+    level:
+        root: INFO
 api:
   prefix: "api/v1"
 server:

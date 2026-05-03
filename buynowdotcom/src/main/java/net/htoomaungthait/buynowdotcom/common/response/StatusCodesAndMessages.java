@@ -54,7 +54,8 @@ public class StatusCodesAndMessages {
             StatusCodeAndMessage.of("PROD_004", "Product not found"),
             StatusCodeAndMessage.of("PROD_005", "Queried Products found"),
             StatusCodeAndMessage.of("PROD_006", "Empty product list"),
-            StatusCodeAndMessage.of("PROD_007", "Product  found")
+            StatusCodeAndMessage.of("PROD_007", "Product  found"),
+            StatusCodeAndMessage.of("PROD_008", "Product Already existed.")
     );
 
 

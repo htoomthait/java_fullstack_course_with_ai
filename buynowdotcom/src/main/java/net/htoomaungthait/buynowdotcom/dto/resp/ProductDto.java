@@ -39,7 +39,7 @@ public class ProductDto {
     private String description;
 
 
-    private Category category;
+    private CategoryDtoMin category;
 
 
     private List<ImageDto> images;
@@ -52,15 +52,15 @@ public class ProductDto {
                 .price(price)
                 .inventory(inventory)
                 .description(description)
-                .category(category)
+                .category(CategoryDtoMin.fromEntity(category))
                 .images(images)
                 .build();
     }
 
     public static ProductDto fromEntity(Product product) {
-        List<ImageDto> imageDtos = product.getImages().stream()
+        List<ImageDto> imageDtos = product.getImages() != null ? product.getImages().stream()
                 .map(image -> ImageDto.of(image.getId(), image.getFileName(), image.getFileType(), image.getDownloadUrl()))
-                .toList();
+                .toList() : List.of();
 
         return ProductDto.builder()
                 .id(product.getId())
@@ -69,7 +69,7 @@ public class ProductDto {
                 .price(product.getPrice())
                 .inventory(product.getInventory())
                 .description(product.getDescription())
-                .category(product.getCategory())
+                .category(CategoryDtoMin.fromEntity(product.getCategory()))
                 .images(imageDtos)
                 .build();
     }

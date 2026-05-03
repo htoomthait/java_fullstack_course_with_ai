@@ -74,6 +74,7 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public CategoryDto findCategoryById(Long categoryId) {
+        log.debug("this is find category by id function");
         return CategoryDto.from(this.getCategoryById(categoryId));
     }
 

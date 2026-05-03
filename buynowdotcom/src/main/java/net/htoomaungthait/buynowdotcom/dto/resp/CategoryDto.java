@@ -27,6 +27,8 @@ public class CategoryDto {
                     .build();
         }
 
+
+
         public  static CategoryDto from(Category category){
             return CategoryDto.builder()
                     .id(category.getId())
