@@ -51,7 +51,10 @@ public class StatusCodesAndMessages {
             StatusCodeAndMessage.of("PROD_001", "Product created successfully"),
             StatusCodeAndMessage.of("PROD_002", "Product updated successfully"),
             StatusCodeAndMessage.of("PROD_003", "Product deleted successfully"),
-            StatusCodeAndMessage.of("PROD_004", "Product not found")
+            StatusCodeAndMessage.of("PROD_004", "Product not found"),
+            StatusCodeAndMessage.of("PROD_005", "Queried Products found"),
+            StatusCodeAndMessage.of("PROD_006", "Empty product list"),
+            StatusCodeAndMessage.of("PROD_007", "Product  found")
     );
 
 

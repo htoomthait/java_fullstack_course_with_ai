@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
 import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
+import net.htoomaungthait.buynowdotcom.dto.resp.ProductDto;
 import net.htoomaungthait.buynowdotcom.model.*;
 import net.htoomaungthait.buynowdotcom.repository.CartItemRepository;
 import net.htoomaungthait.buynowdotcom.repository.CategoryRepository;
@@ -92,8 +93,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDto> getAllProducts() {
+        List<Product> products =  productRepository.findAll();
+
+        return products.stream()
+                .map(ProductDto::fromEntity)
+                .toList();
     }
 
     @Override
