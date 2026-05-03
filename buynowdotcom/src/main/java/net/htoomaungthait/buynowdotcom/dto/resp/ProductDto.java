@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.htoomaungthait.buynowdotcom.model.Category;
 import net.htoomaungthait.buynowdotcom.model.Image;
+import net.htoomaungthait.buynowdotcom.model.Product;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -53,6 +54,23 @@ public class ProductDto {
                 .description(description)
                 .category(category)
                 .images(images)
+                .build();
+    }
+
+    public static ProductDto fromEntity(Product product) {
+        List<ImageDto> imageDtos = product.getImages().stream()
+                .map(image -> ImageDto.of(image.getId(), image.getFileName(), image.getFileType(), image.getDownloadUrl()))
+                .toList();
+
+        return ProductDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .brand(product.getBrand())
+                .price(product.getPrice())
+                .inventory(product.getInventory())
+                .description(product.getDescription())
+                .category(product.getCategory())
+                .images(imageDtos)
                 .build();
     }
 

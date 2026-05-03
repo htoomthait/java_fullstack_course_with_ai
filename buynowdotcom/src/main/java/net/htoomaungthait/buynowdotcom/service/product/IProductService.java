@@ -2,6 +2,7 @@ package net.htoomaungthait.buynowdotcom.service.product;
 
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
 import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
+import net.htoomaungthait.buynowdotcom.dto.resp.ProductDto;
 import net.htoomaungthait.buynowdotcom.model.Product;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface IProductService {
 
     void deleteProductById(Long id);
 
-    List<Product> getAllProducts();
+    List<ProductDto> getAllProducts();
 
     List<Product> getProductsByCategoryId(Long categoryId);
 
