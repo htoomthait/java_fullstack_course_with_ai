@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
+import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
 import net.htoomaungthait.buynowdotcom.dto.resp.ProductDto;
 import net.htoomaungthait.buynowdotcom.service.product.IProductService;
 import org.springframework.http.HttpStatus;
@@ -81,6 +82,23 @@ public class ProductController extends BaseController {
                 "success created",
                 getStatusMessageByCode("PROD_001"),
                 iProductService.addProduct(requestBody) );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<ProductDto>> updateProduct(
+            @PathVariable
+            @Min(value = 1, message = "Id must be greater than or equal to 1")
+            Long id,
+            @RequestBody UpdateProductRequest requestBody
+    ){
+
+        return makeResponse(
+                HttpStatus.ACCEPTED.value(),
+                "PROD_002",
+                "success update",
+                getStatusMessageByCode("PROD_002"),
+                iProductService.updateProduct(id, requestBody)
+        );
     }
 
 

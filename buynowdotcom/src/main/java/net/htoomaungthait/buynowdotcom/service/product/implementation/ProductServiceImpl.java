@@ -47,11 +47,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product updateProduct(Long productId, UpdateProductRequest request) {
+    public ProductDto updateProduct(Long productId, UpdateProductRequest request) {
 
             Product existingProduct = getProductById(productId);
 
-            return productRepository.save(updateExistingProduct(existingProduct, request));
+            return ProductDto
+                    .fromEntity(updateExistingProduct(existingProduct, request));
 
 
     }
@@ -178,10 +179,12 @@ public class ProductServiceImpl implements IProductService {
     private Product updateExistingProduct(Product existingProduct, UpdateProductRequest request){
 
         existingProduct.setName(request.getName());
+        existingProduct.setDescription(request.getDescription());
         existingProduct.setBrand(request.getBrand());
         existingProduct.setPrice(BigDecimal.valueOf(request.getPrice()));
         existingProduct.setInventory(request.getQuantity());
-        existingProduct.setDescription(request.getDescription());
+
+
 
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory()))
                 .orElseGet(() -> {
@@ -192,8 +195,10 @@ public class ProductServiceImpl implements IProductService {
 
         existingProduct.setCategory(category);
 
+        return productRepository.save(existingProduct);
 
-        return existingProduct;
+
+
 
     }
 
