@@ -179,7 +179,7 @@ public class ProductServiceImpl implements IProductService {
 
     private Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(STR."Product not found with id: \{id}", "PROD_004") );
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id:"+ id, "PROD_004") );
     }
 
     private boolean productExists(String name, String brand) {

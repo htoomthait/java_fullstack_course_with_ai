@@ -106,8 +106,11 @@ public class ImageServiceImpl implements IImageService {
             } catch (IOException | SQLException e) {
                 log.error(e.getMessage());
 
-                throw new GeneralException(STR."\{StatusCodesAndMessages.getByStatusCode("IMG_002").getMessage()}Failed to save image: \{file.getOriginalFilename()}",
-                        "IMG_002");
+                String message = StatusCodesAndMessages.getByStatusCode("IMG_002").getMessage()
+                        + " Failed to save image: "
+                        + file.getOriginalFilename();
+
+                throw new GeneralException(message, "IMG_002");
             }
 
         }
@@ -116,7 +119,10 @@ public class ImageServiceImpl implements IImageService {
 
     private Image findImageById(Long id) {
         return imageRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(STR."Image not found with id: \{id}", "IMG_004"));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Image not found with id: " + id,
+                        "IMG_004"
+                ));
 
     }
 }
