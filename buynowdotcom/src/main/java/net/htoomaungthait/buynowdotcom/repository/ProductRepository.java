@@ -10,15 +10,22 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.brand = :brand AND p.name = :name")
-    List<Product> findByBrandAndCategoryName(
+    List<Product> findByBrandAndProductName(
             @Param("brand") String brand,
             @Param("name") String name);
 
-    List<Product> findByNameContainingIgnoreCase(String name);
+    @Query("SELECT p FROM Product p " +
+            "WHERE p.category.name = :categoryName " +
+            "AND p.brand = :brand")
+   List<Product> findByProductCategoryNameAndBrand(
+           @Param("categoryName")String categoryName, @Param("brand") String brand);
+
+    Product findByNameContainingIgnoreCase(String name);
 
     List<Product> findByBrand(String brand);
 
-    List<Product> findByCategoryId(Long categoryId);
+    @Query("SELECT p FROM Product p WHERE p.category.id = :categoryId")
+    List<Product> findByCategoryId(@Param("categoryId") Long categoryId);
 
     List<Product> findByCategoryName(String name);
 

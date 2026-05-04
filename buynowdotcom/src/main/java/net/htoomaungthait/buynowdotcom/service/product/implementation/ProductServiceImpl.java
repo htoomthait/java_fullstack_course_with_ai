@@ -1,7 +1,6 @@
 package net.htoomaungthait.buynowdotcom.service.product.implementation;
 
 
-import ch.qos.logback.classic.Logger;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityExistsException;
@@ -121,34 +120,61 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<Product> getProductsByCategoryId(Long categoryId) {
-        return productRepository.findByCategoryId(categoryId);
+    public List<ProductDto> getProductsByCategoryId(Long categoryId) {
+        List<Product> products = productRepository.findByCategoryId(categoryId);
+
+        return products.stream()
+                .map(ProductDto::fromEntity)
+                .toList();
     }
 
     @Override
-    public List<Product> getProductsByCategoryName(String name) {
-        return productRepository.findByCategoryName(name);
+    public List<ProductDto> getProductsByCategoryName(String name) {
+
+        List<Product> products =  productRepository.findByCategoryName(name);
+
+        return products.stream()
+                .map(ProductDto::fromEntity)
+                .toList();
     }
 
     @Override
-    public List<Product> getProductsByBrand(String brand) {
-        return productRepository.findByBrand(brand);
+    public List<ProductDto> getProductsByBrand(String brand) {
+        List<Product> products =  productRepository.findByBrand(brand);
+
+        return products
+                .stream()
+                .map(ProductDto::fromEntity)
+                .toList();
     }
 
     @Override
-    public List<Product> getProductsByCategoryAndBrand(String brand, String name) {
+    public List<ProductDto> getProductsByCategoryAndBrand(String brand, String name) {
 
-        return productRepository.findByBrandAndCategoryName(brand, name);
+        List<Product> products = productRepository.findByProductCategoryNameAndBrand(name, brand);
+
+        return products
+                .stream()
+                .map(ProductDto::fromEntity)
+                .toList();
     }
 
     @Override
-    public List<Product> searchProductsByName(String name) {
-        return productRepository.findByNameContainingIgnoreCase(name);
+    public ProductDto searchProductsByName(String name) {
+
+       Product product = productRepository.findByNameContainingIgnoreCase(name);
+        return ProductDto.fromEntity(product);
+
     }
 
     @Override
-    public List<Product> searchProductsByNameAndBrand(String name, String brand) {
-        return productRepository.findByNameContainingIgnoreCaseAndBrand(name, brand);
+    public List<ProductDto> searchProductsByNameAndBrand(String name, String brand) {
+        List<Product> products =  productRepository.findByNameContainingIgnoreCaseAndBrand(name, brand);
+
+        return products
+                .stream()
+                .map(ProductDto::fromEntity)
+                .toList();
     }
 
     private Product getProductById(Long id) {
@@ -157,7 +183,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     private boolean productExists(String name, String brand) {
-        List<Product> products = productRepository.findByBrandAndCategoryName(brand, name);
+        List<Product> products = productRepository.findByBrandAndProductName(brand, name);
         return !products.isEmpty();
     }
 

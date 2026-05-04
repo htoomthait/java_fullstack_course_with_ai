@@ -21,16 +21,16 @@ public interface IProductService {
 
     List<ProductDto> getAllProducts();
 
-    List<Product> getProductsByCategoryId(Long categoryId);
+    List<ProductDto> getProductsByCategoryId(Long categoryId);
 
-    List<Product> getProductsByCategoryName(String name);
+    List<ProductDto> getProductsByCategoryName(String name);
 
-    List<Product> getProductsByBrand(String brand);
+    List<ProductDto> getProductsByBrand(String brand);
 
-    List<Product> getProductsByCategoryAndBrand(String brand, String name);
+    List<ProductDto> getProductsByCategoryAndBrand(String brand, String name);
 
-    List<Product> searchProductsByName(String name);
+    ProductDto searchProductsByName(String name);
 
-    List<Product> searchProductsByNameAndBrand(String name, String brand);
+    List<ProductDto> searchProductsByNameAndBrand(String name, String brand);
 
 }
