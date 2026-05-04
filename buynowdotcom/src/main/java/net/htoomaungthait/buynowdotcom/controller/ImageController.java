@@ -65,7 +65,8 @@ public class ImageController extends BaseController {
 
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, STR."attachment; filename=\"\{image.getFileName()}\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + image.getFileName() + "\"")
                 .contentType(MediaType.parseMediaType(image.getFileType()))
                 .body(resource);
     }

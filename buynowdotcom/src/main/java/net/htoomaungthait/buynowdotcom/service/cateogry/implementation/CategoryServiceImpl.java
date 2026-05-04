@@ -107,7 +107,7 @@ public class CategoryServiceImpl implements ICategoryService {
                 .toList();
 
         if (categoryDtoList.isEmpty()) {
-            throw new EntityNotFoundException(STR."Categories not found with name: \{name}", "CAT_006");
+            throw new EntityNotFoundException("Categories not found with name: " +name, "CAT_006");
         }
 
         return categoryDtoList;
@@ -115,6 +115,6 @@ public class CategoryServiceImpl implements ICategoryService {
 
     private Category getCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new EntityNotFoundException(STR."Category not found with id: \{categoryId}", "CAT_004"));
+                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + categoryId, "CAT_004"));
     }
 }
