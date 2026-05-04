@@ -18,11 +18,13 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.server.MethodNotAllowedException;
 
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -108,6 +110,36 @@ public class GlobalExceptionHandler {
                 "Validation Failed",
                 StatusCodesAndMessages.getByStatusCode("CER_004").getMessage(),
                 fieldErrors
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<MultiErrorResponse> handleHandlerMethodValidation(
+            HandlerMethodValidationException ex) {
+
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getParameterValidationResults().forEach(result -> {
+
+            String field = result.getMethodParameter().getParameterName();
+
+            result.getResolvableErrors().forEach(error -> {
+                String message = error.getDefaultMessage() != null
+                        ? error.getDefaultMessage()
+                        : "Validation error";
+
+                errors.put(field, message);
+            });
+        });
+
+        MultiErrorResponse errorResponse = MultiErrorResponse.of(
+                "CER_004",
+                "Validation Failed",
+                "Invalid request parameters",
+                errors
         );
 
         return ResponseEntity

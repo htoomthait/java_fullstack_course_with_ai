@@ -1,6 +1,8 @@
 package net.htoomaungthait.buynowdotcom.controller;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
@@ -58,6 +60,7 @@ public class ProductController extends BaseController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductDto>> deleteProductById(
             @PathVariable
+            @Valid
             @Min(value = 1, message = "Id must be greater than or equal to 1")
             Long id){
 
@@ -87,6 +90,7 @@ public class ProductController extends BaseController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<ProductDto>> updateProduct(
             @PathVariable
+            @Valid
             @Min(value = 1, message = "Id must be greater than or equal to 1")
             Long id,
             @RequestBody UpdateProductRequest requestBody
@@ -100,6 +104,146 @@ public class ProductController extends BaseController {
                 iProductService.updateProduct(id, requestBody)
         );
     }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<ApiResponse<List<ProductDto>>> getProductsByCategoryId(
+            @PathVariable
+            @Valid
+            @Min(value = 1, message = "Id must be greater than or equal to 1")
+            Long categoryId
+    ){
+
+        List<ProductDto> productDtos = iProductService.getProductsByCategoryId(categoryId);
+        int countOfProducts = productDtos.size();
+        String statusCode = countOfProducts > 0 ? "PROD_005" : "PROD_006";
+
+        return makeResponse(
+                HttpStatus.OK.value(),
+                statusCode,
+                "success search",
+                getStatusMessageByCode(statusCode),
+                productDtos
+        );
+    }
+
+    @GetMapping("/category-name/{categoryName}")
+    public ResponseEntity<ApiResponse<List<ProductDto>>> getProductsByCategoryName(
+            @PathVariable
+            @Valid
+            @NotBlank(message = "Category name must be provided")
+            String categoryName
+    ){
+
+        List<ProductDto> productDtos = iProductService.getProductsByCategoryName(categoryName);
+        int countOfProducts = productDtos.size();
+        String statusCode = countOfProducts > 0 ? "PROD_005" : "PROD_006";
+
+        return makeResponse(
+                HttpStatus.OK.value(),
+                statusCode,
+                "success search",
+                getStatusMessageByCode(statusCode),
+                productDtos
+        );
+    }
+
+
+    @GetMapping("/brand-name/{brand}")
+    public ResponseEntity<ApiResponse<List<ProductDto>>> getProductsByBrand(
+            @PathVariable
+            @Valid
+            @NotBlank(message = "brand name must be provided")
+            String brand
+    ){
+
+        List<ProductDto> productDtos = iProductService.getProductsByBrand(brand);
+        int countOfProducts = productDtos.size();
+        String statusCode = countOfProducts > 0 ? "PROD_005" : "PROD_006";
+
+        return makeResponse(
+                HttpStatus.OK.value(),
+                statusCode,
+                "success search",
+                getStatusMessageByCode(statusCode),
+                productDtos
+        );
+    }
+
+    @GetMapping("/search-by-category-and-brand")
+    public ResponseEntity<ApiResponse<List<ProductDto>>> getProductsByCategoryAndBrand(
+            @RequestParam
+            @Valid
+            @NotBlank(message = "brand name must be provided")
+            String brand,
+            @RequestParam
+            @Valid
+            @NotBlank(message = "Category name must be provided")
+            String categoryName
+    ){
+
+        List<ProductDto> productDtos = iProductService.getProductsByCategoryAndBrand(brand, categoryName);
+
+
+        int countOfProducts = productDtos.size();
+        String statusCode = countOfProducts > 0 ? "PROD_005" : "PROD_006";
+
+        return makeResponse(
+                HttpStatus.OK.value(),
+                statusCode,
+                "success search",
+                getStatusMessageByCode(statusCode),
+                productDtos
+        );
+     }
+
+     @GetMapping("/search-by-name")
+     public ResponseEntity<ApiResponse<ProductDto>> searchProductsByName(
+             @RequestParam
+             @Valid
+             @NotBlank(message = "Product name must be provided")
+             String name
+     ) {
+
+         ProductDto productDto = iProductService.searchProductsByName(name);
+         String statusCode = productDto != null ? "PROD_007" : "PROD_004";
+
+
+         return makeResponse(
+                 HttpStatus.OK.value(),
+                 statusCode,
+                 "success search",
+                 getStatusMessageByCode(statusCode),
+                 productDto
+         );
+
+     }
+
+     @GetMapping("/search-by-name-and-brand")
+     public ResponseEntity<ApiResponse<List<ProductDto>>> searchProductsByNameAndBrand(
+        @RequestParam
+        @Valid
+        @NotBlank(message = "Product name must be provided")
+        String name,
+        @RequestParam
+        @Valid
+        @NotBlank(message = "Brand name must be provided")
+        String brandName
+     ){
+
+         List<ProductDto> productDtos = iProductService.searchProductsByNameAndBrand(name, brandName);
+         int countOfProducts = productDtos.size();
+         String statusCode = countOfProducts > 0 ? "PROD_005" : "PROD_006";
+
+         return makeResponse(
+                 HttpStatus.OK.value(),
+                 statusCode,
+                 "success search",
+                 getStatusMessageByCode(statusCode),
+                 productDtos
+         );
+     }
+
+
 
 
 
