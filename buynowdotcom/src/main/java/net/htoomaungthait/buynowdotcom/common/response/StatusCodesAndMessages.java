@@ -58,7 +58,11 @@ public class StatusCodesAndMessages {
             StatusCodeAndMessage.of("PROD_008", "Product Already existed."),
 
 
-            StatusCodeAndMessage.of("EXT_USER_001", "External user(s) have been listed")
+            StatusCodeAndMessage.of("EXT_USER_001", "External user(s) have been listed"),
+            StatusCodeAndMessage.of("EXT_USER_002", "External user by id have been queried"),
+            StatusCodeAndMessage.of("EXT_USER_003", "External user cannot be queried"),
+            StatusCodeAndMessage.of("EXT_USER_004", "External user cannot be found"),
+            StatusCodeAndMessage.of("EXT_USER_005", "External user query get internal server error at service provider ")
     );
 
 
