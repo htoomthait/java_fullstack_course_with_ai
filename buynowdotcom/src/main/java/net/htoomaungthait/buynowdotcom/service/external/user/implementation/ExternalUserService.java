@@ -51,24 +51,35 @@ public class ExternalUserService implements IExternalUserService {
     public ExternalUserDto getExternalUserById(Long userId) {
 
         return webClient.get()
-                .uri("https://jsonplaceholder.typicode.com/users/"+userId)
-                .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
-                    log.error("Client error while fetching user {}", userId);
-                    return Mono.error(new EntityNotFoundException(
-                            "User not found with ID: " + userId,
-                            "EXT_USER_004"
-                    ));
+                .uri("https://jsonplaceholder.typicode.com/users/{id}", userId)
+                .exchangeToMono(response -> {
+
+                    int status = response.statusCode().value();
+
+                    if (response.statusCode().is2xxSuccessful()) {
+                        log.info("Success fetching user {}, status: {}", userId, status);
+
+                        return response.bodyToMono(ExternalUserDto.class);
+                    }
+
+                    if (response.statusCode().is4xxClientError()) {
+                        log.error("Client error {}, status: {}", userId, status);
+                        return Mono.error(new EntityNotFoundException(
+                                "User not found with ID: " + userId,
+                                "EXT_USER_004"
+                        ));
+                    }
+
+                    if (response.statusCode().is5xxServerError()) {
+                        log.error("Server error, status: {}", status);
+                        return Mono.error(new GeneralException(
+                                "External service error",
+                                "EXT_USER_005"
+                        ));
+                    }
+
+                    return Mono.error(new RuntimeException("Unexpected response"));
                 })
-                .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> {
-                    log.error("Server error from external API");
-                    return Mono.error(new GeneralException(
-                            "External service error",
-                            "EXT_USER_005"
-                    ));
-                })
-                .bodyToMono(ExternalUserDto.class)
-                .doOnNext(user -> log.info("Fetched external user: {}", user))
                 .block();
 
 
