@@ -54,7 +54,8 @@ public class ExternalUserService implements IExternalUserService {
                 .uri("https://jsonplaceholder.typicode.com/users/"+userId)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
-                    log.error("Client error while fetching user {}", userId);
+
+                    log.error("Client error while fetching user {}, http status code: {}", userId, clientResponse.statusCode().value());
                     return Mono.error(new EntityNotFoundException(
                             "User not found with ID: " + userId,
                             "EXT_USER_004"
