@@ -5,13 +5,11 @@ import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
+import net.htoomaungthait.buynowdotcom.dto.request.ExternalUserRequest;
 import net.htoomaungthait.buynowdotcom.dto.resp.ExternalUserDto;
 import net.htoomaungthait.buynowdotcom.service.external.user.IExternalUserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -50,4 +48,58 @@ public class ExternalUserController extends BaseController {
                 externalUserService.getExternalUserById(userId)
         );
     }
+
+    @PostMapping("")
+    public ResponseEntity<ApiResponse<ExternalUserDto>> createNewUser(
+            @Valid
+            @RequestBody
+            ExternalUserRequest newUser
+    ){
+        return makeResponse(
+                201,
+                "EXT_USER_006",
+                "success",
+                getStatusMessageByCode("EXT_USER_006"),
+                externalUserService.createExternalUser(newUser)
+        );
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ApiResponse<ExternalUserDto>> deleteUserById(
+            @PathVariable
+            @Valid
+            @Min(value = 1, message = "Id must be greater than or equal 1")
+            Long userId
+    ){
+        return makeResponse(
+                200,
+                "EXT_USER_007",
+                "success",
+                getStatusMessageByCode("EXT_USER_007"),
+                externalUserService.deleteExternalUserById(userId)
+
+        );
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<ApiResponse<ExternalUserDto>> updateUserById(
+            @PathVariable
+            @Valid
+            @Min(value = 1, message = "Id must be greater than or equal 1")
+            Long userId,
+            @RequestBody
+            @Valid
+            ExternalUserRequest userToUpdate
+
+    ){
+        return makeResponse(
+          200,
+          "EXT_USER_008",
+          "success",
+          getStatusMessageByCode("EXT_USER_007"),
+          externalUserService.updateExternalUserById(userId, userToUpdate)
+        );
+    }
+
+
 }

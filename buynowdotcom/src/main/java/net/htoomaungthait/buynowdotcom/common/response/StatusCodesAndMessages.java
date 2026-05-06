@@ -28,6 +28,7 @@ public class StatusCodesAndMessages {
             StatusCodeAndMessage.of("CER_003", "Undefined URL!"),
             StatusCodeAndMessage.of("CER_004", "Input Validation Failed."),
             StatusCodeAndMessage.of("CER_005", "Input variable type doesn't match the required type."),
+            StatusCodeAndMessage.of("CER_006", "Internal Server Occurred!"),
 
 
             StatusCodeAndMessage.of("CAT_001", "Category created successfully"),
@@ -62,7 +63,10 @@ public class StatusCodesAndMessages {
             StatusCodeAndMessage.of("EXT_USER_002", "External user by id have been queried"),
             StatusCodeAndMessage.of("EXT_USER_003", "External user cannot be queried"),
             StatusCodeAndMessage.of("EXT_USER_004", "External user cannot be found"),
-            StatusCodeAndMessage.of("EXT_USER_005", "External user query get internal server error at service provider ")
+            StatusCodeAndMessage.of("EXT_USER_005", "External user query get internal server error at service provider "),
+            StatusCodeAndMessage.of("EXT_USER_006", "New external user has been created!"),
+            StatusCodeAndMessage.of("EXT_USER_007", "An external user has been deleted!"),
+            StatusCodeAndMessage.of("EXT_USER_008", "An external user has been updated!")
     );
 
 
