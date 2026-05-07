@@ -29,7 +29,7 @@ public interface IProductService {
 
     List<ProductDto> getProductsByCategoryAndBrand(String brand, String name);
 
-    ProductDto searchProductsByName(String name);
+    List<ProductDto> searchProductsByName(String name);
 
     List<ProductDto> searchProductsByNameAndBrand(String name, String brand);
 

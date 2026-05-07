@@ -20,7 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
    List<Product> findByProductCategoryNameAndBrand(
            @Param("categoryName")String categoryName, @Param("brand") String brand);
 
-    Product findByNameContainingIgnoreCase(String name);
+    List<Product> findByNameContainingIgnoreCase(String name);
 
     List<Product> findByBrand(String brand);
 
