@@ -197,15 +197,18 @@ public class ProductController extends BaseController {
      }
 
      @GetMapping("/search-by-name")
-     public ResponseEntity<ApiResponse<ProductDto>> searchProductsByName(
+     public ResponseEntity<ApiResponse<List<ProductDto>>> searchProductsByName(
              @RequestParam
              @Valid
              @NotBlank(message = "Product name must be provided")
              String name
      ) {
 
-         ProductDto productDto = iProductService.searchProductsByName(name);
-         String statusCode = productDto != null ? "PROD_007" : "PROD_004";
+         List<ProductDto> productDtos = iProductService.searchProductsByName(name);
+
+
+         int countOfProducts = productDtos.size();
+         String statusCode = countOfProducts > 0 ? "PROD_005" : "PROD_006";
 
 
          return makeResponse(
@@ -213,7 +216,7 @@ public class ProductController extends BaseController {
                  statusCode,
                  "success search",
                  getStatusMessageByCode(statusCode),
-                 productDto
+                 productDtos
          );
 
      }
