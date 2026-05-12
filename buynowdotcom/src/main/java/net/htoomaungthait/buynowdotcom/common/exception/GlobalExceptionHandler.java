@@ -185,6 +185,8 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now()
         );
 
+        log.info("Constraint violation exception occurred: {}", ex.getMessage());
+
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(errorResponse);
@@ -213,7 +215,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 LocalDateTime.now()
         );
-
+        log.info("Data not found exception occurred: {}", ex.getMessage());
         return ResponseEntity.status(404).body(errorResponse);
     }
 
@@ -224,7 +226,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(),
                 LocalDateTime.now()
         );
-
+        log.info("Entity already exist exception occurred, {}", ex.getMessage());
         return ResponseEntity.status(409).body(errorResponse);
     }
 
