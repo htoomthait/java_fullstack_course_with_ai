@@ -66,7 +66,16 @@ public class StatusCodesAndMessages {
             StatusCodeAndMessage.of("EXT_USER_005", "External user query get internal server error at service provider "),
             StatusCodeAndMessage.of("EXT_USER_006", "New external user has been created!"),
             StatusCodeAndMessage.of("EXT_USER_007", "An external user has been deleted!"),
-            StatusCodeAndMessage.of("EXT_USER_008", "An external user has been updated!")
+            StatusCodeAndMessage.of("EXT_USER_008", "An external user has been updated!"),
+
+            StatusCodeAndMessage.of("USER_001", "User(s) have been listed"),
+            StatusCodeAndMessage.of("USER_002", "User cannot be found."),
+            StatusCodeAndMessage.of("USER_003", "New user has been created successfully."),
+            StatusCodeAndMessage.of("USER_004", "User has been updated successfully."),
+            StatusCodeAndMessage.of("USER_005", "User has found."),
+            StatusCodeAndMessage.of("USER_006", "User list is empty."),
+            StatusCodeAndMessage.of("USER_007", "User has been deleted successfully."),
+            StatusCodeAndMessage.of("USER_008", "User already existed.")
     );
 
 
