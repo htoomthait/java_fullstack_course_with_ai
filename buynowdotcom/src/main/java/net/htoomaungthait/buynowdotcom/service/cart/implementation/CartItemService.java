@@ -1,6 +1,7 @@
 package net.htoomaungthait.buynowdotcom.service.cart.implementation;
 
 import lombok.RequiredArgsConstructor;
+import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.model.Cart;
 import net.htoomaungthait.buynowdotcom.model.CartItem;
 import net.htoomaungthait.buynowdotcom.model.Product;
@@ -52,6 +53,11 @@ public class CartItemService implements ICartItemService {
 
     @Override
     public void removeItemFromCart(Long cartId, Long productId) {
+        Cart cart =  cartService.getCart(cartId);
+
+        CartItem itemToBeRemoved = getCartItem(cartId, productId);
+        cart.removeItem(itemToBeRemoved);
+        cartRepository.save(cart);
 
     }
 
@@ -62,6 +68,11 @@ public class CartItemService implements ICartItemService {
 
     @Override
     public CartItem getCartItem(Long cartId, Long productId) {
-        return null;
+        Cart cart = cartService.getCart(cartId);
+        return cart.getItems()
+                .stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst().orElseThrow(() -> new EntityNotFoundException("Cart not found exception", "CART_001"));
+
     }
 }
