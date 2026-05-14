@@ -51,4 +51,9 @@ public class Cart {
             this.items.add(cartItem);
             cartItem.setCart(this);
     }
+
+    public void clearCart() {
+        this.items.clear();
+        updateTotalAmount();
+    }
 }
