@@ -24,7 +24,7 @@ public class CartItemService implements ICartItemService {
     private final CartRepository cartRepository;
 
     @Override
-    public void addItemToCart(Long cartId, Long productId, int quantity) {
+    public CartItem addItemToCart(Long cartId, Long productId, int quantity) {
         Cart cart  = cartService.getCart(cartId);
 
         Product product = productService.findProductById(productId);
@@ -48,8 +48,10 @@ public class CartItemService implements ICartItemService {
         cartItem.setTotalPrice();
         cart.addItem(cartItem);
 
-         cartItemRepository.save(cartItem);
+         CartItem savedCartItem = cartItemRepository.save(cartItem);
          cartRepository.save(cart);
+
+         return savedCartItem;
 
     }
 
@@ -90,7 +92,7 @@ public class CartItemService implements ICartItemService {
         return cart.getItems()
                 .stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
-                .findFirst().orElseThrow(() -> new EntityNotFoundException("Cart not found exception", "CART_001"));
+                .findFirst().orElseThrow(() -> new EntityNotFoundException("Cart not found exception", "CART_004"));
 
     }
 }
