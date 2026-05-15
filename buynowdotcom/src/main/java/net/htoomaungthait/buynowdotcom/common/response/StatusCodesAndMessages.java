@@ -75,7 +75,13 @@ public class StatusCodesAndMessages {
             StatusCodeAndMessage.of("USER_005", "User has found."),
             StatusCodeAndMessage.of("USER_006", "User list is empty."),
             StatusCodeAndMessage.of("USER_007", "User has been deleted successfully."),
-            StatusCodeAndMessage.of("USER_008", "User already existed.")
+            StatusCodeAndMessage.of("USER_008", "User already existed."),
+
+
+            StatusCodeAndMessage.of("CARTIM_001", "Cart item has been added successfully."),
+            StatusCodeAndMessage.of("CARTIM_002", "Cart item has been removed successfully."),
+            StatusCodeAndMessage.of("CARTIM_003", "Cart item has been updated successfully."),
+            StatusCodeAndMessage.of("CARTIM_004", "Cart item not found.")
     );
 
 

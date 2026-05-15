@@ -70,6 +70,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public User getUserMById(Long userId){
+        return this.findById(userId);
+    }
+
+    @Override
     public UserRespDto deleteUserById(Long userId) {
         User existingUser = this.findById(userId);
 
