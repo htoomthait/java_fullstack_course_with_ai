@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.htoomaungthait.buynowdotcom.dto.resp.Address;
-import net.htoomaungthait.buynowdotcom.dto.resp.CompanyDto;
+import net.htoomaungthait.buynowdotcom.dto.response.Address;
+import net.htoomaungthait.buynowdotcom.dto.response.CompanyDto;
 
 @Data
 @AllArgsConstructor

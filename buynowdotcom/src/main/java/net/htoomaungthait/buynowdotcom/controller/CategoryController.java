@@ -7,19 +7,14 @@ import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.*;
 import net.htoomaungthait.buynowdotcom.dto.request.CategoryRequest;
-import net.htoomaungthait.buynowdotcom.dto.resp.CategoryDto;
-import net.htoomaungthait.buynowdotcom.model.Category;
+import net.htoomaungthait.buynowdotcom.dto.response.CategoryDto;
 import net.htoomaungthait.buynowdotcom.service.cateogry.ICategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor

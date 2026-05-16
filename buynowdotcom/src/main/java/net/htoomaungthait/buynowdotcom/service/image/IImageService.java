@@ -1,6 +1,6 @@
 package net.htoomaungthait.buynowdotcom.service.image;
 
-import net.htoomaungthait.buynowdotcom.dto.resp.ImageDto;
+import net.htoomaungthait.buynowdotcom.dto.response.ImageDto;
 import net.htoomaungthait.buynowdotcom.model.Image;
 import org.springframework.web.multipart.MultipartFile;
 

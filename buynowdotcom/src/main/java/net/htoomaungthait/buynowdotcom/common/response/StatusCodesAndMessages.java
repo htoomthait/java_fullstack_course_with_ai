@@ -81,7 +81,10 @@ public class StatusCodesAndMessages {
             StatusCodeAndMessage.of("CARTIM_001", "Cart item has been added successfully."),
             StatusCodeAndMessage.of("CARTIM_002", "Cart item has been removed successfully."),
             StatusCodeAndMessage.of("CARTIM_003", "Cart item has been updated successfully."),
-            StatusCodeAndMessage.of("CARTIM_004", "Cart item not found.")
+            StatusCodeAndMessage.of("CARTIM_004", "Cart item not found."),
+
+            StatusCodeAndMessage.of("CART_001", "User's cart has been queried successfully."),
+            StatusCodeAndMessage.of("CART_001", "User's cart has been cleared successfully.")
     );
 
 

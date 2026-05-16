@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
-import net.htoomaungthait.buynowdotcom.dto.resp.ImageDto;
+import net.htoomaungthait.buynowdotcom.dto.response.ImageDto;
 import net.htoomaungthait.buynowdotcom.model.Image;
 import net.htoomaungthait.buynowdotcom.service.image.IImageService;
 import org.springframework.core.io.ByteArrayResource;

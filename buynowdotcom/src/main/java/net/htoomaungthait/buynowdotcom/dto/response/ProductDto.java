@@ -1,14 +1,12 @@
-package net.htoomaungthait.buynowdotcom.dto.resp;
+package net.htoomaungthait.buynowdotcom.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.htoomaungthait.buynowdotcom.model.Category;
-import net.htoomaungthait.buynowdotcom.model.Image;
 import net.htoomaungthait.buynowdotcom.model.Product;
 
 import java.math.BigDecimal;

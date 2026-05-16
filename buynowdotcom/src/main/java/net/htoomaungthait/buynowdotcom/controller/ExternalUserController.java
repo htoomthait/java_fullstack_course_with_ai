@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
 import net.htoomaungthait.buynowdotcom.dto.request.ExternalUserRequest;
-import net.htoomaungthait.buynowdotcom.dto.resp.ExternalUserDto;
+import net.htoomaungthait.buynowdotcom.dto.response.ExternalUserDto;
 import net.htoomaungthait.buynowdotcom.service.external.user.IExternalUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

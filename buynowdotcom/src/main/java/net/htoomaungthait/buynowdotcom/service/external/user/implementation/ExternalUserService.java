@@ -1,18 +1,16 @@
 package net.htoomaungthait.buynowdotcom.service.external.user.implementation;
 
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.BadRequestException;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.GeneralException;
 import net.htoomaungthait.buynowdotcom.dto.request.ExternalUserRequest;
-import net.htoomaungthait.buynowdotcom.dto.resp.ExternalUserDto;
+import net.htoomaungthait.buynowdotcom.dto.response.ExternalUserDto;
 import net.htoomaungthait.buynowdotcom.service.external.user.IExternalUserService;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
