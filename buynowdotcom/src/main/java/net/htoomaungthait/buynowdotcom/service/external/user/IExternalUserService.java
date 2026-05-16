@@ -1,7 +1,7 @@
 package net.htoomaungthait.buynowdotcom.service.external.user;
 
 import net.htoomaungthait.buynowdotcom.dto.request.ExternalUserRequest;
-import net.htoomaungthait.buynowdotcom.dto.resp.ExternalUserDto;
+import net.htoomaungthait.buynowdotcom.dto.response.ExternalUserDto;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.GeneralException;
 import net.htoomaungthait.buynowdotcom.common.response.StatusCodesAndMessages;
-import net.htoomaungthait.buynowdotcom.dto.resp.ImageDto;
+import net.htoomaungthait.buynowdotcom.dto.response.ImageDto;
 import net.htoomaungthait.buynowdotcom.model.Image;
 import net.htoomaungthait.buynowdotcom.model.Product;
 import net.htoomaungthait.buynowdotcom.repository.ImageRepository;

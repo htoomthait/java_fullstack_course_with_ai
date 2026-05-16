@@ -2,7 +2,7 @@ package net.htoomaungthait.buynowdotcom.service.product;
 
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
 import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
-import net.htoomaungthait.buynowdotcom.dto.resp.ProductDto;
+import net.htoomaungthait.buynowdotcom.dto.response.ProductDto;
 import net.htoomaungthait.buynowdotcom.model.Product;
 
 import java.util.List;

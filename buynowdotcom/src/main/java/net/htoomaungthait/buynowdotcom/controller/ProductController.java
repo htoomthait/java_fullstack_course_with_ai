@@ -8,7 +8,7 @@ import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
 import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
-import net.htoomaungthait.buynowdotcom.dto.resp.ProductDto;
+import net.htoomaungthait.buynowdotcom.dto.response.ProductDto;
 import net.htoomaungthait.buynowdotcom.service.product.IProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

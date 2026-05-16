@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
-import net.htoomaungthait.buynowdotcom.dto.resp.UserRespDto;
 import net.htoomaungthait.buynowdotcom.model.Cart;
 import net.htoomaungthait.buynowdotcom.model.CartItem;
 import net.htoomaungthait.buynowdotcom.model.User;

@@ -1,4 +1,4 @@
-package net.htoomaungthait.buynowdotcom.dto.resp;
+package net.htoomaungthait.buynowdotcom.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

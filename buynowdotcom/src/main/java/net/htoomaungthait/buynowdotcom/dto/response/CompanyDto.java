@@ -1,5 +1,4 @@
-package net.htoomaungthait.buynowdotcom.dto.resp;
-
+package net.htoomaungthait.buynowdotcom.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,9 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GeoDto {
+public class CompanyDto {
 
-    private String lat;
+    private String name;
 
-    private String lng;
+    private String catchPhrase;
+
+    private String bs;
 }

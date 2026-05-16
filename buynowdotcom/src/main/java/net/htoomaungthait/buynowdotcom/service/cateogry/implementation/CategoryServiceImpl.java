@@ -1,12 +1,11 @@
 package net.htoomaungthait.buynowdotcom.service.cateogry.implementation;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityExistsException;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.dto.request.CategoryRequest;
-import net.htoomaungthait.buynowdotcom.dto.resp.CategoryDto;
+import net.htoomaungthait.buynowdotcom.dto.response.CategoryDto;
 import net.htoomaungthait.buynowdotcom.model.Category;
 import net.htoomaungthait.buynowdotcom.model.Product;
 import net.htoomaungthait.buynowdotcom.repository.CategoryRepository;

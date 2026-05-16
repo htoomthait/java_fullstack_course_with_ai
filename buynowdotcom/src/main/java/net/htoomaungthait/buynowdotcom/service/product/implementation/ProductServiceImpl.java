@@ -7,7 +7,7 @@ import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityExistsExcep
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
 import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
-import net.htoomaungthait.buynowdotcom.dto.resp.ProductDto;
+import net.htoomaungthait.buynowdotcom.dto.response.ProductDto;
 import net.htoomaungthait.buynowdotcom.model.*;
 import net.htoomaungthait.buynowdotcom.repository.*;
 import net.htoomaungthait.buynowdotcom.service.product.IProductService;

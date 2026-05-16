@@ -1,8 +1,7 @@
 package net.htoomaungthait.buynowdotcom.service.cateogry;
 
 import net.htoomaungthait.buynowdotcom.dto.request.CategoryRequest;
-import net.htoomaungthait.buynowdotcom.dto.resp.CategoryDto;
-import net.htoomaungthait.buynowdotcom.model.Category;
+import net.htoomaungthait.buynowdotcom.dto.response.CategoryDto;
 
 import java.util.List;
 
