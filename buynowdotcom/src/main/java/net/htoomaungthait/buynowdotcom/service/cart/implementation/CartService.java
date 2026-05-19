@@ -42,7 +42,7 @@ public class CartService implements ICartService {
     @Override
     public Cart getCartByUserId(Long userId) {
         return cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Cart with user ID: "+ userId + " is not found.", "CART_00"));
+                .orElseThrow(() -> new EntityNotFoundException("Cart with user ID: "+ userId + " is not found.", "CART_003"));
     }
 
     @Override
@@ -57,11 +57,12 @@ public class CartService implements ICartService {
     @Override
     public Cart initializeNewCartForUser(User user) {
 
-        return Optional.ofNullable(getCartByUserId(user.getId())).orElseGet(()->{
-            Cart cart = new Cart();
-            cart.setUser(user);
-            return cartRepository.save(cart);
-        });
+        return cartRepository.findByUserId(user.getId())
+                .orElseGet(() -> {
+                    Cart cart = new Cart();
+                    cart.setUser(user);
+                    return cartRepository.save(cart);
+                });
     }
 
     @Override

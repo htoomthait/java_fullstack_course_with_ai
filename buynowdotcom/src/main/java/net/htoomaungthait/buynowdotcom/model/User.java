@@ -1,10 +1,7 @@
 package net.htoomaungthait.buynowdotcom.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
 import java.util.Collection;
@@ -33,6 +30,7 @@ public class User {
 
     private String password;
 
+    @ToString.Exclude
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Cart  cart;
 
