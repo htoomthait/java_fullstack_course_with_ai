@@ -1,10 +1,7 @@
 package net.htoomaungthait.buynowdotcom.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.htoomaungthait.buynowdotcom.enums.OrderStatus;
 
 import java.math.BigDecimal;
@@ -12,7 +9,8 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

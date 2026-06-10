@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
+import net.htoomaungthait.buynowdotcom.dto.response.OrderRespDto;
 import net.htoomaungthait.buynowdotcom.model.Order;
 import net.htoomaungthait.buynowdotcom.service.order.IOrderService;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class OrderController extends BaseController {
     private final IOrderService orderService;
 
     @PostMapping("/user/order")
-    public ResponseEntity<ApiResponse<Order>> placeOrder(@RequestParam @Valid @Min(value = 1, message = "Id must be greater than or equal to 1")  Long userId){
+    public ResponseEntity<ApiResponse<OrderRespDto>> placeOrder(@RequestParam @Valid @Min(value = 1, message = "Id must be greater than or equal to 1")  Long userId){
 
         Order order = orderService.placeOrder(userId);
         String statusCode = "ORD_001";
@@ -31,7 +32,7 @@ public class OrderController extends BaseController {
                 statusCode,
                 "success",
                 getStatusMessageByCode(statusCode),
-                order
+                OrderRespDto.fromOrder(order)
         );
 
 
