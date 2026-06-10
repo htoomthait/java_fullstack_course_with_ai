@@ -1,10 +1,11 @@
 package net.htoomaungthait.buynowdotcom.service.cart;
 
+import net.htoomaungthait.buynowdotcom.dto.response.CartItemDto;
 import net.htoomaungthait.buynowdotcom.model.CartItem;
 
 public interface ICartItemService {
 
-    CartItem addItemToCart(Long cartId, Long productId, int quantity);
+    CartItemDto addItemToCart(Long cartId, Long productId, int quantity);
 
     void removeItemFromCart(Long cartId, Long productId);
 

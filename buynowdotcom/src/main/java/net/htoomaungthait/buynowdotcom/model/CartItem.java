@@ -2,14 +2,12 @@ package net.htoomaungthait.buynowdotcom.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +25,7 @@ public class CartItem {
 
     private BigDecimal totalPrice;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "product_id",
         foreignKey = @ForeignKey(name = "fk_cart_item_product"))
     private Product product;

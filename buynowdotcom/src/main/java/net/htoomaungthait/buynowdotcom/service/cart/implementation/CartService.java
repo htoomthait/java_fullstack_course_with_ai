@@ -1,5 +1,6 @@
 package net.htoomaungthait.buynowdotcom.service.cart.implementation;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.model.Cart;
@@ -7,6 +8,7 @@ import net.htoomaungthait.buynowdotcom.model.User;
 import net.htoomaungthait.buynowdotcom.repository.CartItemRepository;
 import net.htoomaungthait.buynowdotcom.repository.CartRepository;
 import net.htoomaungthait.buynowdotcom.service.cart.ICartService;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -42,12 +44,16 @@ public class CartService implements ICartService {
     @Override
     public Cart getCartByUserId(Long userId) {
         return cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Cart with user ID: "+ userId + " is not found.", "CART_00"));
+                .orElseThrow(() -> new EntityNotFoundException("Cart with user ID: "+ userId + " is not found.", "CART_003"));
     }
 
+    @Modifying
+    @Transactional
     @Override
     public void clearCart(Long cartId) {
         Cart cart = getCart(cartId);
+
+
         cartItemRepository.deleteAllByCartId(cartId);
         cart.clearCart();
         cartRepository.deleteById(cartId);
@@ -57,11 +63,12 @@ public class CartService implements ICartService {
     @Override
     public Cart initializeNewCartForUser(User user) {
 
-        return Optional.ofNullable(getCartByUserId(user.getId())).orElseGet(()->{
-            Cart cart = new Cart();
-            cart.setUser(user);
-            return cartRepository.save(cart);
-        });
+        return cartRepository.findByUserId(user.getId())
+                .orElseGet(() -> {
+                    Cart cart = new Cart();
+                    cart.setUser(user);
+                    return cartRepository.save(cart);
+                });
     }
 
     @Override

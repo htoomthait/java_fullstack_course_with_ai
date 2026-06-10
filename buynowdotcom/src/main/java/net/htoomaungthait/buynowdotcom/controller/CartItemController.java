@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
+import net.htoomaungthait.buynowdotcom.dto.response.CartItemDto;
 import net.htoomaungthait.buynowdotcom.model.Cart;
 import net.htoomaungthait.buynowdotcom.model.CartItem;
 import net.htoomaungthait.buynowdotcom.model.User;
@@ -26,14 +27,14 @@ public class CartItemController extends BaseController {
 
 
     @PostMapping("/item/add")
-    public ResponseEntity<ApiResponse<CartItem>> addItemToCart(
-                                Long userId,
-                                @RequestParam Long productId,
+    public ResponseEntity<ApiResponse<CartItemDto>> addItemToCart(
+                                @RequestParam @Valid @Min(value = 1, message = "Id must be greater than or equal to 1") Long userId,
+                                @RequestParam @Valid @Min(value = 1, message = "Id must be greater than or equal to 1") Long productId,
                                 @RequestParam int quantity){
 
         User user = userService.getUserMById(userId);
         Cart userCart = cartService.initializeNewCartForUser(user);
-        CartItem cartItem = cartItemService.addItemToCart(userCart.getId(), productId, quantity);
+        CartItemDto cartItem = cartItemService.addItemToCart(userCart.getId(), productId, quantity);
         String statusCode = "CARTIM_001";
 
         return makeResponse(

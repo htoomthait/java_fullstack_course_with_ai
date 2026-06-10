@@ -2,14 +2,12 @@ package net.htoomaungthait.buynowdotcom.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,7 +31,7 @@ public class OrderItem {
     )
     private Order order;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id",
     foreignKey = @ForeignKey(name = "fk_order_item_product"))
     private Product product;
@@ -45,6 +43,7 @@ public class OrderItem {
                 .quantity(quantity)
                 .price(price)
                 .order(order)
+                .totalPrice(price.multiply(BigDecimal.valueOf(quantity)))
                 .build();
     }
 
