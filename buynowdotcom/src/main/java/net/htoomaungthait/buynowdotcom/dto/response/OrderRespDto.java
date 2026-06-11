@@ -9,6 +9,7 @@ import net.htoomaungthait.buynowdotcom.model.Order;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +27,8 @@ public class OrderRespDto {
 
     private UserRespDto user;
 
+    private List<OrderItemRespDto> orderItems;
+
 
     public static OrderRespDto fromOrder(Order order){
         return OrderRespDto.builder()
@@ -34,6 +37,7 @@ public class OrderRespDto {
                 .totalAmount(order.getTotalAmount())
                 .status(order.getOrderStatus())
                 .user(UserRespDto.fromUser(order.getUser()))
+                .orderItems(order.getOrderItems() == null ? null : order.getOrderItems().stream().map(OrderItemRespDto::fromOrderItem).toList())
                 .build();
     }
 }
