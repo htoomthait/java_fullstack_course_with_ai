@@ -6,14 +6,19 @@ import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityExistsExcep
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.dto.request.UserRequest;
 import net.htoomaungthait.buynowdotcom.dto.request.UserUpdateRequest;
+import net.htoomaungthait.buynowdotcom.dto.response.UserCartOrderRespDto;
 import net.htoomaungthait.buynowdotcom.dto.response.UserRespDto;
+import net.htoomaungthait.buynowdotcom.model.Cart;
+import net.htoomaungthait.buynowdotcom.model.Order;
 import net.htoomaungthait.buynowdotcom.model.User;
+import net.htoomaungthait.buynowdotcom.repository.CartRepository;
 import net.htoomaungthait.buynowdotcom.repository.UserRepository;
 import net.htoomaungthait.buynowdotcom.service.user.IUserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -22,6 +27,7 @@ public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CartRepository cartRepository;
 
     @Override
     public UserRespDto createUser(UserRequest userToCreate) {
@@ -72,6 +78,21 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User getUserMById(Long userId){
         return this.findById(userId);
+    }
+
+    @Override
+    public UserCartOrderRespDto getUserCartOrderByUserId(Long userId) {
+        User user = this.findById(userId);
+        Optional<Cart> cart = cartRepository.findByUserId(userId);
+
+
+        List<Order> orderList = user.getOrders();
+
+        return UserCartOrderRespDto.fromModels(
+                user,
+                cart.orElse(null),
+                orderList.size() == 0 ? List.of() : orderList
+        );
     }
 
     @Override

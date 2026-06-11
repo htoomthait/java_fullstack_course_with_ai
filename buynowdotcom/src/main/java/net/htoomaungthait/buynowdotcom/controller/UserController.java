@@ -7,6 +7,7 @@ import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
 import net.htoomaungthait.buynowdotcom.dto.request.UserRequest;
 import net.htoomaungthait.buynowdotcom.dto.request.UserUpdateRequest;
+import net.htoomaungthait.buynowdotcom.dto.response.UserCartOrderRespDto;
 import net.htoomaungthait.buynowdotcom.dto.response.UserRespDto;
 import net.htoomaungthait.buynowdotcom.service.user.IUserService;
 import org.springframework.http.HttpStatus;
@@ -107,6 +108,24 @@ public class UserController extends BaseController {
                 "success",
                 getStatusMessageByCode(statusCode),
                 this.userService.deleteUserById(userId)
+        );
+
+    }
+
+    @GetMapping("/{userId}/cart-orders")
+    public ResponseEntity<ApiResponse<UserCartOrderRespDto>> getUserCartOrderByUserId(
+            @Valid
+            @PathVariable
+            @Min(value = 1, message = "Id must be greater than or equal to 1")
+            Long userId){
+        String statusCode = "USER_009";
+
+        return makeResponse(
+                HttpStatus.OK.value(),
+                statusCode,
+                "success",
+                getStatusMessageByCode(statusCode),
+                this.userService.getUserCartOrderByUserId(userId)
         );
 
     }

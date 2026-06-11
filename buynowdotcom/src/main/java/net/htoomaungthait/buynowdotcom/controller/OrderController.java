@@ -39,7 +39,7 @@ public class OrderController extends BaseController {
     }
 
     @GetMapping("/user/{userId}/order")
-    public ResponseEntity<ApiResponse<List<Order>>> getUserOrders(
+    public ResponseEntity<ApiResponse<List<OrderRespDto>>> getUserOrders(
             @PathVariable @Valid @Min(value = 1, message = "Id must be greater than or equal to 1")  Long userId)
     {
         List<Order> userOrderList = orderService.getUserOrder(userId);
@@ -50,7 +50,7 @@ public class OrderController extends BaseController {
                 statusCode,
                 "success",
                 getStatusMessageByCode(statusCode),
-                userOrderList
+                userOrderList.stream().map(OrderRespDto::fromOrder).toList()
 
         );
     }
