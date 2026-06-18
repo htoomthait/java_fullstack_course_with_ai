@@ -1,3 +1,5 @@
+app:
+  useSecureCookie: false
 auth:
   token:
     jwtSecret: "eiphoh{qu9Okaibohoh2yieH5aeVengo"
