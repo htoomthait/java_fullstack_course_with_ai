@@ -66,7 +66,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         ErrorResponse errorResponse = ErrorResponse.of(
                 String.valueOf(HttpServletResponse.SC_UNAUTHORIZED),
                 "Unauthorized",
-                "Invalid or expired JWT token",
+                "Invalid or expired JWT token. Please login and try again.",
                 java.time.LocalDateTime.now()
         );
 
