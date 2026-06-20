@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import net.htoomaungthait.buynowdotcom.common.response.ErrorResponse;
 import net.htoomaungthait.buynowdotcom.security.user.ShopUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 
@@ -26,6 +28,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired
     private ShopUserDetailsService userDetailsService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
 
 
@@ -44,6 +49,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             sendErrorResponse(response);
             return;
         }
@@ -51,16 +57,19 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     }
 
+
+
     private void sendErrorResponse(HttpServletResponse response) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
+
         ErrorResponse errorResponse = ErrorResponse.of(
                 String.valueOf(HttpServletResponse.SC_UNAUTHORIZED),
                 "Unauthorized",
                 "Invalid or expired JWT token",
                 java.time.LocalDateTime.now()
         );
-        ObjectMapper objectMapper = new ObjectMapper();
+
         String jsonResponse = objectMapper.writeValueAsString(errorResponse);
         response.getWriter().write(jsonResponse);
     }
@@ -68,7 +77,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     public String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7);
+            return headerAuth.substring(7).trim();
         }
         return null;
     }

@@ -40,11 +40,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGeneralException(BadRequestException ex) {
 
         ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().toString())
                 .status("Bad Request")
                 .statusCode(ex.getStatusCode())
                 .message(ex.getMessage())
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().toString())
                 .build();
 
         // Log the real error internally (VERY IMPORTANT)
@@ -59,11 +59,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGeneralException(GeneralException ex) {
 
         ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().toString())
                 .status("Internal Server Error")
                 .statusCode(ex.getStatusCode())
                 .message(ex.getMessage())
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().toString())
                 .build();
 
         // Log the real error internally (VERY IMPORTANT)
@@ -79,11 +79,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGlobalGeneralException(Exception ex) {
 
         ErrorResponse errorResponse = ErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().toString())
                 .status("General Error")
                 .statusCode("GEN_001")
                 .message("Something went wrong. Please contact support.")
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDateTime.now().toString())
                 .build();
 
         // Log the real error internally (VERY IMPORTANT)

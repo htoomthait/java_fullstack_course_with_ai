@@ -38,7 +38,7 @@ public class ShopConfig {
 
     private static final List<String>  SECURED_URLS = List.of(
             API + "/carts/**",
-            API + "/cartItem/**",
+            API + "/cart-items/**",
             API + "/orders/**"
     );
 

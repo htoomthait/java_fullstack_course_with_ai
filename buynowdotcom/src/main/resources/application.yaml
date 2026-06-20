@@ -2,7 +2,7 @@ app:
   useSecureCookie: false
 auth:
   token:
-    jwtSecret: "eiphoh{qu9Okaibohoh2yieH5aeVengo"
+    jwtSecret: "mY7hK2vN8xQpL4sR9tY6uW3aD5fG7jH1kL8zX2cV4bN6mP9qR3sT5uW7xY8zA1bC"
     jwtExpirationMs: 3600000 # 1 hour
     jwtRefreshExpirationMs: 604800000 # 7 days
 logging:
@@ -13,6 +13,9 @@ api:
 server:
   port: 8080
 spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
   servlet:
     multipart:
       max-file-size: 10MB

@@ -14,6 +14,8 @@ import net.htoomaungthait.buynowdotcom.model.User;
 import net.htoomaungthait.buynowdotcom.repository.CartRepository;
 import net.htoomaungthait.buynowdotcom.repository.UserRepository;
 import net.htoomaungthait.buynowdotcom.service.user.IUserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -111,6 +113,15 @@ public class UserServiceImpl implements IUserService {
         return userList.stream()
                 .map(UserRespDto::fromUser)
                 .toList();
+    }
+
+    @Override
+    public User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        return Optional.ofNullable(this.userRepository.findByEmail(email))
+                .orElseThrow(() -> new EntityNotFoundException("Authenticated user not found with email: " + email, "USR_003"));
+
     }
 
 
