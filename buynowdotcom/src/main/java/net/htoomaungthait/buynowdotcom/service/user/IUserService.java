@@ -23,4 +23,7 @@ public interface IUserService {
     User getUserMById(Long userId);
 
     UserCartOrderRespDto getUserCartOrderByUserId(Long userId);
+
+    User getAuthenticatedUser();
+
 }

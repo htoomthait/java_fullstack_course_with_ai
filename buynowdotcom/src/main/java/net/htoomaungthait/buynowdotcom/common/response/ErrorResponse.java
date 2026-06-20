@@ -20,7 +20,7 @@ public class ErrorResponse {
 
     private String status;
 
-    private LocalDateTime timestamp;
+    private String timestamp;
 
     private String message;
 
@@ -29,7 +29,7 @@ public class ErrorResponse {
                 .statusCode(statusCode)
                 .status(status)
                 .message(message)
-                .timestamp(timestamp)
+                .timestamp(timestamp.toString())
                 .build();
     }
 }

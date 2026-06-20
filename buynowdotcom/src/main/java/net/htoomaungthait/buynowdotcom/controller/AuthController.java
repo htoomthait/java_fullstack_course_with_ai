@@ -2,7 +2,9 @@ package net.htoomaungthait.buynowdotcom.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
 import net.htoomaungthait.buynowdotcom.dto.request.LoginRequest;
@@ -17,12 +19,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("${api.prefix}/auth")
 @RequiredArgsConstructor
@@ -41,7 +45,10 @@ public class AuthController extends BaseController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(LoginRequest request, HttpServletResponse response){
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody  LoginRequest request, HttpServletResponse response){
+
+        log.info("login request's email : {}", request.getEmail());
+
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 

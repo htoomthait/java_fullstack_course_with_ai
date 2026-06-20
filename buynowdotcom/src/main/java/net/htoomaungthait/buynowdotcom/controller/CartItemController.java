@@ -28,11 +28,10 @@ public class CartItemController extends BaseController {
 
     @PostMapping("/item/add")
     public ResponseEntity<ApiResponse<CartItemDto>> addItemToCart(
-                                @RequestParam @Valid @Min(value = 1, message = "Id must be greater than or equal to 1") Long userId,
                                 @RequestParam @Valid @Min(value = 1, message = "Id must be greater than or equal to 1") Long productId,
                                 @RequestParam int quantity){
 
-        User user = userService.getUserMById(userId);
+        User user = userService.getAuthenticatedUser();
         Cart userCart = cartService.initializeNewCartForUser(user);
         CartItemDto cartItem = cartItemService.addItemToCart(userCart.getId(), productId, quantity);
         String statusCode = "CARTIM_001";

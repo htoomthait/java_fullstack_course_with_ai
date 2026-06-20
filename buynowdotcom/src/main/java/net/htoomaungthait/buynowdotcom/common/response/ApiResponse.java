@@ -1,6 +1,7 @@
 package net.htoomaungthait.buynowdotcom.common.response;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class ApiResponse<T> {
 
     private String message;
 
-    private String timestamp;
+    private LocalDateTime timestamp;
 
     private T data;
 
@@ -33,7 +34,7 @@ public class ApiResponse<T> {
                 .statusCode(statusCode)
                 .status(status)
                 .message(message)
-                .timestamp(LocalDateTime.now().toString())
+                .timestamp(LocalDateTime.now())
                 .data(data)
                 .build();
     }
