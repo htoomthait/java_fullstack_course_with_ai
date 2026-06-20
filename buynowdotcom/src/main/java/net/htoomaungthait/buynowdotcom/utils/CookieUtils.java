@@ -30,13 +30,12 @@ public class CookieUtils {
         String sameSite =  useSecureCookie ? "None" : "Lax";
 
 
-
         long maxAgeSeconds = maxAge / 1000;
 
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
                 .secure(useSecureCookie)
-                .path(API_PREFIX + "/auth")
+                .path( "/")
                 .maxAge(maxAgeSeconds)
                 .sameSite(sameSite)
                 .build();
