@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import './App.css'
 import RootLayout from './components/layout/RootLayout'
+import Home from './pages/Home'
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
     createRoutesFromElements(
       <Route path='/' element={<RootLayout />}>
 
+        <Route index element={<Home />} />
       </Route>
     )
   )
