@@ -17,7 +17,7 @@ public interface IProductService {
 
     List<ProductDto> getProductsByName(String name);
 
-    List<ProductDto> findDistinctProductsByName(String name);
+    List<ProductDto> findDistinctProductsByName();
 
     ProductDto findProductDtoById(Long id);
 

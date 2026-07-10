@@ -128,8 +128,8 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<ProductDto> findDistinctProductsByName(String name) {
-        List<Product> products =  productRepository.findDistinctByName(name);
+    public List<ProductDto> findDistinctProductsByName() {
+        List<Product> products =  productRepository.findDistinctByName();
 
         return products.stream()
                 .map(ProductDto::fromEntity)

@@ -1,24 +1,65 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Hero from '../components/common/hero/Hero'
 import Paginator from '../components/common/Paginator';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ProductImage from '../components/common/utils/ProductImage';
+import { toast, ToastContainer } from 'react-toastify';
+import { getDistinctProductsByName } from "../components/services/ProductSerivce";
+// import { useSelector } from "react-redux";
 
 const Home = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
+    // const { searchQuery, selectedCategory } = useSelector(
+    //     (state) => state.search
+    // );
+
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
+    useEffect(() => {
+        const getProducts = async () => {
+            try {
+                const response = await getDistinctProductsByName();
+                setProducts(response.data);
+
+            } catch (error) {
+                console.error("Error fetching products:", error);
+                setErrorMessage(error.message);
+                toast.error(error.message);
+            }
+        };
+
+        getProducts();
+    }, [])
+
+
+    // useEffect(() => {
+    //     const results = products.filter(product => {
+    //         const matchesQuery = product.name
+    //             .toLowerCase()
+    //             .includes(searchQuery.toLowerCase());
+    //         const matchesCategory =
+    //             selectedCategory === "all" ||
+    //             product.category.name
+    //                 .toLowerCase()
+    //                 .includes(selectedCategory.toLowerCase());
+
+    //         return matchesQuery && matchesCategory;
+    //     })
+
+    //     setFilteredProducts(results);
+    // }, [products, searchQuery, selectedCategory]);
 
 
 
-
-    const [currentPage, setCurrentPage] = useState([]);
-    const itemPerPage = 10;
 
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-    const indexOfLastProduct = currentPage * itemPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - itemPerPage;
+    const indexOfLastProduct = currentPage * itemsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
     const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
 
@@ -28,6 +69,7 @@ const Home = () => {
             <>
                 <Hero />
                 <div className="d-flex flex-wrap justify-content-center p-5">
+                    <ToastContainer />
                     {products.map((product) => (
                         <Card key={product.id} className='home-product-card'>
                             <Link to={"#"} className="link">
@@ -53,7 +95,7 @@ const Home = () => {
 
                 </div>
                 <Paginator
-                    itemPerPage={itemPerPage}
+                    itemPerPage={itemsPerPage}
                     totalItems={filteredProducts.length}
                     currentPage={currentPage}
                     paginate={paginate}
