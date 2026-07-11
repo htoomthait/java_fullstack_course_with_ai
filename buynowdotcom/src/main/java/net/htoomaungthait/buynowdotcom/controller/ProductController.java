@@ -247,6 +247,24 @@ public class ProductController extends BaseController {
      }
 
 
+     @GetMapping("/distinct/products")
+     public ResponseEntity<ApiResponse<List<ProductDto>>> getDistinctProductsByName(
+            ){
+
+         List<ProductDto> productDtos = iProductService.findDistinctProductsByName();
+         int countOfProducts = productDtos.size();
+         String statusCode = countOfProducts > 0 ? "PROD_005" : "PROD_006";
+
+         return makeResponse(
+                 HttpStatus.OK.value(),
+                 statusCode,
+                 "success search",
+                 getStatusMessageByCode(statusCode),
+                 productDtos
+         );
+     }
+
+
 
 
 

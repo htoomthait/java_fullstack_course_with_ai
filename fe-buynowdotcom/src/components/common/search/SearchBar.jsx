@@ -1,6 +1,9 @@
 import React from 'react'
 
-const SearchBar = () => {
+const SearchBar = ({
+    value,
+    onChange
+}) => {
     return (
         <>
             <div className="search-bar input-group input-group-sm">
@@ -13,7 +16,9 @@ const SearchBar = () => {
                 <input
                     type="text"
                     className="form-control-sm"
-                    placeholder="Search for products..." />
+                    value={value}
+                    onChange={onChange}
+                    placeholder="Search for products...(e.g. tv)" />
 
                 <button className="search-button btn btn-primary btn-sm"> Clear Filter</button>
             </div>

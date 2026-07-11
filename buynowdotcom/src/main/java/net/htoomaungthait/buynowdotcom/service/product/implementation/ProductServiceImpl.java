@@ -120,6 +120,23 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
+    public List<ProductDto> getProductsByName(String name) {
+        List<Product> products =  productRepository.findByNameContainingIgnoreCase(name);
+        return products.stream()
+                .map(ProductDto::fromEntity)
+                .toList();
+    }
+
+    @Override
+    public List<ProductDto> findDistinctProductsByName() {
+        List<Product> products =  productRepository.findDistinctByName();
+
+        return products.stream()
+                .map(ProductDto::fromEntity)
+                .toList();
+    }
+
+    @Override
     public List<ProductDto> getProductsByCategoryId(Long categoryId) {
         List<Product> products = productRepository.findByCategoryId(categoryId);
 

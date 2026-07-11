@@ -31,4 +31,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByNameContainingIgnoreCaseAndBrand(String name, String brand);
 
+    @Query("""
+        SELECT p
+        FROM Product p
+        WHERE p.id IN (
+            SELECT MIN(p2.id)
+            FROM Product p2
+            GROUP BY p2.name
+        )
+    """)
+    List<Product> findDistinctByName();
+
 }

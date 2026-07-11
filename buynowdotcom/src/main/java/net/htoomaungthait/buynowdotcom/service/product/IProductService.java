@@ -15,6 +15,10 @@ public interface IProductService {
 
     Product findProductById(Long id);
 
+    List<ProductDto> getProductsByName(String name);
+
+    List<ProductDto> findDistinctProductsByName();
+
     ProductDto findProductDtoById(Long id);
 
     ProductDto deleteProductById(Long id);
