@@ -77,7 +77,8 @@ public class ShopConfig {
         configuration.setAllowedOrigins(List.of(
                 "https://www.shoptita.com",
                 "http://localhost:5000",
-                "http://localhost:8080"
+                "http://localhost:8080",
+                "http://localhost:5174"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));

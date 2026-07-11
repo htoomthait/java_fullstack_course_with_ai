@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const ProductImage = ({
     productId,
@@ -12,12 +12,12 @@ const ProductImage = ({
 
             try {
                 const response = await fetch(
-                    `http://localhost:9090/api/v1/images/image/download/${id}`
+                    `http://localhost:8080/api/v1/images/download/${productId}`
                 );
                 const blob = await response.blob();
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setProductImg(reader.result);
+                    setProductImage(reader.result);
                 };
                 reader.readAsDataURL(blob);
             } catch (error) {
@@ -33,11 +33,11 @@ const ProductImage = ({
 
     }, [productId]);
 
-    if (!productImg) return null;
+    if (!productImage) return null;
 
     return (
         <div>
-            <img src={productImg} alt='Product Image' />
+            <img src={productImage} alt='Product Image' />
         </div>
     )
 }
