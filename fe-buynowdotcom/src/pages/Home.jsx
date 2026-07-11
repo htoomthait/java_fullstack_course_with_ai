@@ -6,14 +6,13 @@ import { Link } from 'react-router-dom';
 import ProductImage from '../components/common/utils/ProductImage';
 import { toast, ToastContainer } from 'react-toastify';
 import { getDistinctProductsByName } from "../components/services/ProductSerivce";
+import { useSelector } from 'react-redux';
 // import { useSelector } from "react-redux";
 
 const Home = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
-    // const { searchQuery, selectedCategory } = useSelector(
-    //     (state) => state.search
-    // );
+    const { searchQuery } = useSelector((state) => state.search);
 
     const [errorMessage, setErrorMessage] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -36,22 +35,24 @@ const Home = () => {
     }, [])
 
 
-    // useEffect(() => {
-    //     const results = products.filter(product => {
-    //         const matchesQuery = product.name
-    //             .toLowerCase()
-    //             .includes(searchQuery.toLowerCase());
-    //         const matchesCategory =
-    //             selectedCategory === "all" ||
-    //             product.category.name
-    //                 .toLowerCase()
-    //                 .includes(selectedCategory.toLowerCase());
+    useEffect(() => {
+        const results = products.filter(product => {
+            const matchesQuery = product.name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase());
 
-    //         return matchesQuery && matchesCategory;
-    //     })
+            // const matchesCategory =
+            //     selectedCategory === "all" ||
+            //     product.category.name
+            //         .toLowerCase()
+            //         .includes(selectedCategory.toLowerCase());
 
-    //     setFilteredProducts(results);
-    // }, [products, searchQuery, selectedCategory]);
+            // return matchesQuery && matchesCategory;
+            return matchesQuery;
+        })
+
+        setFilteredProducts(results);
+    }, [products, searchQuery]);
 
 
 
@@ -70,7 +71,7 @@ const Home = () => {
                 <Hero />
                 <div className="d-flex flex-wrap justify-content-center p-5">
                     <ToastContainer />
-                    {products.map((product) => (
+                    {currentProducts.map((product) => (
                         <Card key={product.id} className='home-product-card'>
                             <Link to={"#"} className="link">
                                 <div className="image-container">
