@@ -3,6 +3,7 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import './App.css'
 import RootLayout from './components/layout/RootLayout'
 import Home from './pages/Home'
+import Products from './components/common/product/Products'
 
 function App() {
 
@@ -10,7 +11,10 @@ function App() {
     createRoutesFromElements(
       <Route path='/' element={<RootLayout />}>
 
-        <Route index element={<Home />} />
+        <Route index path='/' element={<Home />} />
+        <Route path='/home' element={<Home />} />
+        <Route path='/products' element={<Products />} />
+        <Route path='*' element={<div>404 Not Found</div>} />
       </Route>
     )
   )
