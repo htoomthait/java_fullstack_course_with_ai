@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 const SearchBar = ({
     value,
-    onChange
+    onChange,
+    onCategoryChange,
 }) => {
     const [category, setCategory] = useState([]);
     const dispatch = useDispatch();
@@ -13,7 +14,9 @@ const SearchBar = ({
         (state) => state.search
     );
 
-
+    const handleCategoryChange = (e) => {
+        onCategoryChange(e.target.value);
+    }
 
 
 
@@ -27,10 +30,15 @@ const SearchBar = ({
     return (
         <>
             <div className="search-bar input-group input-group-sm">
-                <select className="form-control-sm" name="category" id="category">
-
-                    {categories.map((cat) => (
-                        <option key={cat.id} value={cat.name}>{cat.name}</option>
+                <select className="form-control-sm" name="category" id="category"
+                    value={selectedCategory}
+                    onChange={handleCategoryChange}
+                >
+                    <option value="all">All Category</option>
+                    {categories.map((category) => (
+                        <option key={category.id} value={category.name}>
+                            {category.name}
+                        </option>
                     ))}
                 </select>
 
