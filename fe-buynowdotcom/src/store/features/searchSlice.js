@@ -15,10 +15,14 @@ const searchSlice = createSlice({
         },
         setSelectedCategory: (state, action) => {
             state.selectedCategory = action.payload;
+        },
+        clearFilters: (state) => {
+            state.searchQuery = "";
+            state.selectedCategory = "all";
         }
 
     }
 }); 
 
-export const { setSearchQuery, setSelectedCategory } = searchSlice.actions;
+export const { setSearchQuery, setSelectedCategory, clearFilters } = searchSlice.actions;
 export default searchSlice.reducer;

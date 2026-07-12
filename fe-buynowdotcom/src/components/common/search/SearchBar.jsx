@@ -6,6 +6,7 @@ const SearchBar = ({
     value,
     onChange,
     onCategoryChange,
+    onClearFilter
 }) => {
     const [category, setCategory] = useState([]);
     const dispatch = useDispatch();
@@ -45,11 +46,13 @@ const SearchBar = ({
                 <input
                     type="text"
                     className="form-control-sm"
-                    value={value}
+                    value={searchQuery}
                     onChange={onChange}
                     placeholder="Search for products...(e.g. tv)" />
 
-                <button className="search-button btn btn-primary btn-sm"> Clear Filter</button>
+                <button className="search-button btn btn-primary btn-sm" onClick={onClearFilter}>
+                    Clear Filter
+                </button>
             </div>
         </>
     )

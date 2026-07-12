@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import HeroSlider from './HeroSlider';
 import SearchBar from '../search/SearchBar';
-import { setSearchQuery, setSelectedCategory } from '../../../store/features/searchSlice';
+import { setSearchQuery, setSelectedCategory, clearFilters } from '../../../store/features/searchSlice';
 import { useDispatch } from 'react-redux';
 
 
@@ -21,6 +21,7 @@ const Hero = () => {
                 <SearchBar
                     onChange={(e) => dispatch(setSearchQuery(e.target.value))}
                     onCategoryChange={(category) => dispatch(setSelectedCategory(category))}
+                    onClearFilter={() => dispatch(clearFilters())}
                 />
 
                 <div className="home-button-container">

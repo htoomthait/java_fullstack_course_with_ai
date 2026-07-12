@@ -36,7 +36,6 @@ const Home = () => {
 
 
     useEffect(() => {
-        console.log("selectedCategory:", selectedCategory);
         const results = products.filter(product => {
             const matchesQuery = product.name
                 .toLowerCase()
