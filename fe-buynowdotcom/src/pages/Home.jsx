@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 const Home = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
-    const { searchQuery } = useSelector((state) => state.search);
+    const { searchQuery, selectedCategory } = useSelector((state) => state.search);
 
     const [errorMessage, setErrorMessage] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -41,18 +41,21 @@ const Home = () => {
                 .toLowerCase()
                 .includes(searchQuery.toLowerCase());
 
-            // const matchesCategory =
-            //     selectedCategory === "all" ||
-            //     product.category.name
-            //         .toLowerCase()
-            //         .includes(selectedCategory.toLowerCase());
+            const matchesCategory =
+                selectedCategory === "all" ||
+                product.category.name
+                    .toLowerCase()
+                    .includes(selectedCategory.toLowerCase());
 
-            // return matchesQuery && matchesCategory;
-            return matchesQuery;
+
+
+            return matchesQuery && matchesCategory;
         })
 
+
+
         setFilteredProducts(results);
-    }, [products, searchQuery]);
+    }, [products, searchQuery, selectedCategory]);
 
 
 
