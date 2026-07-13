@@ -7,6 +7,7 @@ import ProductImage from '../components/common/utils/ProductImage';
 import { toast, ToastContainer } from 'react-toastify';
 import { getDistinctProductsByName } from "../components/services/ProductSerivce";
 import { useSelector } from 'react-redux';
+import ProductCard from '../components/common/product/ProductCard';
 // import { useSelector } from "react-redux";
 
 const Home = () => {
@@ -96,6 +97,8 @@ const Home = () => {
                         </Card>
                     )
                     )}
+
+
 
                 </div>
                 <Paginator
