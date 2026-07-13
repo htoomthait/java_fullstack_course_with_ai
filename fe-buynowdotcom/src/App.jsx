@@ -3,7 +3,7 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import './App.css'
 import RootLayout from './components/layout/RootLayout'
 import Home from './pages/Home'
-import Products from './components/common/product/Products'
+import Products from './components/product/Products'
 
 function App() {
 

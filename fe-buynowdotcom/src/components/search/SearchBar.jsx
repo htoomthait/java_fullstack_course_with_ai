@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllCategories } from '../../../store/features/categorySlice';
+import { getAllCategories } from '../../store/features/categorySlice';
 import { useDispatch, useSelector } from "react-redux";
 
 const SearchBar = ({

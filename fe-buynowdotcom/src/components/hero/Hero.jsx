@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import HeroSlider from './HeroSlider';
 import SearchBar from '../search/SearchBar';
-import { setSearchQuery, setSelectedCategory, clearFilters } from '../../../store/features/searchSlice';
+import { setSearchQuery, setSelectedCategory, clearFilters } from '../../store/features/searchSlice';
 import { useDispatch } from 'react-redux';
 
 

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import ProductCard from "./ProductCard";
 import SearchBar from '../search/SearchBar';
-import { getAllProducts } from '../../../store/features/productSlice';
+import { getAllProducts } from '../../store/features/productSlice';
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from 'react-router-dom';
-import LoadSpinner from '../LoadSpinner';
+import LoadSpinner from '../common/LoadSpinner';
+import SideBar from '../common/SideBar';
 
 
 
@@ -15,7 +16,7 @@ const Products = () => {
     const { searchQuery, selectedCategory } = useSelector(
         (state) => state.search
     );
-    const isLoading = useSelector((state) => state.product.isLoading);
+    const { isLoadingGetAllProducts, isLoadingGetAllBrands, isLoadingGetAllDistinctProductByName } = useSelector((state) => state.product);
     const currentPage = 1;
     const itemsPerPage = 10;
 
@@ -39,16 +40,14 @@ const Products = () => {
         indexOfLastProduct
     );
 
-    if (isLoading) {
-        return (
-            <div>
-                <LoadSpinner />
-            </div>
-        );
-    }
+    const isLoading =
+        isLoadingGetAllProducts ||
+        isLoadingGetAllBrands ||
+        isLoadingGetAllDistinctProductByName;
 
-    return (
-        <>
+
+    const mainContent = <>
+        <div>
             <div className="d-flex justify-content-center">
                 <div className="col-md-6 mt-2">
                     <div className="search-bar input-group">
@@ -58,7 +57,7 @@ const Products = () => {
             </div>
             <div className="d-flex ">
                 <aside className="sidebar" style={{ width: '250px', padding: '1rem' }}>
-                    Sidebar comming here....
+                    <SideBar />
                 </aside>
 
                 <section style={{ flex: 1, padding: '1rem', }}>
@@ -69,6 +68,21 @@ const Products = () => {
                     pagination comming here....
                 </div>
             </div>
+        </div>
+    </>;
+
+
+
+    return (
+        <>
+
+            {isLoading && <LoadSpinner />}
+
+            {mainContent}
+
+
+
+
         </>
 
     )
