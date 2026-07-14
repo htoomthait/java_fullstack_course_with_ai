@@ -1,16 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Pagination } from 'react-bootstrap';
+import { setItemsPerPage, setCurrentPage, setTotalItems } from "../../store/features/paginationSlice";
+import { useDispatch, useSelector } from 'react-redux';
 
-const Paginator = ({
-    itemPerPage,
-    totalItems,
-    currentPage,
-    paginate
-}) => {
+const Paginator = () => {
+    const dispatch = useDispatch();
+    const { itemsPerPage, totalItems, currentPage } = useSelector((state) => state.pagination)
+
     let active = currentPage;
     let items = [];
 
-    for (let number = 1; number <= Math.ceil(totalItems / itemPerPage); number++) {
+
+
+    const paginate = (pageNumber) => {
+        dispatch(setCurrentPage(pageNumber));
+    }
+
+
+
+
+    for (let number = 1; number <= Math.ceil(totalItems / itemsPerPage); number++) {
+        console.log("pagination number: ", number)
         items.push(
             <Pagination.Item
                 key={number}

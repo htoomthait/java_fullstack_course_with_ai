@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from 'react-router-dom';
 import LoadSpinner from '../common/LoadSpinner';
 import SideBar from '../common/SideBar';
+import Paginator from '../common/Paginator';
+import { setTotalItems } from "../../store/features/paginationSlice";
 
 
 
@@ -23,8 +25,9 @@ const Products = () => {
         isLoadingGetAllDistinctProductByName,
         products
     } = useSelector((state) => state.product);
-    const currentPage = 1;
-    const itemsPerPage = 10;
+    const { itemsPerPage, totalItems, currentPage } = useSelector((state) => state.pagination)
+
+
 
     useEffect(() => {
         dispatch(getAllProducts());
@@ -60,6 +63,11 @@ const Products = () => {
         setFilteredProducts(results);
     }, [searchQuery, selectedCategory, products])
 
+    useEffect(() => {
+        dispatch(setTotalItems(filteredProducts.length));
+    }, [filteredProducts, dispatch]);
+
+
 
     const indexOfLastProduct = currentPage * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
@@ -67,6 +75,7 @@ const Products = () => {
         indexOfFirstProduct,
         indexOfLastProduct
     );
+
 
     const isLoading =
         isLoadingGetAllProducts ||
@@ -92,7 +101,8 @@ const Products = () => {
                 <section style={{ flex: 1, }}>
                     <ProductCard products={currentProducts} />
                     <div className="pagination">
-                        pagination comming here....
+                        <Paginator />
+
                     </div>
                 </section>
 

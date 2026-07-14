@@ -6,18 +6,19 @@ import { Link } from 'react-router-dom';
 import ProductImage from '../components/utils/ProductImage';
 import { toast, ToastContainer } from 'react-toastify';
 import { getDistinctProductsByName } from "../components/services/ProductSerivce";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ProductCard from '../components/product/ProductCard';
-// import { useSelector } from "react-redux";
+import { setTotalItems } from "../store/features/paginationSlice";
 
 const Home = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const { searchQuery, selectedCategory } = useSelector((state) => state.search);
+    const { itemsPerPage, totalItems, currentPage } = useSelector((state) => state.pagination)
 
     const [errorMessage, setErrorMessage] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
         const getProducts = async () => {
@@ -58,11 +59,13 @@ const Home = () => {
         setFilteredProducts(results);
     }, [products, searchQuery, selectedCategory]);
 
+    useEffect(() => {
+        dispatch(setTotalItems(filteredProducts.length));
+    }, [filteredProducts, dispatch]);
 
 
 
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
     const indexOfLastProduct = currentPage * itemsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
     const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
@@ -101,14 +104,7 @@ const Home = () => {
 
 
                 </div>
-                <Paginator
-                    itemPerPage={itemsPerPage}
-                    totalItems={filteredProducts.length}
-                    currentPage={currentPage}
-                    paginate={paginate}
-
-
-                />
+                <Paginator />
             </>
         </>
 
