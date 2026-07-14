@@ -20,7 +20,6 @@ const Paginator = () => {
 
 
     for (let number = 1; number <= Math.ceil(totalItems / itemsPerPage); number++) {
-        console.log("pagination number: ", number)
         items.push(
             <Pagination.Item
                 key={number}

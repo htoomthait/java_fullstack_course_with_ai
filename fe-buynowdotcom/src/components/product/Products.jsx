@@ -8,6 +8,7 @@ import LoadSpinner from '../common/LoadSpinner';
 import SideBar from '../common/SideBar';
 import Paginator from '../common/Paginator';
 import { setTotalItems } from "../../store/features/paginationSlice";
+import { setInitialSearchQuery } from "../../store/features/searchSlice"
 
 
 
@@ -39,6 +40,11 @@ const Products = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const initialSearchQuery = queryParams.get("search") || name || "";
+
+
+    useEffect(() => {
+        dispatch(setInitialSearchQuery(initialSearchQuery));
+    }, [initialSearchQuery, dispatch]);
 
 
 

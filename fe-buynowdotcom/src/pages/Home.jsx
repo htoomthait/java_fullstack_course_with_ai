@@ -80,7 +80,7 @@ const Home = () => {
                     <ToastContainer />
                     {currentProducts.map((product) => (
                         <Card key={product.id} className='home-product-card'>
-                            <Link to={"#"} className="link">
+                            <Link to={`products/${product.name}`} className="link">
                                 <div className="image-container">
                                     {product.images.length > 0 && (
                                         <ProductImage productId={product.images[0].id} />
