@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getAllCategories } from '../../store/features/categorySlice';
 import { useDispatch, useSelector } from "react-redux";
+import { setSearchQuery, setSelectedCategory, clearFilters } from '../../store/features/searchSlice';
 
 const SearchBar = ({
     value,
     onChange,
-    onCategoryChange,
     onClearFilter
 }) => {
     const [category, setCategory] = useState([]);
@@ -15,8 +15,16 @@ const SearchBar = ({
         (state) => state.search
     );
 
+    const handleSearchQuery = (e) => {
+        dispatch(setSearchQuery(e.target.value));
+    }
+
     const handleCategoryChange = (e) => {
-        onCategoryChange(e.target.value);
+        dispatch(setSelectedCategory(e.target.value));
+    }
+
+    const handleClearFilters = (e) => {
+        dispatch(clearFilters());
     }
 
 
@@ -47,10 +55,10 @@ const SearchBar = ({
                     type="text"
                     className="form-control-sm"
                     value={searchQuery}
-                    onChange={onChange}
+                    onChange={handleSearchQuery}
                     placeholder="Search for products...(e.g. tv)" />
 
-                <button className="search-button btn btn-primary btn-sm" onClick={onClearFilter}>
+                <button className="search-button btn btn-primary btn-sm" onClick={handleClearFilters}>
                     Clear Filter
                 </button>
             </div>

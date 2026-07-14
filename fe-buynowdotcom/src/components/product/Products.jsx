@@ -10,15 +10,25 @@ import SideBar from '../common/SideBar';
 
 
 
+
 const Products = () => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const dispatch = useDispatch();
     const { searchQuery, selectedCategory } = useSelector(
         (state) => state.search
     );
-    const { isLoadingGetAllProducts, isLoadingGetAllBrands, isLoadingGetAllDistinctProductByName } = useSelector((state) => state.product);
+    const {
+        isLoadingGetAllProducts,
+        isLoadingGetAllBrands,
+        isLoadingGetAllDistinctProductByName,
+        products
+    } = useSelector((state) => state.product);
     const currentPage = 1;
     const itemsPerPage = 10;
+
+    useEffect(() => {
+        dispatch(getAllProducts());
+    }, [dispatch]);
 
 
     const { name } = useParams();
@@ -28,9 +38,27 @@ const Products = () => {
 
 
 
+
+
     useEffect(() => {
-        dispatch(getAllProducts());
-    }, [dispatch]);
+        const results = products.filter((product) => {
+            const matchesQuery = product.name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase());
+
+            const matchesCategory =
+                selectedCategory === "all" ||
+                product.category.name
+                    .toLowerCase()
+                    .includes(selectedCategory.toLowerCase());
+
+            return matchesQuery && matchesCategory;
+        })
+
+
+
+        setFilteredProducts(results);
+    }, [searchQuery, selectedCategory, products])
 
 
     const indexOfLastProduct = currentPage * itemsPerPage;
@@ -52,6 +80,7 @@ const Products = () => {
                 <div className="col-md-6 mt-2">
                     <div className="search-bar input-group">
                         <SearchBar />
+
                     </div>
                 </div>
             </div>
@@ -60,13 +89,14 @@ const Products = () => {
                     <SideBar />
                 </aside>
 
-                <section style={{ flex: 1, padding: '1rem', }}>
-                    Products will be displayed here....
+                <section style={{ flex: 1, }}>
+                    <ProductCard products={currentProducts} />
+                    <div className="pagination">
+                        pagination comming here....
+                    </div>
                 </section>
 
-                <div className="pagination">
-                    pagination comming here....
-                </div>
+
             </div>
         </div>
     </>;
