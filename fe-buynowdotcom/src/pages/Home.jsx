@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import Hero from '../components/common/hero/Hero'
+import Hero from '../components/hero/Hero'
 import Paginator from '../components/common/Paginator';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import ProductImage from '../components/common/utils/ProductImage';
+import ProductImage from '../components/utils/ProductImage';
 import { toast, ToastContainer } from 'react-toastify';
 import { getDistinctProductsByName } from "../components/services/ProductSerivce";
 import { useSelector } from 'react-redux';
+import ProductCard from '../components/product/ProductCard';
 // import { useSelector } from "react-redux";
 
 const Home = () => {
@@ -96,6 +97,8 @@ const Home = () => {
                         </Card>
                     )
                     )}
+
+
 
                 </div>
                 <Paginator

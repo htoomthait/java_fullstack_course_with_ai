@@ -1,0 +1,121 @@
+import React, { useState, useEffect } from 'react';
+import ProductCard from "./ProductCard";
+import SearchBar from '../search/SearchBar';
+import { getAllProducts } from '../../store/features/productSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useParams } from 'react-router-dom';
+import LoadSpinner from '../common/LoadSpinner';
+import SideBar from '../common/SideBar';
+
+
+
+
+
+const Products = () => {
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const dispatch = useDispatch();
+    const { searchQuery, selectedCategory } = useSelector(
+        (state) => state.search
+    );
+    const {
+        isLoadingGetAllProducts,
+        isLoadingGetAllBrands,
+        isLoadingGetAllDistinctProductByName,
+        products
+    } = useSelector((state) => state.product);
+    const currentPage = 1;
+    const itemsPerPage = 10;
+
+    useEffect(() => {
+        dispatch(getAllProducts());
+    }, [dispatch]);
+
+
+    const { name } = useParams();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const initialSearchQuery = queryParams.get("search") || name || "";
+
+
+
+
+
+    useEffect(() => {
+        const results = products.filter((product) => {
+            const matchesQuery = product.name
+                .toLowerCase()
+                .includes(searchQuery.toLowerCase());
+
+            const matchesCategory =
+                selectedCategory === "all" ||
+                product.category.name
+                    .toLowerCase()
+                    .includes(selectedCategory.toLowerCase());
+
+            return matchesQuery && matchesCategory;
+        })
+
+
+
+        setFilteredProducts(results);
+    }, [searchQuery, selectedCategory, products])
+
+
+    const indexOfLastProduct = currentPage * itemsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+    const currentProducts = filteredProducts.slice(
+        indexOfFirstProduct,
+        indexOfLastProduct
+    );
+
+    const isLoading =
+        isLoadingGetAllProducts ||
+        isLoadingGetAllBrands ||
+        isLoadingGetAllDistinctProductByName;
+
+
+    const mainContent = <>
+        <div>
+            <div className="d-flex justify-content-center">
+                <div className="col-md-6 mt-2">
+                    <div className="search-bar input-group">
+                        <SearchBar />
+
+                    </div>
+                </div>
+            </div>
+            <div className="d-flex ">
+                <aside className="sidebar" style={{ width: '250px', padding: '1rem' }}>
+                    <SideBar />
+                </aside>
+
+                <section style={{ flex: 1, }}>
+                    <ProductCard products={currentProducts} />
+                    <div className="pagination">
+                        pagination comming here....
+                    </div>
+                </section>
+
+
+            </div>
+        </div>
+    </>;
+
+
+
+    return (
+        <>
+
+            {isLoading && <LoadSpinner />}
+
+            {mainContent}
+
+
+
+
+        </>
+
+    )
+}
+
+export default Products
