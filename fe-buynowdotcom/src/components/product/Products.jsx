@@ -23,7 +23,8 @@ const Products = () => {
         isLoadingGetAllProducts,
         isLoadingGetAllBrands,
         isLoadingGetAllDistinctProductByName,
-        products
+        products,
+        selectedBrands
     } = useSelector((state) => state.product);
     const { itemsPerPage, totalItems, currentPage } = useSelector((state) => state.pagination)
 
@@ -55,13 +56,20 @@ const Products = () => {
                     .toLowerCase()
                     .includes(selectedCategory.toLowerCase());
 
-            return matchesQuery && matchesCategory;
+
+            const matchesBrand =
+                selectedBrands.length === 0 ||
+                selectedBrands.some((selectedBrand) =>
+                    product.brand.toLowerCase().includes(selectedBrand.toLowerCase())
+                );
+
+            return matchesQuery && matchesCategory && matchesBrand;
         })
 
 
 
         setFilteredProducts(results);
-    }, [searchQuery, selectedCategory, products])
+    }, [searchQuery, selectedCategory, products, selectedBrands])
 
     useEffect(() => {
         dispatch(setTotalItems(filteredProducts.length));
