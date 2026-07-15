@@ -5,36 +5,24 @@ import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ProductImage from '../components/utils/ProductImage';
 import { toast, ToastContainer } from 'react-toastify';
-import { getDistinctProductsByName } from "../components/services/ProductSerivce";
 import { useSelector, useDispatch } from 'react-redux';
 import ProductCard from '../components/product/ProductCard';
 import { setTotalItems } from "../store/features/paginationSlice";
+import { getDistinctProductsByName } from "../store/features/productSlice";
 
 const Home = () => {
-    const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const { searchQuery, selectedCategory } = useSelector((state) => state.search);
     const { itemsPerPage, totalItems, currentPage } = useSelector((state) => state.pagination)
+    const products = useSelector((state) => state.product.distinctProducts)
 
     const [errorMessage, setErrorMessage] = useState(null);
     const dispatch = useDispatch();
 
 
     useEffect(() => {
-        const getProducts = async () => {
-            try {
-                const response = await getDistinctProductsByName();
-                setProducts(response.data);
-
-            } catch (error) {
-                console.error("Error fetching products:", error);
-                setErrorMessage(error.message);
-                toast.error(error.message);
-            }
-        };
-
-        getProducts();
-    }, [])
+        dispatch(getDistinctProductsByName());
+    }, [dispatch]);
 
 
     useEffect(() => {

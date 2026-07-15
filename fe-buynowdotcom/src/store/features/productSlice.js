@@ -84,6 +84,22 @@ const productSlice = createSlice({
                 state.isLoadingGetAllBrands = true;
             })
 
+            .addCase(getDistinctProductsByName.fulfilled, (state, action) => {
+                state.distinctProducts = action.payload;
+                state.errorMessage = null;
+                state.isLoadingGetAllDistinctProductByName = false;
+            })
+            .addCase(getDistinctProductsByName.rejected, (state, action) => {
+                state.distinctProducts = [];
+                state.errorMessage = action.error.message;
+                state.isLoadingGetAllDistinctProductByName = false;
+            })
+            .addCase(getDistinctProductsByName.pending, (state) => {
+                state.distinctProducts = [];
+                state.errorMessage = null;
+                state.isLoadingGetAllDistinctProductByName = true;
+            })
+
     }, 
 });
 
