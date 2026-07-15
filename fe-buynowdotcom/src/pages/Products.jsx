@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import ProductCard from "./ProductCard";
-import SearchBar from '../search/SearchBar';
-import { getAllProducts } from '../../store/features/productSlice';
+import ProductCard from "../components/product/ProductCard";
+import SearchBar from '../components/search/SearchBar';
+import { getAllProducts } from '../store/features/productSlice';
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from 'react-router-dom';
-import LoadSpinner from '../common/LoadSpinner';
-import SideBar from '../common/SideBar';
-import Paginator from '../common/Paginator';
-import { setTotalItems } from "../../store/features/paginationSlice";
-import { setInitialSearchQuery } from "../../store/features/searchSlice"
+import LoadSpinner from '../components/common/LoadSpinner';
+import SideBar from '../components/common/SideBar';
+import Paginator from '../components/common/Paginator';
+import { setTotalItems } from "../store/features/paginationSlice";
+import { setInitialSearchQuery } from "../store/features/searchSlice"
 
 
 
@@ -114,14 +114,11 @@ const Products = () => {
 
                 <section style={{ flex: 1, }}>
                     <ProductCard products={currentProducts} />
-                    <div className="pagination">
-                        <Paginator />
-
-                    </div>
                 </section>
 
 
             </div>
+            <Paginator />
         </div>
     </>;
 

@@ -9,12 +9,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import ProductCard from '../components/product/ProductCard';
 import { setTotalItems } from "../store/features/paginationSlice";
 import { getDistinctProductsByName } from "../store/features/productSlice";
+import LoadSpinner from '../components/common/LoadSpinner';
 
 const Home = () => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const { searchQuery, selectedCategory } = useSelector((state) => state.search);
     const { itemsPerPage, totalItems, currentPage } = useSelector((state) => state.pagination)
-    const products = useSelector((state) => state.product.distinctProducts)
+
+    const {
+        isLoadingGetAllProducts,
+        isLoadingGetAllBrands,
+        isLoadingGetAllDistinctProductByName,
+        distinctProducts
+    } = useSelector((state) => state.product);
 
     const [errorMessage, setErrorMessage] = useState(null);
     const dispatch = useDispatch();
@@ -26,7 +33,7 @@ const Home = () => {
 
 
     useEffect(() => {
-        const results = products.filter(product => {
+        const results = distinctProducts.filter(product => {
             const matchesQuery = product.name
                 .toLowerCase()
                 .includes(searchQuery.toLowerCase());
@@ -45,7 +52,7 @@ const Home = () => {
 
 
         setFilteredProducts(results);
-    }, [products, searchQuery, selectedCategory]);
+    }, [distinctProducts, searchQuery, selectedCategory]);
 
     useEffect(() => {
         dispatch(setTotalItems(filteredProducts.length));
@@ -58,42 +65,52 @@ const Home = () => {
     const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
     const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
 
+    const isLoading =
+        isLoadingGetAllProducts ||
+        isLoadingGetAllBrands ||
+        isLoadingGetAllDistinctProductByName;
+
+
+    const mainContent = <>
+        <Hero />
+        <div className="d-flex flex-wrap justify-content-center p-5">
+            <ToastContainer />
+            {currentProducts.map((product) => (
+                <Card key={product.id} className='home-product-card'>
+                    <Link to={`products/${product.name}`} className="link">
+                        <div className="image-container">
+                            {product.images.length > 0 && (
+                                <ProductImage imageId={product.images[0].id} />
+                            )}
+                        </div>
+                    </Link>
+                    <Card.Body>
+                        <p className="produt-description"> {product.name} - {product.description}</p>
+
+                        <h4 className="price">${product.price.toFixed(2)}</h4>
+
+                        <p className="text-success"> {product.inventory} in stock</p>
+
+                        <Link to={`products/${product.name}`} className="shop-now-button"> Shop Now</Link>
+
+                    </Card.Body>
+                </Card>
+            )
+            )}
+
+
+
+        </div>
+        <Paginator />
+    </>
+
 
     return (
         <>
+            {isLoading && <LoadSpinner />}
 
-            <>
-                <Hero />
-                <div className="d-flex flex-wrap justify-content-center p-5">
-                    <ToastContainer />
-                    {currentProducts.map((product) => (
-                        <Card key={product.id} className='home-product-card'>
-                            <Link to={`products/${product.name}`} className="link">
-                                <div className="image-container">
-                                    {product.images.length > 0 && (
-                                        <ProductImage productId={product.images[0].id} />
-                                    )}
-                                </div>
-                            </Link>
-                            <Card.Body>
-                                <p className="produt-description"> {product.name} - {product.description}</p>
+            {mainContent}
 
-                                <h4 className="price">${product.price.toFixed(2)}</h4>
-
-                                <p className="text-success"> {product.inventory} in stock</p>
-
-                                <Link to={`products/${product.name}`} className="shop-now-button"> Shop Now</Link>
-
-                            </Card.Body>
-                        </Card>
-                    )
-                    )}
-
-
-
-                </div>
-                <Paginator />
-            </>
         </>
 
     )
