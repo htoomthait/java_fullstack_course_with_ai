@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import ProductImage from '../components/utils/ProductImage';
 import { getProductById } from '../store/features/productSlice';
 import ImageZoomify from '../components/common/ImageZoomify';
+import QuantityUpdater from '../components/utils/QuantityUpdater';
 
 const ProductDetails = () => {
     const { productId } = useParams();
@@ -54,7 +55,7 @@ const ProductDetails = () => {
                                 )}
                             </p>
                             <p>Quantity:</p>
-                            <p>Quantity updater coming here:.....</p>
+                            <QuantityUpdater />
                             <div className="d-flex gap-2 mt-3">
                                 <button className="add-to-cart-button">Add to cart</button>
                                 <button className="buy-now-button">Buy now</button>
