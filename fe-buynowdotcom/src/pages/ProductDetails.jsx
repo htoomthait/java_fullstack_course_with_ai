@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ProductImage from '../components/utils/ProductImage';
 import { getProductById } from '../store/features/productSlice';
+import ImageZoomify from '../components/common/ImageZoomify';
 
 const ProductDetails = () => {
     const { productId } = useParams();
@@ -24,13 +25,13 @@ const ProductDetails = () => {
 
 
                             {
-                                product.images.map((img, index) => {
-                                    return <>
-                                        <div key={index} className="image-container">
-                                            <ProductImage imageId={img.id} />
-                                        </div>
-                                    </>
-                                })
+                                product.images.map((img, index) => (
+
+                                    <div key={index} className="image-container">
+                                        <ImageZoomify imageId={img.id} />
+                                    </div>
+
+                                ))
                             }
 
                         </div>
