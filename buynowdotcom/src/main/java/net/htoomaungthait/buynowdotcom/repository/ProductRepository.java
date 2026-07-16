@@ -42,4 +42,15 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     """)
     List<Product> findDistinctByName();
 
+    @Query("""
+        SELECT p
+        FROM Product p
+        WHERE p.id IN (
+            SELECT MIN(p2.id)
+            FROM Product p2
+            GROUP BY p2.brand
+        )
+    """)
+    List<Product> findProductDistinctByBrandName();
+
 }

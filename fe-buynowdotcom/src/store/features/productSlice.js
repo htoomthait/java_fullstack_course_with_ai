@@ -26,11 +26,20 @@ export const getDistinctProductsByName = createAsyncThunk(
   }
 );
 
+export const getProductById = createAsyncThunk(
+    "product/getProductById",
+    async (productId) => {
+        const response = await api.get(`/products/${productId}`)
+        return response.data.data;
+    }
+);
+
 const initialState = {
     products: [],
     brands:[],
     selectedBrands: [],
     distinctProducts: [],
+    product: null,
     errorMessage: null,
     isLoadingGetAllProducts: false,
     isLoadingGetAllBrands: false,
@@ -82,6 +91,32 @@ const productSlice = createSlice({
                 state.brands = [];
                 state.errorMessage = null;
                 state.isLoadingGetAllBrands = true;
+            })
+
+            .addCase(getDistinctProductsByName.fulfilled, (state, action) => {
+                state.distinctProducts = action.payload;
+                state.errorMessage = null;
+                state.isLoadingGetAllDistinctProductByName = false;
+            })
+            .addCase(getDistinctProductsByName.rejected, (state, action) => {
+                state.distinctProducts = [];
+                state.errorMessage = action.error.message;
+                state.isLoadingGetAllDistinctProductByName = false;
+            })
+            .addCase(getDistinctProductsByName.pending, (state) => {
+                state.distinctProducts = [];
+                state.errorMessage = null;
+                state.isLoadingGetAllDistinctProductByName = true;
+            })
+            .addCase(getProductById.fulfilled, (state, action) => {
+                state.product= action.payload;
+                state.errorMessage = null;
+               
+            })
+            .addCase(getProductById.rejected, (state, action) => {
+                state.product= null;
+                state.errorMessage = action.error.message;
+               
             })
 
     }, 

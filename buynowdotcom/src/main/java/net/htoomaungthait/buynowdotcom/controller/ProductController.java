@@ -8,6 +8,7 @@ import net.htoomaungthait.buynowdotcom.common.BaseController;
 import net.htoomaungthait.buynowdotcom.common.response.ApiResponse;
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
 import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
+import net.htoomaungthait.buynowdotcom.dto.response.DistinctBrand;
 import net.htoomaungthait.buynowdotcom.dto.response.ProductDto;
 import net.htoomaungthait.buynowdotcom.service.product.IProductService;
 import org.springframework.http.HttpStatus;
@@ -262,6 +263,22 @@ public class ProductController extends BaseController {
                  getStatusMessageByCode(statusCode),
                  productDtos
          );
+     }
+
+     @GetMapping("/distinct/brands")
+     public ResponseEntity<ApiResponse<List<DistinctBrand>>> getDistinctBrandsByName(){
+
+        List<DistinctBrand> distinctBrands = iProductService.getDistinctBrands();
+        int countOfProducts = distinctBrands.size();
+        String statusCode = countOfProducts > 0 ? "PROD_005" : "PROD_006";
+
+        return makeResponse(
+                HttpStatus.OK.value(),
+                statusCode,
+                "success search",
+                getStatusMessageByCode(statusCode),
+                distinctBrands
+        );
      }
 
 

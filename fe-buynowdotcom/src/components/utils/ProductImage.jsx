@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 const ProductImage = ({
-    productId,
+    imageId,
 }) => {
     const [productImage, setProductImage] = useState(null);
 
@@ -12,7 +12,7 @@ const ProductImage = ({
 
             try {
                 const response = await fetch(
-                    `http://localhost:8080/api/v1/images/download/${productId}`
+                    `http://localhost:8080/api/v1/images/download/${imageId}`
                 );
                 const blob = await response.blob();
                 const reader = new FileReader();
@@ -27,11 +27,11 @@ const ProductImage = ({
 
 
 
-        if (productId) {
+        if (imageId) {
             fetchProductImage();
         }
 
-    }, [productId]);
+    }, [imageId]);
 
     if (!productImage) return null;
 

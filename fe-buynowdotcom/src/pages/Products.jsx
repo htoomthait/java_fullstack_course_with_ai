@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import ProductCard from "./ProductCard";
-import SearchBar from '../search/SearchBar';
-import { getAllProducts } from '../../store/features/productSlice';
+import ProductCard from "../components/product/ProductCard";
+import SearchBar from '../components/search/SearchBar';
+import { getAllProducts } from '../store/features/productSlice';
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from 'react-router-dom';
-import LoadSpinner from '../common/LoadSpinner';
-import SideBar from '../common/SideBar';
+import LoadSpinner from '../components/common/LoadSpinner';
+import SideBar from '../components/common/SideBar';
+import Paginator from '../components/common/Paginator';
+import { setTotalItems } from "../store/features/paginationSlice";
+import { setInitialSearchQuery } from "../store/features/searchSlice"
 
 
 
@@ -21,10 +24,12 @@ const Products = () => {
         isLoadingGetAllProducts,
         isLoadingGetAllBrands,
         isLoadingGetAllDistinctProductByName,
-        products
+        products,
+        selectedBrands
     } = useSelector((state) => state.product);
-    const currentPage = 1;
-    const itemsPerPage = 10;
+    const { itemsPerPage, totalItems, currentPage } = useSelector((state) => state.pagination)
+
+
 
     useEffect(() => {
         dispatch(getAllProducts());
@@ -35,6 +40,11 @@ const Products = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const initialSearchQuery = queryParams.get("search") || name || "";
+
+
+    useEffect(() => {
+        dispatch(setInitialSearchQuery(initialSearchQuery));
+    }, [initialSearchQuery, dispatch]);
 
 
 
@@ -52,13 +62,25 @@ const Products = () => {
                     .toLowerCase()
                     .includes(selectedCategory.toLowerCase());
 
-            return matchesQuery && matchesCategory;
+
+            const matchesBrand =
+                selectedBrands.length === 0 ||
+                selectedBrands.some((selectedBrand) =>
+                    product.brand.toLowerCase().includes(selectedBrand.toLowerCase())
+                );
+
+            return matchesQuery && matchesCategory && matchesBrand;
         })
 
 
 
         setFilteredProducts(results);
-    }, [searchQuery, selectedCategory, products])
+    }, [searchQuery, selectedCategory, products, selectedBrands])
+
+    useEffect(() => {
+        dispatch(setTotalItems(filteredProducts.length));
+    }, [filteredProducts, dispatch]);
+
 
 
     const indexOfLastProduct = currentPage * itemsPerPage;
@@ -67,6 +89,7 @@ const Products = () => {
         indexOfFirstProduct,
         indexOfLastProduct
     );
+
 
     const isLoading =
         isLoadingGetAllProducts ||
@@ -91,13 +114,11 @@ const Products = () => {
 
                 <section style={{ flex: 1, }}>
                     <ProductCard products={currentProducts} />
-                    <div className="pagination">
-                        pagination comming here....
-                    </div>
                 </section>
 
 
             </div>
+            <Paginator />
         </div>
     </>;
 

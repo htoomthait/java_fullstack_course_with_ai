@@ -2,6 +2,7 @@ package net.htoomaungthait.buynowdotcom.service.product;
 
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
 import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
+import net.htoomaungthait.buynowdotcom.dto.response.DistinctBrand;
 import net.htoomaungthait.buynowdotcom.dto.response.ProductDto;
 import net.htoomaungthait.buynowdotcom.model.Product;
 
@@ -36,5 +37,7 @@ public interface IProductService {
     List<ProductDto> searchProductsByName(String name);
 
     List<ProductDto> searchProductsByNameAndBrand(String name, String brand);
+
+    List<DistinctBrand>  getDistinctBrands();
 
 }

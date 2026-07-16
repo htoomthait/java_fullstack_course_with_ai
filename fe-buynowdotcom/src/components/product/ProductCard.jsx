@@ -14,12 +14,12 @@ const ProductCard = ({ products }) => {
     return (
         <main className="row m-2">
             {products.map((product) => (
-                <div className='col-12 col-sm-6 col-md-4 col-lg-3' key={product.id}>
+                <div className='col-12 col-sm-6 col-md-4 col-lg-2' key={product.id}>
                     <Card className='mb-2 mt-2' style={{ height: '475px', maxHeight: '480px' }}>
                         <Link to={`/product/${product.id}/details`} className='link'>
                             <div className='image-container'>
                                 {product.images.length > 0 && (
-                                    <ProductImage productId={product.images[0].id} />
+                                    <ProductImage imageId={product.images[0].id} />
                                 )}
                             </div>
                         </Link>

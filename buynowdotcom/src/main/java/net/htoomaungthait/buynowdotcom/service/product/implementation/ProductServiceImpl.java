@@ -7,6 +7,7 @@ import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityExistsExcep
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
 import net.htoomaungthait.buynowdotcom.dto.request.AddProductRequest;
 import net.htoomaungthait.buynowdotcom.dto.request.UpdateProductRequest;
+import net.htoomaungthait.buynowdotcom.dto.response.DistinctBrand;
 import net.htoomaungthait.buynowdotcom.dto.response.ProductDto;
 import net.htoomaungthait.buynowdotcom.model.*;
 import net.htoomaungthait.buynowdotcom.repository.*;
@@ -193,6 +194,16 @@ public class ProductServiceImpl implements IProductService {
         return products
                 .stream()
                 .map(ProductDto::fromEntity)
+                .toList();
+    }
+
+    @Override
+    public List<DistinctBrand> getDistinctBrands() {
+        List<Product> products =  productRepository.findProductDistinctByBrandName();
+
+        return products
+                .stream()
+                .map(DistinctBrand::from)
                 .toList();
     }
 

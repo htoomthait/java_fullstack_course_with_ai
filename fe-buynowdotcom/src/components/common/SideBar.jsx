@@ -15,7 +15,6 @@ const SideBar = () => {
 
 
     const handleBrandChange = (brand, isChecked) => {
-        console.log("Brand to change", brand, "Value to update", isChecked);
         dispatch(filterByBrands({ brand, isChecked }));
     }
 
