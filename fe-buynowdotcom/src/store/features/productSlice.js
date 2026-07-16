@@ -34,6 +34,14 @@ export const getProductById = createAsyncThunk(
     }
 );
 
+export const getProductsByCategory = createAsyncThunk(
+    "product/getProductsByCategory",
+    async (categoryId) => {
+        const response = await api.get(`/products/category/${categoryId}`)
+        return response.data.data;
+    }
+);
+
 const initialState = {
     products: [],
     brands:[],
@@ -41,6 +49,7 @@ const initialState = {
     distinctProducts: [],
     product: null,
     quantity: 1,
+    productsByCategory:[],
     errorMessage: null,
     isLoadingGetAllProducts: false,
     isLoadingGetAllBrands: false,
@@ -126,6 +135,19 @@ const productSlice = createSlice({
                 state.product= null;
                 state.errorMessage = action.error.message;
                
+            })
+
+           .addCase(getProductsByCategory.fulfilled, (state, action) => {
+                state.products = action.payload;
+                state.productsByCategory = action.payload;
+                state.errorMessage = null;
+                state.isLoadingGetAllProducts = false;
+            })
+            .addCase(getProductsByCategory.rejected, (state, action) => {
+                state.products = [];
+                state.productsByCategory = [];
+                state.errorMessage = null;
+                state.isLoadingGetAllProducts = false;
             })
 
     }, 

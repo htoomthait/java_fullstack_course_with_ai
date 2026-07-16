@@ -21,6 +21,10 @@ function App() {
           path='/product/:productId/details'
           element={<ProductDetails />}
         />
+        <Route
+          path="/product/category/:categoryId/products/"
+          element={<Products />}
+        />
         <Route path='*' element={<div>404 Not Found</div>} />
       </Route>
     )
