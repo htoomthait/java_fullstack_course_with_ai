@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllCategories } from '../../store/features/categorySlice';
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchQuery, setSelectedCategory, clearFilters } from '../../store/features/searchSlice';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const SearchBar = ({
     value,
@@ -10,10 +11,12 @@ const SearchBar = ({
 }) => {
     const [category, setCategory] = useState([]);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { categories = [] } = useSelector((state) => state.category);
     const { searchQuery, selectedCategory } = useSelector(
         (state) => state.search
     );
+    const { categoryId } = useParams();
 
     const handleSearchQuery = (e) => {
         dispatch(setSearchQuery(e.target.value));
@@ -25,8 +28,22 @@ const SearchBar = ({
 
     const handleClearFilters = (e) => {
         dispatch(clearFilters());
+        navigate("/products");
     }
 
+    useEffect(() => {
+        if (categoryId && categories.length > 0) {
+            const seletedCategory = categories.find(
+                (category) => category.id === parseInt(categoryId, 10)
+            );
+
+            if (seletedCategory) {
+                dispatch(setSelectedCategory(seletedCategory.name));
+            } else {
+                dispatch(setSelectedCategory("all"));
+            }
+        }
+    }, [categoryId, categories, dispatch]);
 
 
 

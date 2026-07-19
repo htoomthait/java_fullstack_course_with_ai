@@ -31,6 +31,7 @@ const Products = () => {
 
     const { name } = useParams();
     const { categoryId } = useParams();
+
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const initialSearchQuery = queryParams.get("search") || name || "";
@@ -62,22 +63,28 @@ const Products = () => {
 
 
     useEffect(() => {
+
+        const safeSearchQuery = (searchQuery || "").toLowerCase();
+        const safeSelectedCategory = (selectedCategory || "all").toLowerCase();
+        const safeSelectedBrands = selectedBrands || [];
+
+
         const results = products.filter((product) => {
-            const matchesQuery = product.name
+            const matchesQuery = (product?.name || "")
                 .toLowerCase()
-                .includes(searchQuery.toLowerCase());
+                .includes(safeSearchQuery);
 
             const matchesCategory =
                 selectedCategory === "all" ||
-                product.category.name
+                (product?.category?.name || "")
                     .toLowerCase()
-                    .includes(selectedCategory.toLowerCase());
+                    .includes(safeSelectedCategory);
 
 
             const matchesBrand =
                 selectedBrands.length === 0 ||
                 selectedBrands.some((selectedBrand) =>
-                    product.brand.toLowerCase().includes(selectedBrand.toLowerCase())
+                    (product?.brand || "").toLowerCase().includes(safeSelectedBrands)
                 );
 
             return matchesQuery && matchesCategory && matchesBrand;
