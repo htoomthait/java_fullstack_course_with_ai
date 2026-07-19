@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom';
 import ProductImage from '../components/utils/ProductImage';
 import { getProductById } from '../store/features/productSlice';
 import ImageZoomify from '../components/common/ImageZoomify';
+import QuantityUpdater from '../components/utils/QuantityUpdater';
+import { FaCartPlus } from "react-icons/fa";
+import { capitalizeRegex } from '../components/utils/StringFunc';
 
 const ProductDetails = () => {
     const { productId } = useParams();
@@ -39,7 +42,7 @@ const ProductDetails = () => {
                             <h1 className='product-name'>{product.name}</h1>
                             <h4 className='price'>${product.price}</h4>
                             <p className='product-description'>{product.description}</p>
-                            <p className='product-name'>Brand: {product.brand}</p>
+                            <p className='product-name'>Brand: {capitalizeRegex(product.brand)}</p>
                             <p className='product-name'>
                                 Rating: <span className='rating'>some stars</span>
                             </p>
@@ -54,9 +57,11 @@ const ProductDetails = () => {
                                 )}
                             </p>
                             <p>Quantity:</p>
-                            <p>Quantity updater coming here:.....</p>
+                            <QuantityUpdater />
                             <div className="d-flex gap-2 mt-3">
-                                <button className="add-to-cart-button">Add to cart</button>
+                                <button className="add-to-cart-button">
+                                    <FaCartPlus /> Add to cart
+                                </button>
                                 <button className="buy-now-button">Buy now</button>
                             </div>
                         </div>
@@ -70,3 +75,4 @@ const ProductDetails = () => {
 }
 
 export default ProductDetails
+

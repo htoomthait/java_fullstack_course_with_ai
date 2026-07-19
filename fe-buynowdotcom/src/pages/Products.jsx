@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import ProductCard from "../components/product/ProductCard";
 import SearchBar from '../components/search/SearchBar';
-import { getAllProducts } from '../store/features/productSlice';
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from 'react-router-dom';
 import LoadSpinner from '../components/common/LoadSpinner';
 import SideBar from '../components/common/SideBar';
 import Paginator from '../components/common/Paginator';
 import { setTotalItems } from "../store/features/paginationSlice";
-import { setInitialSearchQuery } from "../store/features/searchSlice"
-
+import { setInitialSearchQuery } from "../store/features/searchSlice";
+import { getProductsByCategory, getAllProducts } from "../store/features/productSlice";
 
 
 
@@ -25,21 +24,34 @@ const Products = () => {
         isLoadingGetAllBrands,
         isLoadingGetAllDistinctProductByName,
         products,
+        productsByCategory,
         selectedBrands
     } = useSelector((state) => state.product);
     const { itemsPerPage, totalItems, currentPage } = useSelector((state) => state.pagination)
 
-
-
-    useEffect(() => {
-        dispatch(getAllProducts());
-    }, [dispatch]);
-
-
     const { name } = useParams();
+    const { categoryId } = useParams();
+
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const initialSearchQuery = queryParams.get("search") || name || "";
+
+
+
+
+    useEffect(() => {
+        if (categoryId) {
+            dispatch(getProductsByCategory(categoryId))
+        } else {
+            dispatch(getAllProducts());
+        }
+
+
+    }, [dispatch, categoryId]);
+
+
+
+
 
 
     useEffect(() => {
@@ -51,22 +63,28 @@ const Products = () => {
 
 
     useEffect(() => {
+
+        const safeSearchQuery = (searchQuery || "").toLowerCase();
+        const safeSelectedCategory = (selectedCategory || "all").toLowerCase();
+        const safeSelectedBrands = selectedBrands || [];
+
+
         const results = products.filter((product) => {
-            const matchesQuery = product.name
+            const matchesQuery = (product?.name || "")
                 .toLowerCase()
-                .includes(searchQuery.toLowerCase());
+                .includes(safeSearchQuery);
 
             const matchesCategory =
                 selectedCategory === "all" ||
-                product.category.name
+                (product?.category?.name || "")
                     .toLowerCase()
-                    .includes(selectedCategory.toLowerCase());
+                    .includes(safeSelectedCategory);
 
 
             const matchesBrand =
                 selectedBrands.length === 0 ||
                 selectedBrands.some((selectedBrand) =>
-                    product.brand.toLowerCase().includes(selectedBrand.toLowerCase())
+                    (product?.brand || "").toLowerCase().includes(safeSelectedBrands)
                 );
 
             return matchesQuery && matchesCategory && matchesBrand;
