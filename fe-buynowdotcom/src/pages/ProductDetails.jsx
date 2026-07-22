@@ -7,15 +7,21 @@ import ImageZoomify from '../components/common/ImageZoomify';
 import QuantityUpdater from '../components/utils/QuantityUpdater';
 import { FaCartPlus } from "react-icons/fa";
 import { capitalizeRegex } from '../components/utils/StringFunc';
+import { addToCart } from '../store/features/cartSlice';
 
 const ProductDetails = () => {
     const { productId } = useParams();
     const dispatch = useDispatch();
-    const product = useSelector((state) => state.product.product)
+    const { product, quantity } = useSelector((state) => state.product)
 
     useEffect(() => {
         dispatch(getProductById(productId));
     }, [dispatch, productId])
+
+
+    const handleAddToCart = (quantity) => {
+        dispatch(addToCart({ productId, quantity }));
+    }
 
 
     return (
@@ -59,7 +65,7 @@ const ProductDetails = () => {
                             <p>Quantity:</p>
                             <QuantityUpdater />
                             <div className="d-flex gap-2 mt-3">
-                                <button className="add-to-cart-button">
+                                <button className="add-to-cart-button" onClick={() => handleAddToCart(product.quantity)}>
                                     <FaCartPlus /> Add to cart
                                 </button>
                                 <button className="buy-now-button">Buy now</button>
