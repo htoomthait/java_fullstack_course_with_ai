@@ -3,7 +3,10 @@ package net.htoomaungthait.buynowdotcom.service.cart.implementation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.htoomaungthait.buynowdotcom.common.exception.custom.EntityNotFoundException;
+import net.htoomaungthait.buynowdotcom.dto.response.CartDetailDto;
+import net.htoomaungthait.buynowdotcom.dto.response.CartItemDto;
 import net.htoomaungthait.buynowdotcom.model.Cart;
+import net.htoomaungthait.buynowdotcom.model.CartItem;
 import net.htoomaungthait.buynowdotcom.model.User;
 import net.htoomaungthait.buynowdotcom.repository.CartItemRepository;
 import net.htoomaungthait.buynowdotcom.repository.CartRepository;
@@ -12,6 +15,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,9 +46,22 @@ public class CartService implements ICartService {
     }
 
     @Override
+    public CartDetailDto getCartDetailByUserId(Long userId) {
+        Cart foundCart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Cart with user ID: "+ userId + " is not found.", "CART_003"));
+        List<CartItem> cartItems = cartItemRepository.findByCartId(foundCart.getId());
+
+        List<CartItemDto> cartItemDtos = cartItems.stream()
+                .map(CartItemDto::of).toList();
+
+        return CartDetailDto.of(foundCart, cartItemDtos);
+    }
+
+    @Override
     public Cart getCartByUserId(Long userId) {
         return cartRepository.findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Cart with user ID: "+ userId + " is not found.", "CART_003"));
+
     }
 
     @Modifying

@@ -7,20 +7,42 @@ import ImageZoomify from '../components/common/ImageZoomify';
 import QuantityUpdater from '../components/utils/QuantityUpdater';
 import { FaCartPlus } from "react-icons/fa";
 import { capitalizeRegex } from '../components/utils/StringFunc';
+import { addToCart } from '../store/features/cartSlice';
+import { toast, ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductDetails = () => {
     const { productId } = useParams();
     const dispatch = useDispatch();
-    const product = useSelector((state) => state.product.product)
+    const { product, quantity } = useSelector((state) => state.product)
+    const { successMessage, errorMessage } = useSelector((state) => state.cart)
 
     useEffect(() => {
         dispatch(getProductById(productId));
     }, [dispatch, productId])
 
 
+    const handleAddToCart = () => {
+
+        try {
+            dispatch(addToCart({ productId, quantity }));
+            toast.success(successMessage)
+        } catch (error) {
+            if (errormessage) {
+                toast.error(errorMessage)
+            }
+            else {
+                toast.error(error.message);
+            }
+
+        }
+    }
+
+
     return (
         <>
             <div className="container">
+                <ToastContainer />
                 {product ? (
                     <div className='row product-details'>
                         <div className="col-md-2">
@@ -59,7 +81,7 @@ const ProductDetails = () => {
                             <p>Quantity:</p>
                             <QuantityUpdater />
                             <div className="d-flex gap-2 mt-3">
-                                <button className="add-to-cart-button">
+                                <button className="add-to-cart-button" onClick={() => handleAddToCart()}>
                                     <FaCartPlus /> Add to cart
                                 </button>
                                 <button className="buy-now-button">Buy now</button>
