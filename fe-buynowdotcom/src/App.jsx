@@ -5,6 +5,7 @@ import RootLayout from './components/layout/RootLayout'
 import Home from './pages/Home'
 import Products from './pages/Products'
 import ProductDetails from './pages/ProductDetails'
+import Cart from './components/cart/Cart'
 
 function App() {
 
@@ -24,6 +25,10 @@ function App() {
         <Route
           path="/product/category/:categoryId/products/"
           element={<Products />}
+        />
+        <Route
+          path="/user/:userId/my-cart"
+          element={<Cart />}
         />
         <Route path='*' element={<div>404 Not Found</div>} />
       </Route>

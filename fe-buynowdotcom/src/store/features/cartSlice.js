@@ -12,12 +12,18 @@ export const addToCart = createAsyncThunk(
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log("The response from addToCart API 1:", response.data);
-        console.log("The response from addToCart API 2:", response.data.data);
         return response.data;
     }
 
 );
+
+export const getUserCart =  createAsyncThunk(
+    'cart/getCartItemByUserId', async(userId) => {
+        const response = await api.get(`/carts/user/${userId}/cart`);
+
+        return response.data.data;
+    }
+)
 
 const initialState = {
     items: [],
@@ -36,21 +42,27 @@ const cartSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(addToCart.fulfilled, (state, action) => {
-                state.items = action.payload.items;
-                state.cartId = action.payload.cartId;
-                state.totalAmount = action.payload.totalAmount;
-                state.errorMessage = null;
                 state.isLoading = false;
                 state.successMessage = action.payload.message || "Item added to cart successfully";
             })
             .addCase(addToCart.rejected, (state, action) => {
                 state.errorMessage = action.error.message;
-                state.successMessage = null;
+                state.isLoading = false;
             })
             .addCase(addToCart.pending, (state) => {
                 state.errorMessage = null;
                 state.successMessage = null;
                 state.isLoading = true;
+            })
+            .addCase(getUserCart.fulfilled, (state, action) => {
+                state.items = action.payload.cartItems;
+                state.cartId = action.payload.id;
+                state.totalAmount = action.payload.total;
+                state.errorMessage = null;
+                state.isLoading = false;
+            })
+            .addCase(getUserCart.rejected, (state, action) => {
+                state.errorMessage = action.error.message;
             })
     }, 
 });
