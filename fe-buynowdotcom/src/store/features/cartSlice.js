@@ -25,6 +25,18 @@ export const getUserCart =  createAsyncThunk(
     }
 )
 
+export const updateQuantity = createAsyncThunk(
+    'cart/updateQuantity', async ({cartId, itemId, newQuantity}) =>{
+        console.log("Quantity to update", {cartId, itemId, newQuantity});
+        const response = await api.patch(`cart-items/cart/${cartId}/item/${itemId}/update?quantity=${newQuantity}`);
+
+        return {itemId, newQuantity};
+    }
+
+    
+
+)
+
 const initialState = {
     items: [],
     totalAmount:0,
@@ -63,6 +75,19 @@ const cartSlice = createSlice({
             })
             .addCase(getUserCart.rejected, (state, action) => {
                 state.errorMessage = action.error.message;
+            })
+            .addCase(updateQuantity.fulfilled, (state, action) => {
+                const { itemId, newQuantity } = action.payload;
+
+                const item = state.items.find((item) => item.product.id === itemId);
+                if (item) {
+                    item.quantity = newQuantity;
+                    item.totalPrice = item.product.price * newQuantity;
+                }
+                state.totalAmount = state.items.reduce(
+                (   total, item) => total + item.totalPrice,
+                    0
+                );
             })
     }, 
 });

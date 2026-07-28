@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom';
-import { getUserCart } from "../../store/features/cartSlice"
+import { getUserCart, updateQuantity } from "../../store/features/cartSlice"
 import { Card } from 'react-bootstrap';
 import ProductImage from '../utils/ProductImage';
 import QuantityUpdater from '../utils/QuantityUpdater';
@@ -17,7 +17,28 @@ const Cart = () => {
         dispatch(getUserCart(userId));
     }, [dispatch, userId])
 
-    console.log("The user cart from cart component: ", cart)
+
+    useEffect(() => {
+        console.log("The user cart from cart component: ", cart)
+    }, [])
+
+    const handleDecreaseQuantity = (itemId) => {
+        const item = cart.items.find((item) => item.product.id === itemId);
+        if (item && item.quantity > 1) {
+            dispatch(updateQuantity({
+                cartId, itemId, newQuantity: item.quantity - 1
+            }));
+        }
+    }
+
+    const handleIncreaseQuantity = (itemId) => {
+        const item = cart.items.find((item) => item.product.id === itemId);
+        if (item && cartId) {
+            dispatch(updateQuantity({
+                cartId, itemId, newQuantity: item.quantity + 1
+            }));
+        }
+    }
 
     return (
         <div className="container mt-5 mb-5 p-5">
