@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import ProductImage from '../components/utils/ProductImage';
-import { getProductById } from '../store/features/productSlice';
+import { getProductById, setQuantity } from '../store/features/productSlice';
 import ImageZoomify from '../components/common/ImageZoomify';
 import QuantityUpdater from '../components/utils/QuantityUpdater';
 import { FaCartPlus } from "react-icons/fa";
@@ -22,21 +22,33 @@ const ProductDetails = () => {
     }, [dispatch, productId])
 
 
-    const handleAddToCart = () => {
-
+    const handleAddToCart = async () => {
         try {
-            dispatch(addToCart({ productId, quantity }));
-            toast.success(successMessage)
-        } catch (error) {
-            if (errormessage) {
-                toast.error(errorMessage)
-            }
-            else {
-                toast.error(error.message);
-            }
+            const result = await dispatch(
+                addToCart({ productId, quantity })
+            ).unwrap();
 
+            toast.success(
+                result.message || "Item added to cart successfully"
+            );
+        } catch (error) {
+            toast.error(error?.message || error);
         }
-    }
+    };
+
+    const handleIncreaseQuantity = () => {
+        dispatch(setQuantity(quantity + 1));
+    };
+
+    const handleDecreaseQuantity = () => {
+        if (quantity > 1) {
+            dispatch(setQuantity(quantity - 1));
+        }
+
+    };
+
+
+
 
 
     return (
@@ -79,7 +91,11 @@ const ProductDetails = () => {
                                 )}
                             </p>
                             <p>Quantity:</p>
-                            <QuantityUpdater />
+                            <QuantityUpdater
+                                quantity={quantity}
+                                onIncrease={handleIncreaseQuantity}
+                                onDecrease={handleDecreaseQuantity}
+                            />
                             <div className="d-flex gap-2 mt-3">
                                 <button className="add-to-cart-button" onClick={() => handleAddToCart()}>
                                     <FaCartPlus /> Add to cart

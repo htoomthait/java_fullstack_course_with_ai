@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { decreaseQuantity, increaseQuantity } from "../../store/features/productSlice"
 
 
-const QuantityUpdater = () => {
-    const dispatch = useDispatch();
-    const quantity = useSelector((state) => state.product.quantity)
+const QuantityUpdater = ({ quantity, onDecrease, onIncrease }) => {
+    //const dispatch = useDispatch();
+    // const quantity = useSelector((state) => state.product.quantity)
 
 
     return (
@@ -14,7 +14,7 @@ const QuantityUpdater = () => {
             <section style={{ width: "150px" }}>
                 <div className="input-group">
                     <button
-                        onClick={() => { dispatch(decreaseQuantity()) }}
+                        onClick={onDecrease}
                         className="btn btn-outline-secondary">
                         <BsDash />
                     </button>
@@ -28,7 +28,7 @@ const QuantityUpdater = () => {
                     />
 
                     <button
-                        onClick={() => { dispatch(increaseQuantity()) }}
+                        onClick={onIncrease}
                         className="btn btn-outline-secondary">
                         <BsPlus />
                     </button>
