@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom';
-import { getUserCart, updateQuantity } from "../../store/features/cartSlice"
-import { Card } from 'react-bootstrap';
+import { getUserCart, updateQuantity, removeItemFromCart } from "../../store/features/cartSlice"
+import { Button, Card } from 'react-bootstrap';
 import ProductImage from '../utils/ProductImage';
 import QuantityUpdater from '../utils/QuantityUpdater';
+import { MdOutlineRemoveShoppingCart } from "react-icons/md";
+import { toast, ToastContainer } from 'react-toastify';
+import LoadSpinner from '../common/LoadSpinner';
 
 const Cart = () => {
     const { userId } = useParams();
@@ -20,7 +23,7 @@ const Cart = () => {
 
     useEffect(() => {
         console.log("The user cart from cart component: ", cart)
-    }, [])
+    }, [cart])
 
     const handleDecreaseQuantity = (itemId) => {
         const item = cart.items.find((item) => item.product.id === itemId);
@@ -40,8 +43,23 @@ const Cart = () => {
         }
     }
 
+    const handleRemoveItem = async (itemId) => {
+        try {
+            await dispatch(removeItemFromCart({ cartId, itemId })).unwrap();
+            console.info(`Item removed! cartId: ${cartId}, itemId: ${itemId}`);
+            toast.success("Item removed from cart");
+        } catch (error) {
+            toast.error(error?.message || error);
+        }
+    };
+
+    if (isLoading) {
+        return <LoadSpinner />
+    }
+
     return (
         <div className="container mt-5 mb-5 p-5">
+            <ToastContainer />
             <div>
                 <div className="d-flex justify-content-between mb-4 fw-bold">
                     <div className="text-center">Image</div>
@@ -83,11 +101,14 @@ const Cart = () => {
                             </div>
                             <div className='text-center'>${item.totalPrice.toFixed(2)}</div>
                             <div>
-                                <Link
-                                    to={"#"}
+                                <Button
+                                    className="btn btn-danger"
                                     onClick={() => handleRemoveItem(item.product.id)}>
-                                    <span className='remove-item'>Remove</span>
-                                </Link>
+                                    <span className='remove-item'>
+                                        <MdOutlineRemoveShoppingCart />
+
+                                    </span>
+                                </Button>
                             </div>
                         </Card.Body>
                     </Card>

@@ -22,21 +22,19 @@ const ProductDetails = () => {
     }, [dispatch, productId])
 
 
-    const handleAddToCart = () => {
-
+    const handleAddToCart = async () => {
         try {
-            dispatch(addToCart({ productId, quantity }));
-            toast.success(successMessage)
-        } catch (error) {
-            if (errormessage) {
-                toast.error(errorMessage)
-            }
-            else {
-                toast.error(error.message);
-            }
+            const result = await dispatch(
+                addToCart({ productId, quantity })
+            ).unwrap();
 
+            toast.success(
+                result.message || "Item added to cart successfully"
+            );
+        } catch (error) {
+            toast.error(error?.message || error);
         }
-    }
+    };
 
     const handleIncreaseQuantity = () => {
         dispatch(setQuantity(quantity + 1));
@@ -48,6 +46,8 @@ const ProductDetails = () => {
         }
 
     };
+
+
 
 
 
