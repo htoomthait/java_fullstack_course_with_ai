@@ -4,10 +4,11 @@ import {api} from '../../components/services/api';
 
 
 export const placeOrder = createAsyncThunk(
-    "orders/placeOrder", async (userId) => {
+    "orders/placeOrder", async (userId, {rejectWithValue}) => {
 
         try {
-            const response = await api.post(`orders/user/order?userId=${userId}`)
+            const response = await api.post(`orders/user/order?userId=${userId}`);
+
             console.log("The reponse from the order slice: ",response.data)
             console.log("The reponse from the order slice: ",response.data.data)
             return response.data;
@@ -34,12 +35,12 @@ const orderSlice = createSlice({
         builder
             .addCase(placeOrder.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.successMessage = action.playload.message;
+                state.successMessage = action.payload.message;
                 state.orders.push(action.payload.data);
             })
             .addCase(placeOrder.rejected, (state, action) => {
                 state.isLoading = false
-                state.errorMessage = action.payload || action.error.message;
+                // state.errorMessage = action.payload || action.error.message;
             })
             .addCase(placeOrder.pending, (state, action) => {
                 state.isLoading = true;

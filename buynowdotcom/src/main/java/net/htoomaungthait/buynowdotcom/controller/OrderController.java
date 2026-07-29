@@ -11,6 +11,7 @@ import net.htoomaungthait.buynowdotcom.service.order.IOrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -23,9 +24,12 @@ public class OrderController extends BaseController {
 
     @PostMapping("/user/order")
     public ResponseEntity<ApiResponse<OrderRespDto>> placeOrder(@RequestParam @Valid @Min(value = 1, message = "Id must be greater than or equal to 1")  Long userId){
+        
 
         Order order = orderService.placeOrder(userId);
         String statusCode = "ORD_001";
+
+
 
         return makeResponse(
                 HttpStatus.CREATED.value(),

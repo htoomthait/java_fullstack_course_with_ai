@@ -8,6 +8,7 @@ import QuantityUpdater from '../utils/QuantityUpdater';
 import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import { toast, ToastContainer } from 'react-toastify';
 import LoadSpinner from '../common/LoadSpinner';
+import { placeOrder } from '../../store/features/orderSlice';
 
 const Cart = () => {
     const { userId } = useParams();
@@ -15,6 +16,8 @@ const Cart = () => {
     const cart = useSelector((state) => state.cart)
     const cartId = useSelector((state) => state.cart.cartId)
     const isLoading = useSelector((state) => state.cart.isLoading)
+
+    const order = useSelector((state) => state.order)
 
     useEffect(() => {
         dispatch(getUserCart(userId));
@@ -52,6 +55,28 @@ const Cart = () => {
             toast.error(error?.message || error);
         }
     };
+
+    const handlePlaceOrder = async () => {
+        if (cart.items.length === 0) {
+            toast.error("Your cart is empty.");
+            return;
+        }
+        try {
+            const result = await dispatch(placeOrder(userId)).unwrap();
+            console.log("From success order place result", result);
+            toast.success(result.message);
+            dispatch(getUserCart(userId));
+
+        } catch (error) {
+            console.log("Place order error:", error);
+
+            toast.error(
+                typeof error === "string"
+                    ? error
+                    : error?.message || "Failed to place order"
+            );
+        }
+    }
 
     if (isLoading) {
         return <LoadSpinner />
@@ -121,7 +146,7 @@ const Cart = () => {
                     </h4>
                     <div className='ms-auto checkout-links'>
                         <Link to={"/products"}>Continue Shopping</Link>
-                        <Link to={"#"}>Proceed to Checkout</Link>
+                        <Link to={"#"} onClick={handlePlaceOrder}>Proceed to Checkout</Link>
                     </div>
                 </div>
             </div>
