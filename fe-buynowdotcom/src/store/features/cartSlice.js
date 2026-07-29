@@ -97,6 +97,7 @@ const cartSlice = createSlice({
             })
             .addCase(getUserCart.rejected, (state, action) => {
                 state.errorMessage = action.error.message;
+                state.isLoading = false;
             })
             .addCase(updateQuantity.fulfilled, (state, action) => {
                 const { itemId, newQuantity } = action.payload;
