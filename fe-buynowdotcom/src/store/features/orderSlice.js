@@ -9,8 +9,6 @@ export const placeOrder = createAsyncThunk(
         try {
             const response = await api.post(`orders/user/order?userId=${userId}`);
 
-            console.log("The reponse from the order slice: ",response.data)
-            console.log("The reponse from the order slice: ",response.data.data)
             return response.data;
         } catch (error) {
            return rejectWithValue(
@@ -18,6 +16,23 @@ export const placeOrder = createAsyncThunk(
             );
         }
     }
+)
+
+export const fetchUserOrder = createAsyncThunk(
+    "order/fetchUserOrcer", async (userId, {rejectWithValue}) => {
+
+        try {
+            const response = await api.get(`orders/user/${userId}/order`);
+            console.log("From order fetch of order slice 1: ", response.data);
+            console.log("From order fetch of order slice 2: ", response.data.data);
+
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(
+                error.response?.data?.message || "Fail to fetch orders of given user"
+            );
+        }
+    } 
 )
 
 const initialState = {
@@ -47,6 +62,20 @@ const orderSlice = createSlice({
                 state.successMessage = null;
                 state.errorMessage = null;
 
+            })
+            .addCase(fetchUserOrder.fulfilled, (state, action) => { 
+                state.orders = action.payload.data;
+                state.successMessage = action.payload.message;
+                state.errorMessage = null;
+                state.isLoading = false;
+            })
+            .addCase(fetchUserOrder.rejected, (state, action) => { 
+                 state.isLoading = false
+            })
+            .addCase(fetchUserOrder.pending, (state, action) => { 
+                state.isLoading = true;
+                state.successMessage = null;
+                state.errorMessage = null;
             })
     }
 });

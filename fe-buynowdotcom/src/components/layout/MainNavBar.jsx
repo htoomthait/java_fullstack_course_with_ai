@@ -39,7 +39,7 @@ const MainNavBar = () => {
 
                                 <NavDropdown.Divider />
 
-                                <NavDropdown.Item to={"#"} as={Link}>
+                                <NavDropdown.Item to={`/user/${userId}/my-orders`} as={Link}>
                                     My Orders
                                 </NavDropdown.Item>
 

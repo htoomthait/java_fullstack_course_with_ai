@@ -17,6 +17,8 @@ public class OrderItemRespDto {
 
     private String productName;
 
+    private String productBrand;
+
     private int quantity;
 
     private String price;
@@ -29,6 +31,7 @@ public class OrderItemRespDto {
                 .id(orderItem.getId())
                 .productId(orderItem.getProduct().getId())
                 .productName(orderItem.getProduct().getName())
+                .productBrand(orderItem.getProduct().getBrand())
                 .quantity(orderItem.getQuantity())
                 .price(orderItem.getPrice().toString())
                 .totalPrice(orderItem.getTotalPrice() == null ? null : orderItem.getTotalPrice().toString())
