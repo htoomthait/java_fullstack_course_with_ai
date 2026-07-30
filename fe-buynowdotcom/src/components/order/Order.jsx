@@ -58,7 +58,7 @@ const Order = () => {
                                     {orders.map((order, index) => (
                                         <tr key={index}>
                                             <td>{order.id}</td>
-                                            <td>{new Date(order.orderDate).toLocaleDateString}</td>
+                                            <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                                             <td>$ {order.totalAmount.toFixed(2)}</td>
                                             <td>{order.status}</td>
                                             <td>

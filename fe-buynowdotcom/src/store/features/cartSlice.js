@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'; 
 import {api} from '../../components/services/api';
 
-const token = localStorage.getItem("token") || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huam9obkBnbWFpbC5jb20iLCJyb2xlcyI6W10sImlhdCI6MTc4NTMyODI1MywiZXhwIjoxNzg1MzMxODUzfQ.0FNFj4cttNuVkEzJYiujCx_ef0tkrCLwuxFCEooBq5QMFtW6EeaUyucYjvSLifFhwqU5XPiPRvbcdkpVrSq1AA";
+const token = localStorage.getItem("token") || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huam9obkBnbWFpbC5jb20iLCJyb2xlcyI6W10sImlhdCI6MTc4NTQzMzcwMywiZXhwIjoxNzg1NDM3MzAzfQ.JoevFK8p53-DqJ95LgQu9_uKbru54WTCHzfEw3Ud_DBP97aPSk-Tl_2rnDnn26vUBd-i10F6YITB_3LM6uK58Q";
 
 
 export const addToCart = createAsyncThunk(
@@ -98,6 +98,7 @@ const cartSlice = createSlice({
             .addCase(getUserCart.rejected, (state, action) => {
                 state.errorMessage = action.error.message;
                 state.items = [];
+                state.totalAmount=0,
                 state.isLoading = false;
             })
             .addCase(updateQuantity.fulfilled, (state, action) => {

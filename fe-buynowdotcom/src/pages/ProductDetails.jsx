@@ -7,7 +7,7 @@ import ImageZoomify from '../components/common/ImageZoomify';
 import QuantityUpdater from '../components/utils/QuantityUpdater';
 import { FaCartPlus } from "react-icons/fa";
 import { capitalizeRegex } from '../components/utils/StringFunc';
-import { addToCart } from '../store/features/cartSlice';
+import { addToCart, getUserCart } from '../store/features/cartSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
@@ -28,9 +28,15 @@ const ProductDetails = () => {
                 addToCart({ productId, quantity })
             ).unwrap();
 
+
             toast.success(
                 result.message || "Item added to cart successfully"
             );
+
+            dispatch(getUserCart(result.data.cart.userId));
+            dispatch(setQuantity(1));
+
+
         } catch (error) {
             toast.error(error?.message || error);
         }

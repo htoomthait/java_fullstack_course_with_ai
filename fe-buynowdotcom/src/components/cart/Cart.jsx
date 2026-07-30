@@ -96,7 +96,7 @@ const Cart = () => {
                     <div className="text-center">Action</div>
                 </div>
                 <hr className="mb-2 mt-2" />
-                <h3 className='mb-4 cart-title'>My Shopping Cart</h3>
+                <h3 className='mb-4 cart-title'>My Shopping Cart {cart.items.length == 0 && `is Empty`} </h3>
 
                 {cart.items.map((item, index) => (
                     <Card key={index} className='mb-4'>
