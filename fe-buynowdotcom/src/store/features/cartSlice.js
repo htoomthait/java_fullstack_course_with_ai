@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'; 
 import {api} from '../../components/services/api';
 
-const token = localStorage.getItem("token") || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huam9obkBnbWFpbC5jb20iLCJyb2xlcyI6W10sImlhdCI6MTc4NTQzMzcwMywiZXhwIjoxNzg1NDM3MzAzfQ.JoevFK8p53-DqJ95LgQu9_uKbru54WTCHzfEw3Ud_DBP97aPSk-Tl_2rnDnn26vUBd-i10F6YITB_3LM6uK58Q";
+const token = localStorage.getItem("token") || "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huam9obkBnbWFpbC5jb20iLCJyb2xlcyI6W10sImlhdCI6MTc4NTQ4NzA5OSwiZXhwIjoxNzg1NDkwNjk5fQ.CbU92ovTvDIIvAlBCfdkoThSjA6IsqdVCyyAQPllvdQsXFJM-DrUoVOQw50QBXhcBNUkLOQ-p1Lo8nkNJzUGAA";
 
 
 export const addToCart = createAsyncThunk(
@@ -18,7 +18,7 @@ export const addToCart = createAsyncThunk(
           },
         }
       );
-
+      console.log("from cart slice:", response.data.data.product)
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -78,6 +78,7 @@ const cartSlice = createSlice({
             .addCase(addToCart.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.successMessage = action.payload.message || "Item added to cart successfully";
+                state.items.push(action.payload.data)
             })
             .addCase(addToCart.rejected, (state, action) => {
                 state.errorMessage = action.error.message;

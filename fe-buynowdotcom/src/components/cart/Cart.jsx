@@ -23,10 +23,10 @@ const Cart = () => {
         dispatch(getUserCart(userId));
     }, [dispatch, userId])
 
-
     useEffect(() => {
-        console.log("The user cart from cart component: ", cart)
+        console.log("The cart component jsx cart: ", cart);
     }, [cart])
+
 
     const handleDecreaseQuantity = (itemId) => {
         const item = cart.items.find((item) => item.product.id === itemId);
@@ -49,7 +49,6 @@ const Cart = () => {
     const handleRemoveItem = async (itemId) => {
         try {
             await dispatch(removeItemFromCart({ cartId, itemId })).unwrap();
-            console.info(`Item removed! cartId: ${cartId}, itemId: ${itemId}`);
             toast.success("Item removed from cart");
         } catch (error) {
             toast.error(error?.message || error);

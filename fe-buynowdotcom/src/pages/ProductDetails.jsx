@@ -33,7 +33,7 @@ const ProductDetails = () => {
                 result.message || "Item added to cart successfully"
             );
 
-            dispatch(getUserCart(result.data.cart.userId));
+            // dispatch(getUserCart(result.data.cart.userId));
             dispatch(setQuantity(1));
 
 
