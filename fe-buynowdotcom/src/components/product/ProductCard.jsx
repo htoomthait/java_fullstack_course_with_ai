@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import ProductImage from '../utils/ProductImage'
 import { Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import StockStatus from '../utils/StockStatus'
 
 
 const ProductCard = ({ products }) => {
@@ -28,7 +29,9 @@ const ProductCard = ({ products }) => {
                                 {product.name} - {product.description}
                             </p>
                             <h4 className='price'>${product.price}</h4>
-                            <p className='text-success'>{product.inventory} in stock.</p>
+                            <p>
+                                <StockStatus inventory={product.inventory} />
+                            </p>
                             <div className='d-flex gap-2'>
                                 <button className='shop-now-button'>Add to cart</button>
                             </div>
