@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Products from './pages/Products'
 import ProductDetails from './pages/ProductDetails'
 import Cart from './components/cart/Cart'
+import Order from './components/order/Order'
 
 function App() {
 
@@ -29,6 +30,10 @@ function App() {
         <Route
           path="/user/:userId/my-cart"
           element={<Cart />}
+        />
+        <Route
+          path="/user/:userId/my-orders"
+          element={<Order />}
         />
         <Route path='*' element={<div>404 Not Found</div>} />
       </Route>

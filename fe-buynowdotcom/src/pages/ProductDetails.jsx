@@ -7,15 +7,17 @@ import ImageZoomify from '../components/common/ImageZoomify';
 import QuantityUpdater from '../components/utils/QuantityUpdater';
 import { FaCartPlus } from "react-icons/fa";
 import { capitalizeRegex } from '../components/utils/StringFunc';
-import { addToCart } from '../store/features/cartSlice';
+import { addToCart, getUserCart } from '../store/features/cartSlice';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import StockStatus from '../components/utils/StockStatus';
 
 const ProductDetails = () => {
     const { productId } = useParams();
     const dispatch = useDispatch();
     const { product, quantity } = useSelector((state) => state.product)
     const { successMessage, errorMessage } = useSelector((state) => state.cart)
+    const productOutOfStock = product?.inventory <= 0;
 
     useEffect(() => {
         dispatch(getProductById(productId));
@@ -28,9 +30,15 @@ const ProductDetails = () => {
                 addToCart({ productId, quantity })
             ).unwrap();
 
+
             toast.success(
                 result.message || "Item added to cart successfully"
             );
+
+            // dispatch(getUserCart(result.data.cart.userId));
+            dispatch(setQuantity(1));
+
+
         } catch (error) {
             toast.error(error?.message || error);
         }
@@ -81,26 +89,21 @@ const ProductDetails = () => {
                                 Rating: <span className='rating'>some stars</span>
                             </p>
                             <p>
-                                {" "}
-                                {product.inventory > 0 ? (
-                                    <span className='text-success'>
-                                        {product.inventory} in stock
-                                    </span>
-                                ) : (
-                                    <span className='text-danger'>Out of stock</span>
-                                )}
+                                <StockStatus inventory={product.inventory} />
                             </p>
+
                             <p>Quantity:</p>
                             <QuantityUpdater
                                 quantity={quantity}
                                 onIncrease={handleIncreaseQuantity}
                                 onDecrease={handleDecreaseQuantity}
+                                disabled={productOutOfStock}
                             />
                             <div className="d-flex gap-2 mt-3">
-                                <button className="add-to-cart-button" onClick={() => handleAddToCart()}>
+                                <button className="add-to-cart-button" onClick={() => handleAddToCart()} disabled={productOutOfStock}>
                                     <FaCartPlus /> Add to cart
                                 </button>
-                                <button className="buy-now-button">Buy now</button>
+                                <button className="buy-now-button" disabled={productOutOfStock}>Buy now</button>
                             </div>
                         </div>
 

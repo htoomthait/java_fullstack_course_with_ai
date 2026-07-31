@@ -42,7 +42,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> getUserOrder(Long userId) {
-        return orderRepository.findByUserId(userId);
+        return orderRepository.findByUserIdOrderByIdDesc(userId);
     }
 
 

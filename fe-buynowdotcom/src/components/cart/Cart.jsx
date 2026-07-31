@@ -8,6 +8,7 @@ import QuantityUpdater from '../utils/QuantityUpdater';
 import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import { toast, ToastContainer } from 'react-toastify';
 import LoadSpinner from '../common/LoadSpinner';
+import { placeOrder } from '../../store/features/orderSlice';
 
 const Cart = () => {
     const { userId } = useParams();
@@ -16,14 +17,16 @@ const Cart = () => {
     const cartId = useSelector((state) => state.cart.cartId)
     const isLoading = useSelector((state) => state.cart.isLoading)
 
+    const order = useSelector((state) => state.order)
+
     useEffect(() => {
         dispatch(getUserCart(userId));
     }, [dispatch, userId])
 
-
     useEffect(() => {
-        console.log("The user cart from cart component: ", cart)
+        console.log("The cart component jsx cart: ", cart);
     }, [cart])
+
 
     const handleDecreaseQuantity = (itemId) => {
         const item = cart.items.find((item) => item.product.id === itemId);
@@ -46,12 +49,33 @@ const Cart = () => {
     const handleRemoveItem = async (itemId) => {
         try {
             await dispatch(removeItemFromCart({ cartId, itemId })).unwrap();
-            console.info(`Item removed! cartId: ${cartId}, itemId: ${itemId}`);
             toast.success("Item removed from cart");
         } catch (error) {
             toast.error(error?.message || error);
         }
     };
+
+    const handlePlaceOrder = async () => {
+        if (cart.items.length === 0) {
+            toast.error("Your cart is empty.");
+            return;
+        }
+        try {
+            const result = await dispatch(placeOrder(userId)).unwrap();
+            console.log("From success order place result", result);
+            toast.success(result.message);
+            dispatch(getUserCart(userId));
+
+        } catch (error) {
+            console.log("Place order error:", error);
+
+            toast.error(
+                typeof error === "string"
+                    ? error
+                    : error?.message || "Failed to place order"
+            );
+        }
+    }
 
     if (isLoading) {
         return <LoadSpinner />
@@ -71,7 +95,7 @@ const Cart = () => {
                     <div className="text-center">Action</div>
                 </div>
                 <hr className="mb-2 mt-2" />
-                <h3 className='mb-4 cart-title'>My Shopping Cart</h3>
+                <h3 className='mb-4 cart-title'>My Shopping Cart {cart.items.length == 0 && `is Empty`} </h3>
 
                 {cart.items.map((item, index) => (
                     <Card key={index} className='mb-4'>
@@ -121,7 +145,7 @@ const Cart = () => {
                     </h4>
                     <div className='ms-auto checkout-links'>
                         <Link to={"/products"}>Continue Shopping</Link>
-                        <Link to={"#"}>Proceed to Checkout</Link>
+                        <Link to={"#"} onClick={handlePlaceOrder}>Proceed to Checkout</Link>
                     </div>
                 </div>
             </div>

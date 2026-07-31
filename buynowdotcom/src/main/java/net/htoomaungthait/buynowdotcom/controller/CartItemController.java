@@ -54,7 +54,7 @@ public class CartItemController extends BaseController {
             cartItemService.removeItemFromCart(cartId, itemId);
             String statusCode = "CARTIM_002";
 
-            
+
 
 
             return makeResponse(
