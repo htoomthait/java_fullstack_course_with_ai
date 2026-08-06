@@ -79,6 +79,9 @@ const productSlice = createSlice({
         },
         setQuantity: (state, action) => {
             state.quantity = action.payload;
+        },
+        addBrand: (state, action) => {
+            state.brands.push(action.payload);
         }
     },
     extraReducers: (builder) => {
@@ -156,5 +159,5 @@ const productSlice = createSlice({
     }, 
 });
 
-export const { filterByBrands, decreaseQuantity, increaseQuantity, setQuantity } = productSlice.actions;
+export const { filterByBrands, decreaseQuantity, increaseQuantity, setQuantity, addBrand } = productSlice.actions;
 export default productSlice.reducer;
