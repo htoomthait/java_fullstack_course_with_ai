@@ -27,21 +27,27 @@ const BrandSelector = ({
         }
     }
 
+    const handleBrandChange = (e) => {
+        if (e.target.value === 'New') {
+            setShowNewBrandInput(true)
+        } else {
+            onBrandChange(e.target.value)
+        }
+    }
+
+    const handleNewBrandChange = (e) => {
+        setNewBrand(e.target.value);
+    }
+
     return (
         <>
             <div className="mb-3">
                 <lable className="form-label">Brand</lable>
                 <select
-                    className="form-control"
+                    className="form-select"
                     required
                     value={selectedBrand}
-                    onChange={(e) => {
-                        if (e.target.value === 'New') {
-                            setShowNewBrandInput(true)
-                        } else {
-                            onBrandChange(e.target.value)
-                        }
-                    }}
+                    onChange={handleBrandChange}
 
                 >
                     <option value="">All Brands</option>
@@ -59,7 +65,7 @@ const BrandSelector = ({
                             className="form-control"
                             placeholder="Enter new brand name"
                             value={newBrand}
-                            onChange={(e) => setNewBrand(e.target.value)}
+                            onChange={handleNewBrandChange}
                         />
                         <button
                             type="button"
