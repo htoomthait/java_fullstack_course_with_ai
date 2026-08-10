@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllBrands, addBrand } from '../../store/features/productSlice'
 
@@ -15,12 +15,17 @@ const BrandSelector = ({
 
     useEffect(() => {
         dispatch(getAllBrands())
+
     }, [])
+
+    useEffect(() => {
+        console.log("all brands for selectors", brands)
+    }, [brands])
 
     const handleAddNewBrand = () => {
 
         if (newBrand !== undefined && newBrand !== '') {
-            dispatch(addBrand(newBrand))
+            dispatch(addBrand({ brand: newBrand }))
             onBrandChange(newBrand)
             setShowNewBrandInput(false)
             setNewBrand('')
@@ -42,7 +47,7 @@ const BrandSelector = ({
     return (
         <>
             <div className="mb-3">
-                <lable className="form-label">Brand</lable>
+                <label className="form-label">Brand</label>
                 <select
                     className="form-select"
                     required
@@ -53,8 +58,8 @@ const BrandSelector = ({
                     <option value="">All Brands</option>
                     <option value="New">Add New Brand</option>
                     {brands.map((brand, index) => (
-                        <option key={index} value={brand}>
-                            {brand}
+                        <option key={index} value={brand.brand}>
+                            {brand.brand}
                         </option>
                     ))}
                 </select>

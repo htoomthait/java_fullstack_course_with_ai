@@ -175,7 +175,7 @@ const productSlice = createSlice({
             .addCase(addNewProduct.pending, (state) => {
                 state.errorMessage = null;
                 state.isLoadingAddNewProduct = true;
-            }
+            })
 
     }, 
 });

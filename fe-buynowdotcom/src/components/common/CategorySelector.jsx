@@ -1,8 +1,8 @@
-import React from 'react'
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllCategories, addCategory } from '../../store/features/categorySlice';
 
-const CategorySelectory = ({
+const CategorySelector = ({
     selectedCategory,
     onCategoryChange,
     newCategory,
@@ -16,6 +16,10 @@ const CategorySelectory = ({
     useEffect(() => {
         dispatch(getAllCategories());
     }, []);
+
+    // useEffect(() => {
+    //     console.log("Category selector list: ", categories)
+    // }, [categories])
 
     const handleAddNewCategory = () => {
         if (newCategory !== undefined && newCategory !== '') {
@@ -42,7 +46,7 @@ const CategorySelectory = ({
     return (
         <>
             <div className="mb-3">
-                <lable className="form-label">Category</lable>
+                <label className="form-label">Category</label>
                 <select
                     className="form-select"
                     required
@@ -80,4 +84,4 @@ const CategorySelectory = ({
     )
 }
 
-export default CategorySelectory
+export default CategorySelector

@@ -28,7 +28,7 @@ const MainNavBar = () => {
                     </Nav>
 
                     <Nav className='me-auto'>
-                        <Nav.Link to={"#"} as={Link}>
+                        <Nav.Link to={"/add-product"} as={Link}>
                             Manage Products
                         </Nav.Link>
                     </Nav>
