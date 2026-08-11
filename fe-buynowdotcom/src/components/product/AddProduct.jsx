@@ -24,10 +24,10 @@ const AddProduct = () => {
 
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type } = e.target;
         setProduct((prevProduct) => ({
             ...prevProduct,
-            [name]: value
+            [name]: type === "number" ? Number(value) : value
         }));
     }
 
@@ -62,7 +62,8 @@ const AddProduct = () => {
         e.preventDefault();
 
         try {
-            const result = await dispatch(addNewProduct(productData)).unwrap();
+            console.log('Adding product:', product);
+            const result = await dispatch(addNewProduct(product)).unwrap();
             console.log('Product added successfully:', result);
             toast.success('Product added successfully!');
         } catch (error) {
