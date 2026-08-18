@@ -3,10 +3,12 @@ import { nanoid } from 'nanoid';
 import { uploadImages } from '../../store/features/imageSlice';
 import { useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
-import { BsDash } from 'react-icons/bs';
+import { BsDash, BsPlus } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 const ImageUploader = ({ productId }) => {
     const [images, setImages] = useState([]);
+    const [imageInput, setImageInput] = useState([{ id: nanoid() }]);
     const dispatch = useDispatch();
 
 
@@ -24,6 +26,14 @@ const ImageUploader = ({ productId }) => {
         );
 
         setImages((prevImages) => [...prevImages, ...newImages]);
+    }
+
+    const handleAddImageInput = () => {
+        setImageInput((prevInputs) => [...prevInputs, { id: nanoid() }]);
+    }
+
+    const handleRemoveImageInput = (id) => {
+
     }
 
     const handleImageUpload = async (e) => {
@@ -57,17 +67,27 @@ const ImageUploader = ({ productId }) => {
                 <div className="mt-4">
 
                     <h4> Upload Product Image (s)</h4>
-                    <div className="d-flex align-items-center mb-2 input-group">
-                        <input
-                            type="file"
-                            multiple
-                            accept="image/*"
-                            onChange={(e) => handleImageChange(e)}
-                            className="form-control me-2"
-                        />
+                    <Link to={"#"} onClick={handleAddImageInput} className="btn btn-sm btn-outline-primary mb-2">
+                        <BsPlus className='icon' /> Add More Images
+                    </Link>
+
+                    <div className="mb-2 mt-2">
+                        {imageInput.map((input) => (
+                            <div key={input.id} className="d-flex align-items-center mb-2 input-group">
+                                <input
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    onChange={(e) => handleImageChange(e)}
+                                    className="form-control me-2"
+                                />
 
 
+                            </div>
+                        ))}
                     </div>
+
+
 
                     <button
                         type="submit"
