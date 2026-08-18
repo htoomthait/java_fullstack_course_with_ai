@@ -66,7 +66,7 @@ const Products = () => {
 
         const safeSearchQuery = (searchQuery || "").toLowerCase();
         const safeSelectedCategory = (selectedCategory || "all").toLowerCase();
-        const safeSelectedBrands = selectedBrands || [];
+        // const safeSelectedBrands = selectedBrands || [];
 
 
         const results = products.filter((product) => {
@@ -84,7 +84,7 @@ const Products = () => {
             const matchesBrand =
                 selectedBrands.length === 0 ||
                 selectedBrands.some((selectedBrand) =>
-                    (product?.brand || "").toLowerCase().includes(safeSelectedBrands)
+                    product.brand.toLowerCase().includes(selectedBrand.toLowerCase())
                 );
 
             return matchesQuery && matchesCategory && matchesBrand;

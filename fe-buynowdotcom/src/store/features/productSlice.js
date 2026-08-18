@@ -10,6 +10,13 @@ export const getAllProducts = createAsyncThunk(
     }
 );
 
+export const addNewProduct = createAsyncThunk(
+    'product/addNewProduct', async (productData) => {
+        const response = await api.post('/products/add', productData);
+        return response.data;
+    }
+)
+
 export const getAllBrands = createAsyncThunk(
     "product/getAllBrands",
     async () => {
@@ -53,7 +60,8 @@ const initialState = {
     errorMessage: null,
     isLoadingGetAllProducts: false,
     isLoadingGetAllBrands: false,
-    isLoadingGetAllDistinctProductByName: false
+    isLoadingGetAllDistinctProductByName: false,
+    isLoadingAddNewProduct: false
 }
 
 const productSlice = createSlice({
@@ -79,6 +87,9 @@ const productSlice = createSlice({
         },
         setQuantity: (state, action) => {
             state.quantity = action.payload;
+        },
+        addBrand: (state, action) => {
+            state.brands.push(action.payload);
         }
     },
     extraReducers: (builder) => {
@@ -152,9 +163,22 @@ const productSlice = createSlice({
                 state.errorMessage = null;
                 state.isLoadingGetAllProducts = false;
             })
+            .addCase(addNewProduct.fulfilled, (state, action) => {
+                state.products.push(action.payload);
+                state.errorMessage = null;
+                state.isLoadingAddNewProduct = false;
+            })
+            .addCase(addNewProduct.rejected, (state, action) => {
+                state.errorMessage = action.error.message;
+                state.isLoadingAddNewProduct = false;
+            })
+            .addCase(addNewProduct.pending, (state) => {
+                state.errorMessage = null;
+                state.isLoadingAddNewProduct = true;
+            })
 
     }, 
 });
 
-export const { filterByBrands, decreaseQuantity, increaseQuantity, setQuantity } = productSlice.actions;
+export const { filterByBrands, decreaseQuantity, increaseQuantity, setQuantity, addBrand } = productSlice.actions;
 export default productSlice.reducer;

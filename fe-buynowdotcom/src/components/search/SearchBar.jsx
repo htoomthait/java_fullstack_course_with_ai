@@ -61,8 +61,8 @@ const SearchBar = ({
                     onChange={handleCategoryChange}
                 >
                     <option value="all">All Category</option>
-                    {categories.map((category) => (
-                        <option key={category.id} value={category.name}>
+                    {categories.map((category, index) => (
+                        <option key={index} value={category.name}>
                             {category.name}
                         </option>
                     ))}
