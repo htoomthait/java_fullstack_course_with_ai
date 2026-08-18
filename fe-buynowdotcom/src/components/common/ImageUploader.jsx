@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import { uploadImages } from '../../store/features/imageSlice';
 import { useDispatch } from 'react-redux';
 import { toast, ToastContainer } from 'react-toastify';
+import { BsDash } from 'react-icons/bs';
 
 const ImageUploader = ({ productId }) => {
     const [images, setImages] = useState([]);
@@ -51,7 +52,32 @@ const ImageUploader = ({ productId }) => {
 
 
     return (
-        <div>ImageUploader</div>
+        <>
+            <form onSubmit={handleImageUpload}>
+                <div className="mt-4">
+
+                    <h4> Upload Product Image (s)</h4>
+                    <div className="d-flex align-items-center mb-2 input-group">
+                        <input
+                            type="file"
+                            multiple
+                            accept="image/*"
+                            onChange={(e) => handleImageChange(e)}
+                            className="form-control me-2"
+                        />
+
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="btn btn-primary btn-sm"
+                    >
+                        Upload Images
+                    </button>
+                </div>
+            </form>
+        </>
     )
 }
 

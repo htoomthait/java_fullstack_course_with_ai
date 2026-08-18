@@ -13,7 +13,7 @@ export const getAllProducts = createAsyncThunk(
 export const addNewProduct = createAsyncThunk(
     'product/addNewProduct', async (productData) => {
         const response = await api.post('/products/add', productData);
-        return response.data.data;
+        return response.data;
     }
 )
 
