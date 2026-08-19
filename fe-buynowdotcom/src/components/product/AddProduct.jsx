@@ -194,6 +194,10 @@ const AddProduct = () => {
                                 )
                             }
 
+                            <div className="container">
+                                <ImageUploader productId={40} />
+                            </div>
+
 
 
                         </div>

@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { BsDash, BsPlus } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
-const ImageUploader = ({ productId }) => {
+const ImageUploader = ({ productId = 40 }) => {
     const [images, setImages] = useState([]);
     const [imageInput, setImageInput] = useState([{ id: nanoid() }]);
     const dispatch = useDispatch();
@@ -39,7 +39,9 @@ const ImageUploader = ({ productId }) => {
     }
 
     const handleImageUpload = async (e) => {
-        e.prevImagesentDefault();
+        e.preventDefault();
+
+        console.log("You 've reached to image upload function");
 
         if (!productId) {
             return;
@@ -47,6 +49,19 @@ const ImageUploader = ({ productId }) => {
 
         if (Array.isArray(images) && images.length > 0) {
             try {
+                console.log("productId:", productId);
+                console.log(
+                    "files:",
+                    images.map((image) => image.file)
+                );
+
+                images.forEach((image) => {
+                    console.log(
+                        image.file,
+                        image.file instanceof File
+                    );
+                });
+
                 const result = await dispatch(
                     uploadImages({ productId, files: images.map((image) => image.file) })
                 ).unwrap();
@@ -55,6 +70,7 @@ const ImageUploader = ({ productId }) => {
                 toast.success('Images uploaded successfully');
 
             } catch (error) {
+                console.log(error);
                 toast.error('Failed to upload images');
             }
         }
