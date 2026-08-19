@@ -30,10 +30,12 @@ const ImageUploader = ({ productId }) => {
 
     const handleAddImageInput = () => {
         setImageInput((prevInputs) => [...prevInputs, { id: nanoid() }]);
+        console.log("The added Input : ", imageInput);
     }
 
     const handleRemoveImageInput = (id) => {
-
+        setImageInput((prevInputs) => prevInputs.filter((input) => input.id !== id));
+        console.log("The removed Input : ", imageInput);
     }
 
     const handleImageUpload = async (e) => {
@@ -81,20 +83,28 @@ const ImageUploader = ({ productId }) => {
                                     onChange={(e) => handleImageChange(e)}
                                     className="form-control me-2"
                                 />
-
+                                <button
+                                    type="button"
+                                    onClick={() => handleRemoveImageInput(input.id)}
+                                    className="btn btn-danger btn-sm"
+                                >
+                                    <BsDash className='icon' />
+                                </button>
 
                             </div>
                         ))}
                     </div>
 
+                    {imageInput.length > 0 && (
 
+                        <button
+                            type="submit"
+                            className="btn btn-primary btn-sm"
+                        >
+                            Upload Images
+                        </button>
 
-                    <button
-                        type="submit"
-                        className="btn btn-primary btn-sm"
-                    >
-                        Upload Images
-                    </button>
+                    )}
                 </div>
             </form>
         </>
