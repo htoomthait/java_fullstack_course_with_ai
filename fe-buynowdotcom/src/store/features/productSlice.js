@@ -11,11 +11,36 @@ export const getAllProducts = createAsyncThunk(
 );
 
 export const addNewProduct = createAsyncThunk(
-    'product/addNewProduct', async (productData) => {
-        const response = await api.post('/products/add', productData);
-        return response.data;
+    'product/addNewProduct',
+    async (productData, { rejectWithValue }) => {
+        try {
+            const response = await api.post(
+                '/products/add',
+                productData
+            );
+
+            return response.data;
+
+        } catch (error) {
+            // Server responded with an error
+            if (error.response) {
+                return rejectWithValue(error.response.data);
+            }
+
+            // Request was sent but no response received
+            if (error.request) {
+                return rejectWithValue({
+                    message: 'No response from server. Please try again.'
+                });
+            }
+
+            // Other JavaScript/Axios errors
+            return rejectWithValue({
+                message: error.message || 'Something went wrong.'
+            });
+        }
     }
-)
+);
 
 export const getAllBrands = createAsyncThunk(
     "product/getAllBrands",

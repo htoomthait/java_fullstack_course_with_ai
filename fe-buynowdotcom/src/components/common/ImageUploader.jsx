@@ -6,7 +6,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { BsDash, BsPlus } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
-const ImageUploader = ({ productId = 40 }) => {
+const ImageUploader = ({ productId }) => {
     const [images, setImages] = useState([]);
     const [imageInput, setImageInput] = useState([{ id: nanoid() }]);
     const dispatch = useDispatch();
@@ -75,6 +75,11 @@ const ImageUploader = ({ productId = 40 }) => {
             }
         }
 
+    }
+
+    const clearFileInput = () => {
+        setImages([]);
+        setImageInput([{ id: nanoid() }]);
     }
 
 
