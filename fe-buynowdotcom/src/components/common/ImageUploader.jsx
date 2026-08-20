@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { nanoid } from 'nanoid';
 import { uploadImages } from '../../store/features/imageSlice';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 const ImageUploader = ({ productId }) => {
     const [images, setImages] = useState([]);
+    const fileInputRefs = useRef();
     const [imageInput, setImageInput] = useState([{ id: nanoid() }]);
     const dispatch = useDispatch();
 
