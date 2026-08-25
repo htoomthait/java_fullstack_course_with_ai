@@ -42,6 +42,35 @@ export const addNewProduct = createAsyncThunk(
     }
 );
 
+export const updateProduct = createAsyncThunk(
+    'product/updateNewProduct',
+    async ({productId, updatedProduct}, { rejectWithValue }) => {
+        try {
+            
+            const response = await api.put(`/product/${productId}`, updatedProduct)
+            return response.data
+
+        } catch (error) {
+            // Server responded with an error
+            if (error.response) {
+                return rejectWithValue(error.response.data);
+            }
+
+            // Request was sent but no response received
+            if (error.request) {
+                return rejectWithValue({
+                    message: 'No response from server. Please try again.'
+                });
+            }
+
+            // Other JavaScript/Axios errors
+            return rejectWithValue({
+                message: error.message || 'Something went wrong.'
+            });
+        }
+    }
+);
+
 export const getAllBrands = createAsyncThunk(
     "product/getAllBrands",
     async () => {
@@ -86,7 +115,8 @@ const initialState = {
     isLoadingGetAllProducts: false,
     isLoadingGetAllBrands: false,
     isLoadingGetAllDistinctProductByName: false,
-    isLoadingAddNewProduct: false
+    isLoadingAddNewProduct: false,
+    isLoadingUpdateProduct: false
 }
 
 const productSlice = createSlice({
@@ -200,6 +230,18 @@ const productSlice = createSlice({
             .addCase(addNewProduct.pending, (state) => {
                 state.errorMessage = null;
                 state.isLoadingAddNewProduct = true;
+            })
+            .addCase(updateProduct.fulfilled, (state, action)=> {
+                state.product = action.payload.data;
+                state.isLoadingUpdateProduct = false;
+            })
+            .addCase(updateProduct.rejected, (state, action)=> {
+
+                state.isLoadingUpdateProduct = false;
+            })
+            .addCase(updateProduct.pending, (state, action)=> {
+                tate.errorMessage = null;
+                state.isLoadingUpdateProduct = true;
             })
 
     }, 
