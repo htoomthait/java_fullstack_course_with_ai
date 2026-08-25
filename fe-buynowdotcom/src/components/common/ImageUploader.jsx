@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 const ImageUploader = ({ productId }) => {
     const [images, setImages] = useState([]);
-    const fileInputRefs = useRef();
+    const fileInputRefs = useRef([]);
     const [imageInput, setImageInput] = useState([{ id: nanoid() }]);
     const dispatch = useDispatch();
 
@@ -79,6 +79,9 @@ const ImageUploader = ({ productId }) => {
     }
 
     const clearFileInput = () => {
+        fileInputRefs.current.forEach((input) => {
+            if (input) input.value = null;
+        });
         setImages([]);
         setImageInput([{ id: nanoid() }]);
     }
@@ -96,14 +99,14 @@ const ImageUploader = ({ productId }) => {
                     </Link>
 
                     <div className="mb-2 mt-2">
-                        {imageInput.map((input) => (
+                        {imageInput.map((input, index) => (
                             <div key={input.id} className="d-flex align-items-center mb-2 input-group">
                                 <input
                                     type="file"
-                                    multiple
                                     accept="image/*"
                                     onChange={(e) => handleImageChange(e)}
                                     className="form-control me-2"
+                                    ref={(el) => (fileInputRefs.current[index] = el)}
                                 />
                                 <button
                                     type="button"
