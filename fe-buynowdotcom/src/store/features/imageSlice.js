@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import { api } from '../../components/services/api';
 
 
-export const uploadImages = createAsyncThunk(
+/* export const uploadImages = createAsyncThunk(
     'image/uploadImage', async (productId, files) => {
         const formData = new FormData();
 
@@ -15,7 +15,9 @@ export const uploadImages = createAsyncThunk(
             formData.append("images", files);
         }
 
-        formdData.append("productId", productId);
+        formData.append("productId", productId);
+
+        
 
         const response = await api.post('images/upload', formData, {
             headers: {
@@ -24,7 +26,53 @@ export const uploadImages = createAsyncThunk(
         });
 
         return response.data.data;
-    })
+    }) */
+
+export const uploadImages = createAsyncThunk(
+    "image/uploadImage",
+    async ({ productId, files }, { rejectWithValue }) => {
+        try {
+            const formData = new FormData();
+
+            files.forEach((file) => {
+                formData.append("images", file);
+            });
+
+            formData.append("productId", String(productId));
+
+            // Check exactly what will be sent
+            for (const [key, value] of formData.entries()) {
+                console.log(
+                    "FormData:",
+                    key,
+                    value
+                );
+            }
+
+            const response = await api.post(
+                "/images/upload",
+                formData
+            );
+
+            return response.data.data;
+
+        } catch (error) {
+            console.log(
+                "Status:",
+                error.response?.status
+            );
+
+            console.log(
+                "Backend response:",
+                error.response?.data
+            );
+
+            return rejectWithValue(
+                error.response?.data || error.message
+            );
+        }
+    }
+);
 
 
 const initialState = {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { nanoid } from 'nanoid';
 import { uploadImages } from '../../store/features/imageSlice';
 import { useDispatch } from 'react-redux';
@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 const ImageUploader = ({ productId }) => {
     const [images, setImages] = useState([]);
+    const fileInputRefs = useRef();
     const [imageInput, setImageInput] = useState([{ id: nanoid() }]);
     const dispatch = useDispatch();
 
@@ -30,14 +31,18 @@ const ImageUploader = ({ productId }) => {
 
     const handleAddImageInput = () => {
         setImageInput((prevInputs) => [...prevInputs, { id: nanoid() }]);
+        console.log("The added Input : ", imageInput);
     }
 
     const handleRemoveImageInput = (id) => {
-
+        setImageInput((prevInputs) => prevInputs.filter((input) => input.id !== id));
+        console.log("The removed Input : ", imageInput);
     }
 
     const handleImageUpload = async (e) => {
-        e.prevImagesentDefault();
+        e.preventDefault();
+
+        console.log("You 've reached to image upload function");
 
         if (!productId) {
             return;
@@ -45,6 +50,19 @@ const ImageUploader = ({ productId }) => {
 
         if (Array.isArray(images) && images.length > 0) {
             try {
+                console.log("productId:", productId);
+                console.log(
+                    "files:",
+                    images.map((image) => image.file)
+                );
+
+                images.forEach((image) => {
+                    console.log(
+                        image.file,
+                        image.file instanceof File
+                    );
+                });
+
                 const result = await dispatch(
                     uploadImages({ productId, files: images.map((image) => image.file) })
                 ).unwrap();
@@ -53,10 +71,16 @@ const ImageUploader = ({ productId }) => {
                 toast.success('Images uploaded successfully');
 
             } catch (error) {
+                console.log(error);
                 toast.error('Failed to upload images');
             }
         }
 
+    }
+
+    const clearFileInput = () => {
+        setImages([]);
+        setImageInput([{ id: nanoid() }]);
     }
 
 
@@ -81,20 +105,28 @@ const ImageUploader = ({ productId }) => {
                                     onChange={(e) => handleImageChange(e)}
                                     className="form-control me-2"
                                 />
-
+                                <button
+                                    type="button"
+                                    onClick={() => handleRemoveImageInput(input.id)}
+                                    className="btn btn-danger btn-sm"
+                                >
+                                    <BsDash className='icon' />
+                                </button>
 
                             </div>
                         ))}
                     </div>
 
+                    {imageInput.length > 0 && (
 
+                        <button
+                            type="submit"
+                            className="btn btn-primary btn-sm"
+                        >
+                            Upload Images
+                        </button>
 
-                    <button
-                        type="submit"
-                        className="btn btn-primary btn-sm"
-                    >
-                        Upload Images
-                    </button>
+                    )}
                 </div>
             </form>
         </>

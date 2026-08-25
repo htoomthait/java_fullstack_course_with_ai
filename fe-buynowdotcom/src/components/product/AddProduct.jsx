@@ -77,7 +77,12 @@ const AddProduct = () => {
             setActiveStep(1);
         } catch (error) {
             console.error('Error adding product:', error);
-            toast.error('Error adding product.');
+            // toast.error('Error adding product.');
+            toast.error(
+                error?.message ||
+                error?.status ||
+                'Failed to add product'
+            );
         }
     }
 
@@ -196,6 +201,8 @@ const AddProduct = () => {
 
 
 
+
+
                         </div>
                     </div>
                 </div>
@@ -205,3 +212,4 @@ const AddProduct = () => {
 }
 
 export default AddProduct
+
