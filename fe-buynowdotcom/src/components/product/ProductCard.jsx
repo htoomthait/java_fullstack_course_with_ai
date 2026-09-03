@@ -35,6 +35,7 @@ const ProductCard = ({ products }) => {
                                 <StockStatus inventory={product.inventory} />
                             </p>
                             <div className='d-flex gap-2'>
+                                <Link to={`/update-product/${product.id}/update`}>edit</Link>
                                 <button className='shop-now-button'>Add to cart</button>
                             </div>
 

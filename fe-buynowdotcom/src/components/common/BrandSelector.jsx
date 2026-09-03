@@ -34,8 +34,9 @@ const BrandSelector = ({
 
     const handleBrandChange = (e) => {
         if (e.target.value === 'New') {
-            setShowNewBrandInput(true)
+            setShowNewBrandInput(true);
         } else {
+            setShowNewBrandInput(false)
             onBrandChange(e.target.value)
         }
     }

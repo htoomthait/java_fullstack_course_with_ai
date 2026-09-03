@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getProductById, updateProduct } from "../../store/features/productSlice";
 import LoadSpinner from '../common/LoadSpinner';
 import { toast, ToastContainer } from 'react-toastify';
+import CategorySelector from '../common/CategorySelector';
+import BrandSelector from '../common/BrandSelector';
 
 
 const ProductUpdate = () => {
@@ -12,7 +14,6 @@ const ProductUpdate = () => {
     const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
     const [newBrand, setNewBrand] = useState("");
     const [newCategory, setNewCategory] = useState("");
-    const [product, setProduct] = useState(productInitialData)
     const [activeStep, setActiveStep] = useState(0);
     const steps = ["Add Product", "Upload Product Image (s)"];
     const { productId } = useParams();
@@ -30,20 +31,35 @@ const ProductUpdate = () => {
     });
 
     useEffect(() => {
-        dispatch(getProductById(productId));
+        const fetchProduct = async () => {
+            try {
+                const result = await dispatch(getProductById(productId)).unwrap();
+                setUpdatedProduct((prevProduct) => ({
+                    ...prevProduct,
+                    ...result,
+                    quantity: result.inventory,
+                    category: result.category?.name || "",
+                }));
+            } catch (error) {
+                console.log(`Fail to fetch product with ID ${productId}`, error);
+                toast.error(error?.message || `Fail to fetch product with ID ${productId}`);
+            }
+        }
+        fetchProduct();
+
     }, [dispatch, productId])
 
 
     const handleInputChange = (e) => {
         const { name, value, type } = e.target;
-        setProduct((prevProduct) => ({
+        setUpdatedProduct((prevProduct) => ({
             ...prevProduct,
             [name]: type === "number" ? Number(value) : value
         }));
     }
 
     const handleCategoryChange = (category) => {
-        setProduct((prevProduct) => ({
+        setUpdatedProduct((prevProduct) => ({
             ...prevProduct,
             category: category
         }));
@@ -56,7 +72,7 @@ const ProductUpdate = () => {
     }
 
     const handleBrandChange = (brand) => {
-        setProduct((prevProduct) => ({
+        setUpdatedProduct((prevProduct) => ({
             ...prevProduct,
             brand: brand
         }));
@@ -71,23 +87,25 @@ const ProductUpdate = () => {
     const handleUpdateProduct = async (e) => {
         e.preventDefault();
 
-        try {
-            const result = await dispatch(
-                updateProduct({ productId, updatedProduct })
-            ).unwrap();
-            toast.success(result.message);
+        console.log("Updating product with ID:", productId, "Updated Product:", updatedProduct);
 
-        } catch (error) {
-            console.log(`Fail to update product with ID ${productId}`, error);
-            toast.errror(error?.message || `Fail to update product with ID ${productId}`)
-        }
+        // try {
+        //     const result = await dispatch(
+        //         updateProduct({ productId, updatedProduct })
+        //     ).unwrap();
+        //     toast.success(result.message);
+
+        // } catch (error) {
+        //     console.log(`Fail to update product with ID ${productId}`, error);
+        //     toast.errror(error?.message || `Fail to update product with ID ${productId}`)
+        // }
     }
 
 
 
 
 
-    if (isloading) {
+    if (isLoading) {
         return <>
             <LoadSpinner />
         </>
@@ -95,7 +113,91 @@ const ProductUpdate = () => {
 
 
     return (
-        <div>ProductUpdate</div>
+        <>
+            <div className="container mt-5 mb-5">
+                <div className="row d-flex justify-content-center">
+                    <div className="col-md-6 me-4">
+                        <h4> Update Product </h4>
+                        <form onSubmit={handleUpdateProduct}>
+                            <div className="mb-3">
+                                <label className="form-label">Name: </label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="name"
+                                    name="name"
+                                    value={updatedProduct.name}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Price: </label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    id="price"
+                                    name="price"
+                                    value={updatedProduct.price}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label">Quantity: </label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    id="quantity"
+                                    name="quantity"
+                                    value={updatedProduct.quantity}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <BrandSelector
+                                    selectedBrand={updatedProduct.brand}
+                                    onBrandChange={handleBrandChange}
+                                    newBrand={newBrand}
+                                    showNewBrandInput={showNewBrandInput}
+                                    setNewBrand={setNewBrand}
+                                    setShowNewBrandInput={setShowNewBrandInput}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <CategorySelector
+                                    selectedCategory={updatedProduct.category}
+                                    onCategoryChange={handleCategoryChange}
+                                    newCategory={newCategory}
+                                    showNewCategoryInput={showNewCategoryInput}
+                                    setNewCategory={setNewCategory}
+                                    setShowNewCategoryInput={setShowNewCategoryInput}
+                                />
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor='description' className="form-label">Description:</label>
+                                <textarea
+                                    rows={3}
+                                    placeholder="Enter product description"
+                                    className='form-control'
+                                    name="description"
+                                    value={updatedProduct.description}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+
+                            </div>
+                            <button type="submit" className="btn btn-sm btn-secondary">
+                                Save Product Update
+                            </button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </>
+
     )
 }
 

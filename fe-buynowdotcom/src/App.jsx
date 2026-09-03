@@ -8,6 +8,7 @@ import ProductDetails from './pages/ProductDetails'
 import Cart from './components/cart/Cart'
 import Order from './components/order/Order'
 import AddProduct from './components/product/AddProduct'
+import ProductUpdate from './components/product/ProductUpdate'
 
 function App() {
 
@@ -39,6 +40,10 @@ function App() {
         <Route
           path="/add-product"
           element={<AddProduct />}
+        />
+        <Route
+          path="/update-product/:productId/update"
+          element={<ProductUpdate />}
         />
         <Route path='*' element={<div>404 Not Found</div>} />
       </Route>

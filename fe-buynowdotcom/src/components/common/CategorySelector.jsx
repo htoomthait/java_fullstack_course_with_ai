@@ -34,6 +34,7 @@ const CategorySelector = ({
         if (e.target.value === 'New') {
             setShowNewCategoryInput(true);
         } else {
+            setShowNewCategoryInput(false);
             onCategoryChange(e.target.value);
         }
     }
