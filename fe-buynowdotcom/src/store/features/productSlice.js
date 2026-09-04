@@ -46,8 +46,7 @@ export const updateProduct = createAsyncThunk(
     'product/updateNewProduct',
     async ({productId, updatedProduct}, { rejectWithValue }) => {
         try {
-            
-            const response = await api.put(`/product/${productId}`, updatedProduct)
+            const response = await api.put(`/products/${productId}`, updatedProduct)
             return response.data
 
         } catch (error) {
@@ -240,7 +239,7 @@ const productSlice = createSlice({
                 state.isLoadingUpdateProduct = false;
             })
             .addCase(updateProduct.pending, (state, action)=> {
-                tate.errorMessage = null;
+                state.errorMessage = null;
                 state.isLoadingUpdateProduct = true;
             })
 

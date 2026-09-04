@@ -90,16 +90,16 @@ const ProductUpdate = () => {
 
         console.log("Updating product with ID:", productId, "Updated Product:", updatedProduct);
 
-        // try {
-        //     const result = await dispatch(
-        //         updateProduct({ productId, updatedProduct })
-        //     ).unwrap();
-        //     toast.success(result.message);
+        try {
+            const result = await dispatch(
+                updateProduct({ productId, updatedProduct })
+            ).unwrap();
+            toast.success(result.message);
 
-        // } catch (error) {
-        //     console.log(`Fail to update product with ID ${productId}`, error);
-        //     toast.errror(error?.message || `Fail to update product with ID ${productId}`)
-        // }
+        } catch (error) {
+            console.log(`Fail to update product with ID ${productId}`, error);
+            toast.error(error?.message || `Fail to update product with ID ${productId}`)
+        }
     }
 
 
@@ -116,6 +116,7 @@ const ProductUpdate = () => {
     return (
         <>
             <div className="container mt-5 mb-5">
+                <ToastContainer />
                 <div className="row d-flex justify-content-center">
                     <div className="col-md-6 me-4">
                         <h4> Update Product </h4>
@@ -198,7 +199,6 @@ const ProductUpdate = () => {
                     <div className="col-md-3">
                         <table className="table table-bordered text-center">
                             <tbody>
-                                {console.log("Updated Product Images:", updatedProduct.images)}
                                 {updatedProduct.images.map((image, index) => (
 
                                     < tr key={index} >
