@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { getProductById, updateProduct } from "../../store/features/productSlice";
 import LoadSpinner from '../common/LoadSpinner';
 import { toast, ToastContainer } from 'react-toastify';
 import CategorySelector from '../common/CategorySelector';
 import BrandSelector from '../common/BrandSelector';
+import ProductImage from '../utils/ProductImage';
 
 
 const ProductUpdate = () => {
@@ -194,8 +195,29 @@ const ProductUpdate = () => {
 
                         </form>
                     </div>
+                    <div className="col-md-3">
+                        <table className="table table-bordered text-center">
+                            <tbody>
+                                {console.log("Updated Product Images:", updatedProduct.images)}
+                                {updatedProduct.images.map((image, index) => (
+
+                                    < tr key={index} >
+
+                                        <td className="update-image-container">
+                                            <ProductImage imageId={image.id} />
+                                            <div className="d-flex gap-4 mb-2 mt-2">
+                                                <Link to={"#"}> edit</Link>
+                                                <Link to={"#"}> remove</Link>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                            <Link to={"#"}> Add Image</Link>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            </div >
         </>
 
     )
