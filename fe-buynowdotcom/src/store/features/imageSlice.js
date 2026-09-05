@@ -74,6 +74,41 @@ export const uploadImages = createAsyncThunk(
     }
 );
 
+export const updateProductImage = createAsyncThunk(
+    "images/updateProductImage",
+    async({productId, imageId, file}, {rejectWithValue}) => {
+
+        try{
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("productId", String(productId));
+
+
+            const response = await api.put(
+                `/images/${imageId}`,
+                formData
+            );
+
+            return response.data.data;
+
+
+        }catch(error){
+            console.log(
+                "Status:",
+                error.response?.status
+            );
+            console.log(
+                "Backend response:",
+                error.response?.data
+            );
+             return rejectWithValue(
+                error.response?.data || error.message
+            );
+
+        }
+    }
+);   
+
 
 const initialState = {
     isLoading : false,
@@ -91,6 +126,31 @@ const imageSlice = createSlice({
             state.isLoading = false;
             state.errorMessage = null;
         })
+        .addCase(uploadImages.pending, (state) => {
+            state.isLoading = true;
+            state.errorMessage = null;
+        })
+        .addCase(uploadImages.rejected, (state, action) => {
+            state.isLoading = false;
+            state.errorMessage = action.payload || 'Failed to upload images';
+        })
+        .addCase(updateProductImage.fulfilled, (state, action) => {
+            const updatedImage = action.payload;
+            const index = state.images.findIndex(image => image.id === updatedImage.id);
+            if (index !== -1) {
+                state.images[index] = updatedImage;
+            }
+            state.isLoading = false;
+            state.errorMessage = null;
+        })
+        .addCase(updateProductImage.pending, (state) => {
+            state.isLoading = true;
+            state.errorMessage = null;
+        })
+        .addCase(updateProductImage.rejected, (state, action) => {
+            state.isLoading = false;
+            state.errorMessage = action.payload || 'Failed to update image';
+        });
     
     }
 });
