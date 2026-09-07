@@ -31,7 +31,11 @@ const ProductUpdate = () => {
         images: []
     });
 
+
+
     useEffect(() => {
+
+
         const fetchProduct = async () => {
             try {
                 const result = await dispatch(getProductById(productId)).unwrap();
@@ -115,6 +119,7 @@ const ProductUpdate = () => {
 
     return (
         <>
+
             <div className="container mt-5 mb-5">
                 <ToastContainer />
                 <div className="row d-flex justify-content-center">
