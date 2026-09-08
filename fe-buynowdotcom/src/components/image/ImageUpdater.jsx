@@ -1,6 +1,8 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { updateProductImage, uploadImages } from '../../store/features/imageSlice';
+import { Button, Modal } from 'react-bootstrap';
+import { toast, ToastContainer } from 'react-toastify';
 
 const ImageUpdater = ({
     show,
@@ -11,7 +13,7 @@ const ImageUpdater = ({
 }) => {
     const fileInputRef = useRef(null);
     const dispatch = useDispatch();
-    const [selectedFile, selectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
 
 
@@ -49,7 +51,7 @@ const ImageUpdater = ({
             let result;
             if (selectedImageId) {
                 result = await dispatch(
-                    updateProductImage({ productId, imageId, file: selectedFile })
+                    updateProductImage({ productId, imageId: selectedImageId, file: selectedFile })
                 ).unwrap();
 
 
@@ -67,16 +69,52 @@ const ImageUpdater = ({
         }
     }
 
-    const handleClose = () => {
-        setSelectedFile(null);
-        setImagePreview(null);
 
-    }
 
 
 
     return (
         <>
+            <ToastContainer />
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton style={{ backgroundColor: "whitesmoke" }}>
+                    <Modal.Title>
+                        {selectedImageId ? "Update Product Image" : "Upload Product Image"}
+                    </Modal.Title>
+
+                </Modal.Header>
+                <Modal.Body>
+                    <div>
+                        <p>
+                            {selectedImageId ? "selected a new image to replace the current one :"
+                                : "Select the image to be added:"}
+                        </p>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            className="form-control"
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                        />
+                        <div className="image-preview-container">
+                            {imagePreview && (
+                                <img
+                                    src={imagePreview}
+                                    alt='Image Preview'
+                                    className='img-fluid image-preview'
+                                />
+                            )}
+                        </div>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer style={{ backgroundColor: "whitesmoke" }}>
+                    <Button variant="secondary" onClick={handleClose}> Close </Button>
+                    <Button variant="primary" onClick={handleImageAction}>
+                        {selectedImageId ? "Update Image" : "Upload Image"}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
 
         </>
     )

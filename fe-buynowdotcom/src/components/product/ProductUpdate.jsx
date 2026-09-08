@@ -7,6 +7,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import CategorySelector from '../common/CategorySelector';
 import BrandSelector from '../common/BrandSelector';
 import ProductImage from '../utils/ProductImage';
+import ImageUpdater from '../image/ImageUpdater';
 
 
 const ProductUpdate = () => {
@@ -19,6 +20,9 @@ const ProductUpdate = () => {
     const steps = ["Add Product", "Upload Product Image (s)"];
     const { productId } = useParams();
     const isLoading = useSelector((state) => state.product.isLoadingUpdateProduct)
+
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [selectedImageId, setSelectedImageId] = useState(null);
 
 
     const [updatedProduct, setUpdatedProduct] = useState({
@@ -104,6 +108,24 @@ const ProductUpdate = () => {
             console.log(`Fail to update product with ID ${productId}`, error);
             toast.error(error?.message || `Fail to update product with ID ${productId}`)
         }
+    }
+
+    const handleEditImage = (imageId) => {
+        setSelectedImageId(imageId);
+        setShowImageModal(true);
+    }
+
+    const handleRemoveImage = (imageId) => {
+
+    }
+
+    const handleAddImage = () => {
+
+    }
+
+    const handleCloseImageModal = () => {
+        setShowImageModal(false);
+        setSelectedImageId(null);
     }
 
 
@@ -211,17 +233,27 @@ const ProductUpdate = () => {
                                         <td className="update-image-container">
                                             <ProductImage imageId={image.id} />
                                             <div className="d-flex gap-4 mb-2 mt-2">
-                                                <Link to={"#"}> edit</Link>
-                                                <Link to={"#"}> remove</Link>
+                                                <Link to={"#"} onClick={() => handleEditImage(image.id)}> edit</Link>
+                                                <Link to={"#"} onClick={() => handleRemoveImage(image.id)}> remove</Link>
                                             </div>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
-                            <Link to={"#"}> Add Image</Link>
+
                         </table>
+                        <Link to={"#"} onClick={handleAddImage}>
+                            Add Image
+                        </Link>
                     </div>
                 </div>
+
+                <ImageUpdater
+                    show={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    selectedImageId={selectedImageId}
+                    productId={productId}
+                />
             </div >
         </>
 
