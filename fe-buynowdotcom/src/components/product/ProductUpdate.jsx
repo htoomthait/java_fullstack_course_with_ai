@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { use, useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { getProductById, updateProduct } from "../../store/features/productSlice";
@@ -19,10 +19,12 @@ const ProductUpdate = () => {
     const [activeStep, setActiveStep] = useState(0);
     const steps = ["Add Product", "Upload Product Image (s)"];
     const { productId } = useParams();
-    const isLoading = useSelector((state) => state.product.isLoadingUpdateProduct)
+    // const isLoading = useSelector((state) => state.product.isLoadingUpdateProduct)
+    const [isLoading, setIsLoading] = useState(false);
 
     const [showImageModal, setShowImageModal] = useState(false);
     const [selectedImageId, setSelectedImageId] = useState(null);
+    const newProductImage = useSelector((state) => state.image.images);
 
 
     const [updatedProduct, setUpdatedProduct] = useState({
@@ -35,14 +37,18 @@ const ProductUpdate = () => {
         images: []
     });
 
+    useEffect(() => {
+        console.log("New product image state changed:", newProductImage);
+    }, [newProductImage])
+
 
 
     useEffect(() => {
-
-
         const fetchProduct = async () => {
             try {
+                setIsLoading(true);
                 const result = await dispatch(getProductById(productId)).unwrap();
+
                 setUpdatedProduct((prevProduct) => ({
                     ...prevProduct,
                     ...result,
@@ -50,13 +56,25 @@ const ProductUpdate = () => {
                     category: result.category?.name || "",
                 }));
             } catch (error) {
-                console.log(`Fail to fetch product with ID ${productId}`, error);
-                toast.error(error?.message || `Fail to fetch product with ID ${productId}`);
+                console.log(
+                    `Fail to fetch product with ID ${productId}`,
+                    error
+                );
+
+                toast.error(
+                    error?.message ||
+                    `Fail to fetch product with ID ${productId}`
+                );
+            } finally {
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 1000);
             }
-        }
+        };
+
         fetchProduct();
 
-    }, [dispatch, productId])
+    }, [dispatch, productId, newProductImage]);
 
 
     const handleInputChange = (e) => {
@@ -123,10 +141,17 @@ const ProductUpdate = () => {
 
     }
 
-    const handleCloseImageModal = () => {
+    const handleCloseImageModal = async () => {
         setShowImageModal(false);
         setSelectedImageId(null);
+
+
+
     }
+
+    useEffect(() => {
+        console.log("Updated Product state changed:", updatedProduct);
+    }, [updatedProduct]);
 
 
 
@@ -228,7 +253,9 @@ const ProductUpdate = () => {
                             <tbody>
                                 {updatedProduct.images.map((image, index) => (
 
-                                    < tr key={index} >
+
+                                    < tr key={image.id} >
+                                        {/* {console.log(image)} */}
 
                                         <td className="update-image-container">
                                             <ProductImage imageId={image.id} />
@@ -253,6 +280,8 @@ const ProductUpdate = () => {
                     handleClose={handleCloseImageModal}
                     selectedImageId={selectedImageId}
                     productId={productId}
+
+
                 />
             </div >
         </>

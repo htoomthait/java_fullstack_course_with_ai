@@ -11,9 +11,8 @@ const ProductImage = ({
         const fetchProductImage = async () => {
 
             try {
-                const response = await fetch(
-                    `http://localhost:8080/api/v1/images/download/${imageId}`
-                );
+                const url = `http://localhost:8080/api/v1/images/download/${imageId}`;
+                const response = await fetch(url, { cache: 'no-store' });
                 const blob = await response.blob();
                 const reader = new FileReader();
                 reader.onloadend = () => {

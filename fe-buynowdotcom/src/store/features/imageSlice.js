@@ -136,10 +136,11 @@ const imageSlice = createSlice({
         })
         .addCase(updateProductImage.fulfilled, (state, action) => {
             const updatedImage = action.payload;
-            const index = state.images.findIndex(image => image.id === updatedImage.id);
-            if (index !== -1) {
-                state.images[index] = updatedImage;
-            }
+            // const index = state.images.findIndex(image => image.id === updatedImage.id);
+            // if (index !== -1) {
+            //     state.images[index] = updatedImage;
+            // }
+            state.images = [...state.images.filter(image => image.id !== updatedImage.id), updatedImage];
             state.isLoading = false;
             state.errorMessage = null;
         })

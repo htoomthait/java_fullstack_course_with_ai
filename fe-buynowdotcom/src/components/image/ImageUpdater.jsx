@@ -10,11 +10,14 @@ const ImageUpdater = ({
     selectedImageId,
     productId,
     selectedImage
+
+
 }) => {
     const fileInputRef = useRef(null);
     const dispatch = useDispatch();
     const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+
 
 
     useEffect(() => {
@@ -61,21 +64,30 @@ const ImageUpdater = ({
                 ).unwrap();
             }
 
-            toast.success(result.message || "Image updated successfully");
+            console.log('image update/upload result:', result);
+            toast.success(result.message || "Image updated successfully", { autoClose: 3000, toastId: "image-update-success" });
+            // if (typeof fetchProduct === 'function') {
+            //     console.log('calling fetchProduct to refresh product data');
+            //     await fetchProduct();
+            //     console.log('fetchProduct completed');
+            // } else {
+            //     console.warn('fetchProduct is not a function');
+            // }
             handleClose();
 
         } catch (error) {
-            toast.error(error?.message || "Failed to update image");
+            toast.error(error.message || "Failed to update/upload image", { autoClose: 3000, toastId: "image-update-error" });
+            console.error('Error updating/uploading image:', error);
+
         }
+
     }
-
-
 
 
 
     return (
         <>
-            <ToastContainer />
+
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton style={{ backgroundColor: "whitesmoke" }}>
                     <Modal.Title>
