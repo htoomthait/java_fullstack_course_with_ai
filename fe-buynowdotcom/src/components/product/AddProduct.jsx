@@ -96,7 +96,6 @@ const AddProduct = () => {
     return (
         <>
             <section className="mt-5 mb-5 container">
-                <ToastContainer />
                 <div className="d=flex justify-content-center">
                     <div className="col-md-6 col-xs-12 offset-md-3">
                         <h4>Add New Product</h4>

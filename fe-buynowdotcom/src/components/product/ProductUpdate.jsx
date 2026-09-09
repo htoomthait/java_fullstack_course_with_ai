@@ -262,7 +262,7 @@ const ProductUpdate = () => {
 
                         </form>
                     </div>
-                    <div className="col-md-3">
+                    <div className="d-flex flex-column col-md-3 justify-content-center">
                         <table className="table table-bordered text-center">
                             <tbody>
                                 {updatedProduct.images.map((image, index) => (
@@ -273,9 +273,9 @@ const ProductUpdate = () => {
 
                                         <td className="update-image-container">
                                             <ProductImage imageId={image.id} />
-                                            <div className="d-flex gap-4 mb-2 mt-2">
-                                                <Link to={"#"} onClick={() => handleEditImage(image.id)}> edit</Link>
-                                                <Link to={"#"} onClick={() => handleRemoveImage(image.id)}> remove</Link>
+                                            <div className="d-flex gap-4 mb-2 mt-2 justify-content-center">
+                                                <Link className="btn btn-sm btn-outline-primary" to={"#"} onClick={() => handleEditImage(image.id)}> edit</Link>
+                                                <Link className="btn btn-sm btn-outline-danger" to={"#"} onClick={() => handleRemoveImage(image.id)}> remove</Link>
                                             </div>
                                         </td>
                                     </tr>
@@ -283,7 +283,7 @@ const ProductUpdate = () => {
                             </tbody>
 
                         </table>
-                        <Link to={"#"} onClick={handleAddImage}>
+                        <Link className="btn btn-sm btn-outline-success" to={"#"} onClick={handleAddImage}>
                             Add Image
                         </Link>
                     </div>
