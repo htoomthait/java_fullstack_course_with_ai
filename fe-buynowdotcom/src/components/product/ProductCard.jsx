@@ -3,11 +3,24 @@ import ProductImage from '../utils/ProductImage'
 import { Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import StockStatus from '../utils/StockStatus'
+import { deleteProductById } from '../../store/features/productSlice'
+import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
 
 
 const ProductCard = ({ products }) => {
 
+    const dispatch = useDispatch();
 
+    const handleDeleteProduct = async (productId) => {
+        try {
+            const result = await dispatch(deleteProductById(productId)).unwrap();
+
+            toast.success(result.message || 'Product deleted successfully');
+        } catch (error) {
+            toast.error(error.message || 'Failed to delete product');
+        }
+    }
 
 
 
@@ -35,6 +48,9 @@ const ProductCard = ({ products }) => {
                                 <StockStatus inventory={product.inventory} />
                             </p>
                             <div className='d-flex gap-2'>
+                                <Link to='#' onClick={() => handleDeleteProduct(product.id)}>
+                                    delete
+                                </Link>
                                 <Link to={`/update-product/${product.id}/update`}>edit</Link>
                                 <button className='shop-now-button'>Add to cart</button>
                             </div>

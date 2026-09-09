@@ -102,6 +102,34 @@ export const getProductsByCategory = createAsyncThunk(
     }
 );
 
+export const deleteProductById = createAsyncThunk(
+    "product/deleteProductById",
+    async (productId, { rejectWithValue }) => {
+        try {
+            const response = await api.delete(`/products/${productId}`);
+            return response.data;
+
+        } catch (error) {
+            // Server responded with an error
+            if (error.response) {
+                return rejectWithValue(error.response.data);
+            }
+
+            // Request was sent but no response received
+            if (error.request) {
+                return rejectWithValue({
+                    message: 'No response from server. Please try again.'
+                });
+            }
+
+            // Other JavaScript/Axios errors
+            return rejectWithValue({
+                message: error.message || 'Something went wrong.'
+            });
+        }
+    }
+);
+
 const initialState = {
     products: [],
     brands:[],
@@ -241,6 +269,14 @@ const productSlice = createSlice({
             .addCase(updateProduct.pending, (state, action)=> {
                 state.errorMessage = null;
                 state.isLoadingUpdateProduct = true;
+            })
+            .addCase(deleteProductById.fulfilled, (state, action) => {
+                const deletedProductId = action.payload.id;
+                state.products = state.products.filter(product => product.id !== deletedProductId);
+                state.errorMessage = null;
+            })
+            .addCase(deleteProductById.rejected, (state, action) => {
+                state.errorMessage = action.error.message;
             })
 
     }, 
