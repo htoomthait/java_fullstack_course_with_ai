@@ -110,6 +110,34 @@ export const updateProductImage = createAsyncThunk(
 );   
 
 
+export const deleteProductImage = createAsyncThunk(
+    "images/deleteProductImage",
+    async({imageId}, {rejectWithValue}) => {
+        try{
+            const response = await api.delete(
+                `/images/${imageId}`
+            );
+
+            return response.data;
+
+        }catch(error){
+            console.log(
+                "Status:",
+                error.response?.status
+            );
+            console.log(
+                "Backend response:",
+                error.response?.data
+            );
+             return rejectWithValue(
+                error.response?.data || error.message
+            );
+        }
+    }
+
+);
+
+
 const initialState = {
     isLoading : false,
     images: [],
@@ -151,6 +179,20 @@ const imageSlice = createSlice({
         .addCase(updateProductImage.rejected, (state, action) => {
             state.isLoading = false;
             state.errorMessage = action.payload || 'Failed to update image';
+        })
+        .addCase(deleteProductImage.fulfilled, (state, action) => {
+            const deletedImageId = action.payload.id;
+            state.images = state.images.filter(image => image.id !== deletedImageId);
+            state.isLoading = false;
+            state.errorMessage = null;
+        })
+        .addCase(deleteProductImage.pending, (state) => {
+            state.isLoading = true;
+            state.errorMessage = null;
+        })
+        .addCase(deleteProductImage.rejected, (state, action) => {
+            state.isLoading = false;
+            state.errorMessage = action.payload || 'Failed to delete image';
         });
     
     }

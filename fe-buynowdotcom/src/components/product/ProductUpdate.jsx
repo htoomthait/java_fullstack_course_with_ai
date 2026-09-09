@@ -8,6 +8,7 @@ import CategorySelector from '../common/CategorySelector';
 import BrandSelector from '../common/BrandSelector';
 import ProductImage from '../utils/ProductImage';
 import ImageUpdater from '../image/ImageUpdater';
+import { deleteProductImage } from '../../store/features/imageSlice';
 
 
 const ProductUpdate = () => {
@@ -69,6 +70,7 @@ const ProductUpdate = () => {
                 setTimeout(() => {
                     setIsLoading(false);
                 }, 1000);
+
             }
         };
 
@@ -114,7 +116,7 @@ const ProductUpdate = () => {
     const handleUpdateProduct = async (e) => {
         e.preventDefault();
 
-        console.log("Updating product with ID:", productId, "Updated Product:", updatedProduct);
+
 
         try {
             const result = await dispatch(
@@ -133,12 +135,23 @@ const ProductUpdate = () => {
         setShowImageModal(true);
     }
 
-    const handleRemoveImage = (imageId) => {
+    const handleRemoveImage = async (imageId) => {
+        try {
+            const result = await dispatch(deleteProductImage({ imageId })).unwrap();
+            toast.success(result.message || `Image with ID ${imageId} removed successfully`);
 
+            setUpdatedProduct((prevProduct) => ({
+                ...prevProduct,
+                images: prevProduct.images.filter((image) => image.id !== imageId)
+            }));
+        } catch (error) {
+            toast.error(error?.message || `Fail to remove image with ID ${imageId}`)
+        }
     }
 
     const handleAddImage = () => {
-
+        setShowImageModal(true);
+        setSelectedImageId(null);
     }
 
     const handleCloseImageModal = async () => {
@@ -159,6 +172,7 @@ const ProductUpdate = () => {
 
     if (isLoading) {
         return <>
+
             <LoadSpinner />
         </>
     }
@@ -168,7 +182,7 @@ const ProductUpdate = () => {
         <>
 
             <div className="container mt-5 mb-5">
-                <ToastContainer />
+
                 <div className="row d-flex justify-content-center">
                     <div className="col-md-6 me-4">
                         <h4> Update Product </h4>

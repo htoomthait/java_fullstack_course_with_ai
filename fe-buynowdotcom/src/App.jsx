@@ -9,49 +9,65 @@ import Cart from './components/cart/Cart'
 import Order from './components/order/Order'
 import AddProduct from './components/product/AddProduct'
 import ProductUpdate from './components/product/ProductUpdate'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path='/' element={<RootLayout />}>
+      <>
+        <Route path='/' element={<RootLayout />}>
 
-        <Route index path='/' element={<Home />} />
-        <Route path='/home' element={<Home />} />
-        <Route path='/products' element={<Products />} />
-        <Route path='/products/:name' element={<Products />} />
+          <Route index path='/' element={<Home />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/products' element={<Products />} />
+          <Route path='/products/:name' element={<Products />} />
 
-        <Route
-          path='/product/:productId/details'
-          element={<ProductDetails />}
-        />
-        <Route
-          path="/product/category/:categoryId/products/"
-          element={<Products />}
-        />
-        <Route
-          path="/user/:userId/my-cart"
-          element={<Cart />}
-        />
-        <Route
-          path="/user/:userId/my-orders"
-          element={<Order />}
-        />
-        <Route
-          path="/add-product"
-          element={<AddProduct />}
-        />
-        <Route
-          path="/update-product/:productId/update"
-          element={<ProductUpdate />}
-        />
-        <Route path='*' element={<div>404 Not Found</div>} />
-      </Route>
+          <Route
+            path='/product/:productId/details'
+            element={<ProductDetails />}
+          />
+          <Route
+            path="/product/category/:categoryId/products/"
+            element={<Products />}
+          />
+          <Route
+            path="/user/:userId/my-cart"
+            element={<Cart />}
+          />
+          <Route
+            path="/user/:userId/my-orders"
+            element={<Order />}
+          />
+          <Route
+            path="/add-product"
+            element={<AddProduct />}
+          />
+          <Route
+            path="/update-product/:productId/update"
+            element={<ProductUpdate />}
+          />
+          <Route path='*' element={<div>404 Not Found</div>} />
+        </Route>
+
+      </>
+
     )
   )
 
   return (
-    <RouterProvider router={router} />
+    <>
+      <RouterProvider router={router} />
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+      />
+    </>
 
 
   )
