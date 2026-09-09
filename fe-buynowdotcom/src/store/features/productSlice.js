@@ -271,7 +271,7 @@ const productSlice = createSlice({
                 state.isLoadingUpdateProduct = true;
             })
             .addCase(deleteProductById.fulfilled, (state, action) => {
-                const deletedProductId = action.payload.id;
+                const deletedProductId = action.payload.data.id;
                 state.products = state.products.filter(product => product.id !== deletedProductId);
                 state.errorMessage = null;
             })
