@@ -90,7 +90,12 @@ public class StatusCodesAndMessages {
 
             StatusCodeAndMessage.of("ORD_001", "Order has been placed successfully."),
             StatusCodeAndMessage.of("ORD_002", "Order list has been queried successfully."),
-            StatusCodeAndMessage.of("ORD_003", "Order list is empty")
+            StatusCodeAndMessage.of("ORD_003", "Order list is empty"),
+
+            StatusCodeAndMessage.of("ADDRESS_001", "Address has been created successfully."),
+            StatusCodeAndMessage.of("ADDRESS_002", "Address has been updated successfully."),
+            StatusCodeAndMessage.of("ADDRESS_003", "Address has been deleted successfully."),
+            StatusCodeAndMessage.of("ADDRESS_004", "Address not found.")
     );
 
 
